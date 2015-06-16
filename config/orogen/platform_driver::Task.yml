@@ -1,6 +1,6 @@
 --- name:default
 # device address in the system. pcan32 for USB. pcan0 for PCIe
-can_dev_address: /dev/pcan0
+can_dev_address: /dev/pcan32
 # 1 for Peak-Systems interface. Only device type supported so far
 can_dev_type: 1
 # activate/deactivate watchdog on can network
@@ -12,17 +12,17 @@ voltage_factor: 3.93
 # system bogie angle measurement factor to convert from internal to physical units
 bogie_factor: 72
 # Number of motors in the platform.
-num_motors: 18
+num_motors: 10
 # Number of can nodes in the platform = Number of motors + number of group nodes
-num_nodes: 21
+num_nodes: 12
 # parameters of platform can nodes
 can_parameters:
-  CanId: [ 23, 22, 19, 18, 11, 10, 17, 15, 16, 14, 25, 24, 21, 20, 13, 12, 26, 27, 31, 32, 33 ]
-  Type: [WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, MAST_PAN, MAST_TILT, WHEEL_DRIVE, WHEEL_STEER, WHEEL_WALK]
-  Name: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_BL, WHEEL_STEER_BR, WHEEL_WALK_FL, WHEEL_WALK_FR, WHEEL_WALK_CL, WHEEL_WALK_CR, WHEEL_WALK_BL, WHEEL_WALK_BR, MAST_PAN, MAST_TILT, WHEEL_DRIVE_GROUP, WHEEL_STEER_GROUP, WHEEL_WALK_GROUP]
-  Active: [ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE]
+  CanId: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
+  Type: [WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_DRIVE, WHEEL_STEER]
+  Name: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_BL, WHEEL_STEER_BR, WHEEL_DRIVE_GROUP, WHEEL_STEER_GROUP]
+  Active: [ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE]
 
-# motor parameters of the arm joint drives
+# motor parameters of the arm joint drives - NOT APPLICABLE FOR HDPR
 param_gear_motor_arm: 
   dPtpVelDefaultIncrS: 0.0
   dVelMaxEncIncrS: 0.0
@@ -41,7 +41,7 @@ param_gear_motor_arm:
   dAnalogFactor: 0.0
   dNominalCurrent: 0.0
 
-# motor parameters of the tilt drive
+# motor parameters of the tilt drive - NOT APPLICABLE FOR HDPR
 param_gear_motor_tilt: 
   dPtpVelDefaultIncrS: 40000
   dVelMaxEncIncrS: 68000
@@ -60,7 +60,7 @@ param_gear_motor_tilt:
   dAnalogFactor: 0.00067139
   dNominalCurrent: 0.081
 
-# motor parameters of the pan drive
+# motor parameters of the pan drive - NOT APPLICABLE FOR HDPR
 param_gear_motor_pan: 
   dPtpVelDefaultIncrS: 40000
   dVelMaxEncIncrS: 68000
@@ -81,24 +81,24 @@ param_gear_motor_pan:
 
 # motor parameters of the steer drives
 param_gear_motor_steer: 
-  dPtpVelDefaultIncrS: 50000
-  dVelMaxEncIncrS: 70000
-  dPosLimitLowIncr: -115111
+  dPtpVelDefaultIncrS: 182020
+  dVelMaxEncIncrS: 273031
+  dPosLimitLowIncr: -1430000
   dBeltRatio: 1
   iSign: 1
   iEncOffsetIncr: 0
   dCurrentToTorque: 1.0
-  dDecIncrS2: 100000
+  dDecIncrS2: 98240
   dCurrMax: 1.0
-  dGearRatio: 1900
+  dGearRatio: 2772
   bIsSteer: 1
   iEncIncrPerRevMot: 512
-  dAccIncrS2: 100000
-  dPosLimitHighIncr: 115111
+  dAccIncrS2: 98240
+  dPosLimitHighIncr: 1430000
   dAnalogFactor: 0.00067139
-  dNominalCurrent: 0.393
+  dNominalCurrent: 0.516
 
-# motor parameters of the walk drives
+# motor parameters of the walk drives - NOT APPLICABLE FOR HDPR
 param_gear_motor_walk: 
   dPtpVelDefaultIncrS: 50000
   dVelMaxEncIncrS: 75000
@@ -119,22 +119,22 @@ param_gear_motor_walk:
 
 # motor parameters of the wheel drives
 param_gear_motor_wheel: 
-  dPtpVelDefaultIncrS: 50000
-  dVelMaxEncIncrS: 75000
+  dPtpVelDefaultIncrS: 166666
+  dVelMaxEncIncrS: 250000
   dPosLimitLowIncr: -100000000
   dBeltRatio: 1
   iSign: 1
   iEncOffsetIncr: 0
   dCurrentToTorque: 1.0
-  dDecIncrS2: 100000
-  dCurrMax: 2.0
-  dGearRatio: 675
+  dDecIncrS2: 30000
+  dCurrMax: 10.0
+  dGearRatio: 100
   bIsSteer: 0
-  iEncIncrPerRevMot: 512
-  dAccIncrS2: 100000
+  iEncIncrPerRevMot: 500
+  dAccIncrS2: 30000
   dPosLimitHighIncr: 100000000
   dAnalogFactor: 0.00067139
-  dNominalCurrent: 0.664
+  dNominalCurrent: 3.17
 
 #Analog identifiers and desirable names
 analog_readings_config:

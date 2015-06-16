@@ -7,9 +7,9 @@ maxRotationSpeed: 0.18539815 #3.141592653589793
 minRotationSpeed: 0.18539815 #-3.141592653589793
 
 # Maximum translation speed in m/s
-maxSpeed: 0.1
+maxSpeed: 0.9
 # Minimum translation speed in m/s
-minSpeed: -0.1
+minSpeed: 0.9
 # no documentation available for this property
 #metadata:
 #  metadata: []
