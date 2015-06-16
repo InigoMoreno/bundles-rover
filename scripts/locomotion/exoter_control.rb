@@ -63,11 +63,11 @@ Orocos::Process.run 'exoter_control', 'exoter_groundtruth' do
     puts "done"
 
     # setup exoter ptu_control
-    puts "Setting up ptu_control"
-    ptu_control = Orocos.name_service.get 'ptu_control'
-    Orocos.conf.apply(ptu_control, ['default'], :override => true)
-    ptu_control.configure
-    puts "done"
+    #puts "Setting up ptu_control"
+    #ptu_control = Orocos.name_service.get 'ptu_control'
+    #Orocos.conf.apply(ptu_control, ['default'], :override => true)
+    #ptu_control.configure
+    #puts "done"
 
     if options[:reference].casecmp("vicon").zero?
         puts "[INFO] Vicon Ground Truth system available"
@@ -99,10 +99,10 @@ Orocos::Process.run 'exoter_control', 'exoter_groundtruth' do
     command_joint_dispatcher.motors_commands.connect_to platform_driver.joints_commands
 
     # Connect ports: read_joint_dispatcher to ptu_control
-    read_joint_dispatcher.ptu_samples.connect_to ptu_control.ptu_samples
+    #read_joint_dispatcher.ptu_samples.connect_to ptu_control.ptu_samples
 
     # Connect ports: ptu_control to command_joint_dispatcher
-    ptu_control.ptu_commands_out.connect_to command_joint_dispatcher.ptu_commands
+    #ptu_control.ptu_commands_out.connect_to command_joint_dispatcher.ptu_commands
     puts "done"
 
     # Start the tasks
@@ -110,7 +110,7 @@ Orocos::Process.run 'exoter_control', 'exoter_groundtruth' do
     read_joint_dispatcher.start
     command_joint_dispatcher.start
     locomotion_control.start
-    ptu_control.start
+    #ptu_control.start
     if options[:reference].casecmp("vicon").zero?
         vicon.start
     end

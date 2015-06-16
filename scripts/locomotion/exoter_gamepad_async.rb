@@ -116,9 +116,9 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
     end
 
     # Get the logger from the bundles
-    joystick_logger_task =  TaskContext.get 'joystick_Logger'
-    motion_port_logger = joystick_logger_task.port('exoter/joystick.motion_command')
-    motion_port_logger.disconnect_all
+    #joystick_logger_task =  TaskContext.get 'joystick_Logger'
+    #motion_port_logger = joystick_logger_task.port('exoter/joystick.motion_command')
+    #motion_port_logger.disconnect_all
 
     # Get the logger async
     #joystick_logger = Orocos::Async.proxy 'joystick_Logger'
@@ -258,11 +258,11 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
             motion_port.write(motion_cmd) do |result|
                 puts "Sent command #{motion_cmd.translation} and #{motion_cmd.rotation}"
             end
-            loggint_port_writer = joystick_logger_task.port('exoter/joystick.motion_command').writer
-            loggint_port_sample = loggint_port_writer.new_sample
-            loggint_port_sample.translation = translation
-            loggint_port_sample.rotation = rotation
-            loggint_port_writer.write(loggint_port_sample)
+            #loggint_port_writer = joystick_logger_task.port('exoter/joystick.motion_command').writer
+            #loggint_port_sample = loggint_port_writer.new_sample
+            #loggint_port_sample.translation = translation
+            #loggint_port_sample.rotation = rotation
+            #loggint_port_writer.write(loggint_port_sample)
             puts "Logging command #{motion_cmd.translation} and #{motion_cmd.rotation}"
         end
 
