@@ -52,26 +52,26 @@ rover_parameters:
   - 0
   - 0
   WheelRadius: 
-  - 0.126
-  - 0.126
-  - 0.126
-  - 0.126
-  - 0.126
-  - 0.126
+  - 0.125
+  - 0.125
+  - 0.125
+  - 0.125
+  - 0.125
+  - 0.125
   WheelCoordCart: 
   - 0.75
-  - 0.405
+  - 0.41
   - 0.75
-  - -0.405
+  - -0.41
   - 0
-  - 0.405
+  - 0.41
   - 0
-  - -0.405
+  - -0.41
   - -0.75
-  - 0.405
+  - 0.41
   - -0.75
-  - -0.405
+  - -0.41
 # no documentation available for this property
 target_window: 0.05
 position_limit: 1.57
-velocity_limit: 7
+velocity_limit: 8

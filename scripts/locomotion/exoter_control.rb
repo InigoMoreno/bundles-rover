@@ -32,7 +32,7 @@ end.parse!(ARGV)
 ## Initialize orocos ##
 Bundles.initialize
 
-Orocos::Process.run 'exoter_control', 'exoter_groundtruth' do
+Orocos::Process.run 'hdpr_control', 'hdpr_groundtruth' do
 
     # setup platform_driver
     puts "Setting up platform_driver"
@@ -83,7 +83,7 @@ Orocos::Process.run 'exoter_control', 'exoter_groundtruth' do
 
 
     # Log all ports
-    Orocos.log_all_ports
+    #Orocos.log_all_ports
 
     puts "Connecting ports"
     # Connect ports: platform_driver to read_joint_dispatcher

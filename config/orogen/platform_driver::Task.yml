@@ -92,7 +92,7 @@ param_gear_motor_steer:
   dCurrMax: 1.0
   dGearRatio: 2772
   bIsSteer: 1
-  iEncIncrPerRevMot: 512
+  iEncIncrPerRevMot: 2048
   dAccIncrS2: 98240
   dPosLimitHighIncr: 1430000
   dAnalogFactor: 0.00067139
@@ -130,7 +130,7 @@ param_gear_motor_wheel:
   dCurrMax: 10.0
   dGearRatio: 100
   bIsSteer: 0
-  iEncIncrPerRevMot: 500
+  iEncIncrPerRevMot: 2000
   dAccIncrS2: 30000
   dPosLimitHighIncr: 100000000
   dAnalogFactor: 0.00067139

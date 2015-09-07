@@ -25,7 +25,7 @@ calibration_parameters:
 # output format of the camera --> not the output port! see below
 camera_format: :MODE_BAYER_GRBG
 # unique camerea id
-camera_id: '49712223532727488'
+camera_id: '49712223536067003'
 # bit depth per channel
 channel_data_depth: 16
 # if the queue is empty because retrieve was called too rarely clear buffer
@@ -33,9 +33,9 @@ clear_buffer_if_frame_drop: false
 # no data are written to frame_raw if set to true
 disable_frame_raw: true
 # exposure value if exposure mode is not auto
-exposure: 5000
+exposure: 10
 # exposure mode (auto, manual, external, none)
-exposure_mode: auto
+exposure_mode: manual
 # frames per second
 fps: 3.75
 # size of the frame buffer
@@ -45,7 +45,7 @@ frame_start_trigger_event: EdgeRising
 # gain value
 gain: 16
 # gain mode
-gain_mode_auto: true
+gain_mode_auto: false
 # turns gamma on or off
 gamma: false
 # grab mode (Stop, SingleFrame, MultiFrame, Continuously)
@@ -139,9 +139,9 @@ clear_buffer_if_frame_drop: false
 # no data are written to frame_raw if set to true
 disable_frame_raw: true
 # exposure value if exposure mode is not auto
-exposure: 5000
+exposure: 250
 # exposure mode (auto, manual, external, none)
-exposure_mode: manual
+exposure_mode: auto
 # frames per second
 fps: 3.75
 # size of the frame buffer
@@ -151,7 +151,7 @@ frame_start_trigger_event: EdgeRising
 # gain value
 gain: 16
 # gain mode
-gain_mode_auto: false
+gain_mode_auto: true
 # turns gamma on or off
 gamma: false
 # grab mode (Stop, SingleFrame, MultiFrame, Continuously)
@@ -245,9 +245,9 @@ clear_buffer_if_frame_drop: false
 # no data are written to frame_raw if set to true
 disable_frame_raw: true
 # exposure value if exposure mode is not auto
-exposure: 5000
+exposure: 250
 # exposure mode (auto, manual, external, none)
-exposure_mode: manual
+exposure_mode: auto
 # frames per second
 fps: 3.75
 # size of the frame buffer
@@ -257,7 +257,7 @@ frame_start_trigger_event: EdgeRising
 # gain value
 gain: 16
 # gain mode
-gain_mode_auto: false
+gain_mode_auto: true
 # turns gamma on or off
 gamma: false
 # grab mode (Stop, SingleFrame, MultiFrame, Continuously)

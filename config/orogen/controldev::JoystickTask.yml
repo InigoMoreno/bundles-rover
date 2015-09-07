@@ -2,14 +2,14 @@
 # Path to the joystick device
 device: /dev/input/js0
 # Maximum rotation speed in rad/s
-maxRotationSpeed: 0.18539815 #3.141592653589793
+maxRotationSpeed: 0.78539815 #3.141592653589793
 # Minimum rotation speed in rad/s
-minRotationSpeed: 0.18539815 #-3.141592653589793
+minRotationSpeed: 0.78539815 #-3.141592653589793
 
 # Maximum translation speed in m/s
 maxSpeed: 0.9
 # Minimum translation speed in m/s
-minSpeed: 0.9
+minSpeed: 0.5
 # no documentation available for this property
 #metadata:
 #  metadata: []
