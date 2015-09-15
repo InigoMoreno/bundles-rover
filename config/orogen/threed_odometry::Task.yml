@@ -39,9 +39,9 @@ joints_samples_period: 0.08
 # Time in s between orientation_samples readings
 orientation_samples_period: 0.08
 # Minimum system time in seconds between two updates of the status ports
-stream_aligner_status_period: 0.08
+#stream_aligner_status_period: 0.08
 # Maximum time in seconds the transformer will wait until it starts dropping samples
-aggregator_max_latency: 1.0
+#aggregator_max_latency: 1.0
 
 # Set to true if desired orientation noise from orientation_samples input port.Otherwise it uses the motion model Leasts-Squares error to fill the uncertainty.
 orientation_samples_noise_on: true #false

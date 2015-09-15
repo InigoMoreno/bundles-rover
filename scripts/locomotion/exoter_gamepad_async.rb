@@ -52,7 +52,6 @@ widget.tilt_position.setValidator(Qt::IntValidator.new(-180, 180))
 max_linear_speed = 0.00
 max_rot_speed = 0.00
 rover_speed_ratio = 0.00
-ptu_speed_ratio = 0.00
 x_velocity = 0.00
 y_velocity = 0.00
 rotation = 0.00
@@ -61,15 +60,49 @@ x_axis = 0.00
 y_axis = 0.00
 pan_axis = 0.00
 tilt_axis = 0.00
-pan_velocity = 0.00
-tilt_velocity = 0.00
-pan_position = 0.00
-tilt_position = 0.00
 axes_changed = FALSE
 buttons_changed = FALSE
 
-Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
+pan_pos = 0.00
+tilt_pos = 0.00
+# This offset is used cause our PTU is REFURBISHED and has an offset (Tilted about 14.6.... degrees) 
+tilt_offset= 0.25491745
+# Each discrete position (DP) of the ptu is about 185.1428 arcseconds or 0.0514285°
+#Let's Define the limits
+#MIN TILT 587 DP = 0.52688923589 radians (ROCK Driver uses different axes than PTU-D46)
+min_tilt=-0.52688923589
 
+#MAX TILT -889 DP = -0.7979634254 radians (ROCK Driver uses different axes than PTU-D46)
+max_tilt=0.7979634254
+#MIN PAN -3074 DP = 2.7592121144 radians
+min_pan=-2.757507351
+#MAX PAN 3075 DP = 2.76010971105 radians
+max_pan=2.75010971105
+#The scaling of the incrimental controll of the rover
+delta_theta=0.2
+#Direct_Control
+direct_control=FALSE
+
+
+tilt_pos = tilt_pos - tilt_offset
+#tilt_pos_prev = tilt_pos
+beginning_time = Time.now
+
+Orocos::Process.run 'controldev::JoystickTask' => 'joystick', 'ptu_directedperception::Task' => 'ptu_dp' do
+
+    ptu = TaskContext.get 'ptu_dp'
+    port = "/dev/ttyUSB2"
+    ptu.io_port = ["serial://", port,":9600"].join("")
+    ptu.io_read_timeout = Time.at(2.0)
+    ptu.io_write_timeout = Time.at(2.0)
+    puts "connecting to #{ptu.io_port}"
+    pan_writer = ptu.set_orientation.writer
+    rot_reader = ptu.orientation_samples.reader
+    pan_writer = ptu.pan_set.writer
+    tilt_writer = ptu.tilt_set.writer
+    ptu.configure
+    ptu.start
+ 
     ## Get the Joystick task context ##
     joystick = TaskContext.get 'joystick'
     Orocos.conf.apply(joystick, ['default', 'logitech_gamepad'], :override => true)
@@ -195,17 +228,13 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
                 rover_speed_ratio = 0.00
             end
 
-            if current_buttons[4]==1.0 and ptu_speed_ratio < 1.0
-                ptu_speed_ratio = ptu_speed_ratio + 0.050000
-            elsif current_buttons[6]==1.0 and ptu_speed_ratio > 0.0
-                ptu_speed_ratio = ptu_speed_ratio - 0.050000
-            end
-
-            if (ptu_speed_ratio > 1.0)
-                ptu_speed_ratio = 1.0
-            elsif (ptu_speed_ratio < 0.0)
-                ptu_speed_ratio = 0.00
-            end
+	    if current_buttons[1]==1.0
+		if direct_control == FALSE
+			direct_control = TRUE
+		elsif direct_control == TRUE
+			direct_control = FALSE
+		end
+	    end
 
             buttons = current_buttons;
             buttons_changed = TRUE
@@ -231,21 +260,39 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
                 translation = 0.001 * max_linear_speed * rover_speed_ratio
             end
 
-            # PTU velocities
-            pan_velocity = pan_axis * ptu_speed_ratio
-            tilt_velocity = tilt_axis * ptu_speed_ratio
-
-            puts "*** SEND TO EXOTER *** "
+            puts "*** SEND TO HDPR ***"
             puts "rover_speed_ratio: #{rover_speed_ratio}"
-            puts "ptu_speed_ratio: #{ptu_speed_ratio}"
             puts "translation: #{translation}"
             puts "rotation: #{rotation}"
-            puts "pan_velocity: #{pan_velocity}"
-            puts "tilt_velocity: #{tilt_velocity}"
+            puts "pan_position: #{pan_pos}"
+            puts "tilt_position: #{tilt_pos}"
 
-            axes_changed = FALSE
+
+	    axes_changed = FALSE
             buttons_changed = FALSE
         end
+
+	# Control of the PTU (the rock driver uses position commands so the control is really sketchy)
+	if direct_control == TRUE
+		pan_pos = (pan_axis * Math::PI)
+        	tilt_pos = (tilt_axis * Math::PI/2) - tilt_offset
+	else
+            	pan_pos = pan_pos  + (pan_axis * delta_theta)
+            	tilt_pos = tilt_pos + (tilt_axis * delta_theta)
+	end
+	if pan_pos > max_pan
+		pan_pos = max_pan
+	elsif pan_pos < min_pan
+		pan_pos = min_pan
+	end
+	if tilt_pos > max_tilt
+		tilt_pos = max_tilt
+	elsif tilt_pos < min_tilt
+		tilt_pos = min_tilt
+	end
+	    
+	    pan_writer.write(pan_pos)
+	    tilt_writer.write(tilt_pos)
 
         ## ############ ##
         # Motion commands
@@ -256,30 +303,14 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
             motion_cmd.rotation =  rotation
             motion_port = locomotion_control.port('motion_command')
             motion_port.write(motion_cmd) do |result|
-                puts "Sent command #{motion_cmd.translation} and #{motion_cmd.rotation}"
+                #puts "Sent command #{motion_cmd.translation} and #{motion_cmd.rotation}"
             end
             #loggint_port_writer = joystick_logger_task.port('exoter/joystick.motion_command').writer
             #loggint_port_sample = loggint_port_writer.new_sample
             #loggint_port_sample.translation = translation
             #loggint_port_sample.rotation = rotation
             #loggint_port_writer.write(loggint_port_sample)
-            puts "Logging command #{motion_cmd.translation} and #{motion_cmd.rotation}"
-        end
-
-        ## ################# ##
-        # PTU velocity commands
-        ## ################# ##
-        ptu_control.on_reachable do
-            ptu_joints = Types::Base::Commands::Joints.new
-            ptu_joints.time = Time.now
-            ptu_joints.names = ["MAST_PAN", "MAST_TILT"]
-            ptu_joints.elements = [Types::Base::JointState.new(:speed => pan_velocity, :position => NaN),
-                                Types::Base::JointState.new(:speed => tilt_velocity, :position => NaN)]
-
-            ptu_port = ptu_control.port('ptu_joints_commands')
-            ptu_port.write(ptu_joints) do |result|
-                puts "Sent PTU joints"
-            end
+            #puts "Logging command #{motion_cmd.translation} and #{motion_cmd.rotation}"
         end
 
         ## ############## ##
@@ -287,17 +318,12 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
         ## ############## ##
         ptu_control.on_reachable do
            widget.sendButton.connect(SIGNAL('clicked()')) do
-               ptu_joints = Types::Base::Commands::Joints.new
-               ptu_joints.time = Time.now
-               pan_position = (widget.pan_position.text.to_f * Math::PI / 180.00)
-               tilt_position = (widget.tilt_position.text.to_f * Math::PI / 180.00)
-               ptu_joints.names = ["MAST_PAN", "MAST_TILT"]
-               ptu_joints.elements = [Types::Base::JointState.new(:speed => NaN, :position => pan_position),
-                                   Types::Base::JointState.new(:speed => NaN, :position => tilt_position)]
-
-               ptu_port = ptu_control.port('ptu_joints_commands')
-               ptu_port.write(ptu_joints) do |result|
-               end
+               pan_pos = (widget.pan_position.text.to_f * Math::PI / 180.00)
+               tilt_pos = (widget.tilt_position.text.to_f * Math::PI / 180.00) - tilt_offset
+	       #rot = ptu.rbsFromPanTilt(pan_pos,tilt_pos)
+	       #rot_writer.write(rot)
+	       pan_writer.write(pan_pos)
+	       tilt_writer.write(tilt_pos)
            end
         end
 
@@ -323,9 +349,9 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
         widget.lcd_translation.display(translation*100.00)
         widget.lcd_heading.display(rotation*180.00/Math::PI)
         widget.bar_rover_ratio.setValue(rover_speed_ratio*100.00)
-        widget.bar_ptu_ratio.setValue(ptu_speed_ratio*100.00)
-        widget.lcd_pan.display(pan_velocity*180.00/Math::PI)
-        widget.lcd_tilt.display(tilt_velocity*180.00/Math::PI)
+        widget.bar_ptu_ratio.setValue(100.00)
+        widget.lcd_pan.display( 0 )
+        widget.lcd_tilt.display( 0 )
 
 
         ## ######### ##
@@ -335,15 +361,6 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
         # ExoTer Stop
         pixmap = Qt::Pixmap.new(Bundles.find_file('data/gui/images', 'exoter_start.png'))
 
-        if (pan_velocity != 0.00 or tilt_velocity != 0.00)
-            if (translation != 0.00 or rotation != 0.00)
-                # Moving ExoTer and the Pan and Tilt
-                pixmap = Qt::Pixmap.new(Bundles.find_file('data/gui/images', 'exoter_move_all.png'))
-            elsif (translation == 0.00 and rotation == 0.00)
-                # Moving the Pan and Tilt
-                pixmap = Qt::Pixmap.new(Bundles.find_file('data/gui/images', 'exoter_pan_tilt.png'))
-            end
-        else
            if rotation > 0.00
                if translation == 0.00
                    # Spot-turn to left
@@ -375,7 +392,7 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
                    pixmap = Qt::Pixmap.new(Bundles.find_file('data/gui/images', 'exoter_back.png'))
                end
            end
-        end
+        
         widget.image.setPixmap(pixmap)
     end
 
@@ -390,4 +407,5 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
 
     #Readline::readline("Press Enter to exit\n") 
 end
+
 

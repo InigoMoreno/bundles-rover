@@ -41,9 +41,9 @@ Orocos::Process.run 'hdpr_perception' do
     camera_firewire.frame.connect_to camera_bb2.frame_in
 
     # Camera tof
-    camera_tof = TaskContext.get 'camera_tof'
-    Orocos.conf.apply(camera_tof, ['default'], :override => true)
-    camera_tof.configure
+  #  camera_tof = TaskContext.get 'camera_tof'
+ #   Orocos.conf.apply(camera_tof, ['default'], :override => true)
+#    camera_tof.configure
 
     # Start the tasks
     grashopper2_left.start
@@ -51,10 +51,10 @@ Orocos::Process.run 'hdpr_perception' do
     pancam_stereo.start
     camera_firewire.start
     camera_bb2.start
-    camera_tof.start
+#    camera_tof.start
     
 
-    #Orocos.log_all_ports
+    Orocos.log_all_ports
 
 
     Readline::readline("Press ENTER to exit\n") do
