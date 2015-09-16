@@ -73,7 +73,7 @@ tilt_offset= 0.25491745
 min_tilt=-0.52688923589
 
 #MAX TILT -889 DP = -0.7979634254 radians (ROCK Driver uses different axes than PTU-D46)
-max_tilt=0.7979634254
+max_tilt=0.7879634254
 #MIN PAN -3074 DP = 2.7592121144 radians
 min_pan=-2.757507351
 #MAX PAN 3075 DP = 2.76010971105 radians
@@ -91,7 +91,7 @@ beginning_time = Time.now
 Orocos::Process.run 'controldev::JoystickTask' => 'joystick', 'ptu_directedperception::Task' => 'ptu_dp' do
 
     ptu = TaskContext.get 'ptu_dp'
-    port = "/dev/ttyUSB2"
+    port = "/dev/ttyUSB1"
     ptu.io_port = ["serial://", port,":9600"].join("")
     ptu.io_read_timeout = Time.at(2.0)
     ptu.io_write_timeout = Time.at(2.0)
