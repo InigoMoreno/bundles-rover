@@ -16,7 +16,7 @@ options[:logging] = "nominal"
 
 OptionParser.new do |opt|
     opt.banner = <<-EOD
-    usage: exoter_start_all.rb [options] 
+    usage: hdpr_start_all.rb [options] 
     EOD
 
     opt.on '-r or --reference=none/vicon/gnss', String, 'set the type of reference system available' do |reference|
@@ -36,7 +36,7 @@ end.parse!(ARGV)
 ## Initialize orocos ##
 Orocos::CORBA.max_message_size = 80400000
 Bundles.initialize
-Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb'))
+#Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb'))
 
 # Configuration values
 if options[:reference].casecmp("vicon").zero?
@@ -47,11 +47,10 @@ else
     puts "[INFO] No Ground Truth system available"
 end
 
-Bundles.run 'exoter_control',
-            'exoter_groundtruth',
-            'exoter_proprioceptive',
-            'exoter_perception',
-            'exoter_slam',
+Bundles.run 'hdpr_control',
+            'hdpr_groundtruth',
+            'hdpr_proprioceptive',
+            'hdpr_perception',
             'valgrind'=> false,
             'wait' => 1000 do
 
@@ -76,7 +75,7 @@ Bundles.run 'exoter_control',
     puts("Connecting tasks")
     startup.connectLocomotion()
     startup.connectPerception()
-    startup.connectSLAM()
+    #startup.connectSLAM()
     puts("done")
 
 

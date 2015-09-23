@@ -35,7 +35,7 @@ disable_frame_raw: true
 # exposure value if exposure mode is not auto
 exposure: 10
 # exposure mode (auto, manual, external, none)
-exposure_mode: manual
+exposure_mode: auto
 # frames per second
 fps: 3.75
 # size of the frame buffer

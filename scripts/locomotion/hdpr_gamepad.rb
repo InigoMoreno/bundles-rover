@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-
 require 'orocos'
 require 'rock/bundle'
 require 'orocos/async'
@@ -9,7 +8,7 @@ require 'readline'
 require 'optparse'
 
 hostname = nil
-
+    
 options = OptionParser.new do |opt|
     opt.banner = <<-EOD
     usage: exoter_gamepad_async.rb [options]  </path/to/gamepad_device>
@@ -88,29 +87,19 @@ tilt_pos = tilt_pos - tilt_offset
 #tilt_pos_prev = tilt_pos
 beginning_time = Time.now
 
-Orocos::Process.run 'controldev::JoystickTask' => 'joystick', 'ptu_directedperception::Task' => 'ptu_dp' do
+Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
 
-    ptu = TaskContext.get 'ptu_dp'
-    port = "/dev/ttyUSB1"
-    ptu.io_port = ["serial://", port,":9600"].join("")
-    ptu.io_read_timeout = Time.at(2.0)
-    ptu.io_write_timeout = Time.at(2.0)
-    puts "connecting to #{ptu.io_port}"
-    pan_writer = ptu.set_orientation.writer
-    rot_reader = ptu.orientation_samples.reader
-    pan_writer = ptu.pan_set.writer
-    tilt_writer = ptu.tilt_set.writer
-    ptu.configure
-    ptu.start
- 
     ## Get the Joystick task context ##
     joystick = TaskContext.get 'joystick'
     Orocos.conf.apply(joystick, ['default', 'logitech_gamepad'], :override => true)
     joystick.device = device_name
 
-    ## Get the ExoTer control
+    ## Get the HDPR control
     locomotion_control = Orocos::Async.proxy 'locomotion_control'
-    ptu_control = Orocos::Async.proxy 'ptu_control'
+    # Get the PAN-Tilt
+    ptu_directedperception = Orocos.name_service.get 'ptu_directedperception'
+    pan_writer = ptu_directedperception.pan_set.writer
+    tilt_writer = ptu_directedperception.tilt_set.writer
 
     # Log all ports
     joystick.log_all_ports
@@ -227,14 +216,35 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick', 'ptu_directedperce
             elsif (rover_speed_ratio < 0.0)
                 rover_speed_ratio = 0.00
             end
-
+	    #Switch between direct control VS icremental control
 	    if current_buttons[1]==1.0
 		if direct_control == FALSE
 			direct_control = TRUE
 		elsif direct_control == TRUE
 			direct_control = FALSE
+			pan_pos=0.00
+			tilt_pos=0.00-tilt_offset
 		end
 	    end
+	    
+	    ## The following 3 if statements define the three pan_positions positions that will make the pancam see a FOV of ~150° in front of the rover 
+	    ## the tilt defines the min and max radius of the DEM. With our PanCam if set to 19.17 gives a range of 2.5m-Inf	
+	    # Set the camera to right
+	    if current_buttons[2]==1.0
+		pan_pos= -50 * Math::PI / 180.00
+		tilt_pos= 19.17 * Math::PI / 180.00 - tilt_offset
+	    end
+	    # Set the camera to center
+	    if current_buttons[3]==1.0
+		pan_pos= 0 * Math::PI / 180.00
+		tilt_pos= 19.17 * Math::PI / 180.00 - tilt_offset
+	    end
+	    # Set the camera to left
+	    if current_buttons[0]==1.0
+		pan_pos= 50 * Math::PI / 180.00
+		tilt_pos= 19.17 * Math::PI / 180.00 - tilt_offset
+	    end
+
 
             buttons = current_buttons;
             buttons_changed = TRUE
@@ -272,10 +282,15 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick', 'ptu_directedperce
             buttons_changed = FALSE
         end
 
-	# Control of the PTU (the rock driver uses position commands so the control is really sketchy)
+	## Control of the PTU (the PTU uses position commands so the control is really sketchy)
+	#Direct control means that the joystick is defining the direct angle of the pan tilt (max pan~=157°, min pan ~= -157°, max tilt ~= 45°, tilt = -30°
 	if direct_control == TRUE
-		pan_pos = (pan_axis * Math::PI)
-        	tilt_pos = (tilt_axis * Math::PI/2) - tilt_offset
+		pan_pos = (pan_axis * 157 * Math::PI / 180)
+		if (tilt axis >= 0)
+			tilt_pos = (tilt_axis * 45 * Math::PI / 180) - tilt_offset
+		else
+			tilt_pos = (tilt_axis * 30 * Math::PI / 180) - tilt_offset
+		end
 	else
             	pan_pos = pan_pos  + (pan_axis * delta_theta)
             	tilt_pos = tilt_pos + (tilt_axis * delta_theta)
@@ -290,10 +305,8 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick', 'ptu_directedperce
 	elsif tilt_pos < min_tilt
 		tilt_pos = min_tilt
 	end
-	    
-	    pan_writer.write(pan_pos)
-	    tilt_writer.write(tilt_pos)
-
+	pan_writer.write(pan_pos)
+	tilt_writer.write(tilt_pos)
         ## ############ ##
         # Motion commands
         ## ############ ##
@@ -316,17 +329,22 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick', 'ptu_directedperce
         ## ############## ##
         # Send PTU Positions
         ## ############## ##
-        ptu_control.on_reachable do
-           widget.sendButton.connect(SIGNAL('clicked()')) do
-               pan_pos = (widget.pan_position.text.to_f * Math::PI / 180.00)
-               tilt_pos = (widget.tilt_position.text.to_f * Math::PI / 180.00) - tilt_offset
-	       #rot = ptu.rbsFromPanTilt(pan_pos,tilt_pos)
-	       #rot_writer.write(rot)
-	       pan_writer.write(pan_pos)
-	       tilt_writer.write(tilt_pos)
+        widget.sendButton.connect(SIGNAL('clicked()')) do
+		pan_pos = (widget.pan_position.text.to_f * Math::PI / 180.00)
+               	tilt_pos = (widget.tilt_position.text.to_f * Math::PI / 180.00) - tilt_offset
+		       	if pan_pos > max_pan
+					pan_pos = max_pan
+				elsif pan_pos < min_pan
+		   			pan_pos = min_pan
+	       		end
+				if tilt_pos > max_tilt
+					tilt_pos = max_tilt
+					elsif tilt_pos < min_tilt
+					tilt_pos = min_tilt
+				end
+	      	pan_writer.write(pan_pos)
+		tilt_writer.write(tilt_pos)
            end
-        end
-
 
         #Commented because Asyn API cannot find the port of a logger task when it is not in the local hostt
         #joystick_logger.on_reachable do
@@ -399,13 +417,11 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick', 'ptu_directedperce
     #Locomotion and PTU control
     locomotion_control.on_reachable{widget.setEnabled(true)}
     locomotion_control.on_unreachable{widget.setEnabled(false)}
-    ptu_control.on_unreachable{widget.setEnabled(false)}
 
     # Show the GUI
     widget.show
     Vizkit.exec
 
-    #Readline::readline("Press Enter to exit\n") 
 end
 
 

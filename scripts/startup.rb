@@ -7,18 +7,21 @@ class Startup
     attr_accessor :read_joint_dispatcher
     attr_accessor :command_joint_dispatcher
     attr_accessor :locomotion_control
-    attr_accessor :ptu_control
+    attr_accessor :ptu_directedperception
 
     # SLAM
-    attr_accessor :localization_frontend
-    attr_accessor :exoter_odometry
+    #attr_accessor :localization_frontend
+    #attr_accessor :exoter_odometry
     attr_accessor :imu_stim300
 
     # Perception
     attr_accessor :camera_firewire
     attr_accessor :camera_bb2
     attr_accessor :camera_tof
-    attr_accessor :colorize_pointcloud
+    attr_accessor :pancam_left
+    attr_accessor :pancam_right
+    attr_accessor :pancam_stereo
+    #attr_accessor :colorize_pointcloud
 
     # Ground Truth
     attr_accessor :vicon
@@ -51,14 +54,14 @@ class Startup
         @locomotion_control = Orocos.name_service.get 'locomotion_control'
         @tasks << @locomotion_control
 
-        @ptu_control = Orocos.name_service.get 'ptu_control'
-        @tasks << @ptu_control
+        @ptu_directedperception = Orocos.name_service.get 'ptu_directedperception'
+        @tasks << @ptu_directedperception
 
-        @localization_frontend = Orocos.name_service.get 'localization_frontend'
-        @tasks << @localization_frontend
+        #@localization_frontend = Orocos.name_service.get 'localization_frontend'
+        #@tasks << @localization_frontend
 
-        @exoter_odometry = Orocos.name_service.get 'exoter_odometry'
-        @tasks << @exoter_odometry
+        #@exoter_odometry = Orocos.name_service.get 'exoter_odometry'
+        #@tasks << @exoter_odometry
 
         @imu_stim300 = Orocos.name_service.get 'imu_stim300'
         @tasks << @imu_stim300
@@ -69,11 +72,20 @@ class Startup
         @camera_bb2 = Orocos.name_service.get 'camera_bb2'
         @tasks << @camera_bb2
 
+        @pancam_left = Orocos.name_service.get 'pancam_left'
+        @tasks << @pancam_left
+
+        @pancam_right = Orocos.name_service.get 'pancam_right'
+        @tasks << @pancam_right
+
+        @pancam_stereo = Orocos.name_service.get 'pancam_stereo'
+        @tasks << @pancam_stereo
+
         @camera_tof = Orocos.name_service.get 'camera_tof'
         @tasks << @camera_tof
 
-        @colorize_pointcloud= Orocos.name_service.get 'colorize_pointcloud'
-        @tasks << @colorize_pointcloud
+#        @colorize_pointcloud= Orocos.name_service.get 'colorize_pointcloud'
+#        @tasks << @colorize_pointcloud
 
         if @configuration[:reference].casecmp("vicon").zero?
             @vicon = Orocos.name_service.get 'vicon'
@@ -94,30 +106,35 @@ class Startup
         Orocos.conf.apply( @read_joint_dispatcher, ['reading'], :override => true)
         Orocos.conf.apply( @command_joint_dispatcher, ['commanding'], :override => true)
         Orocos.conf.apply( @locomotion_control, ['default'], :override => true)
-        Orocos.conf.apply( @ptu_control, ['default'], :override => true)
-        Orocos.conf.apply( @localization_frontend, ['default', 'hamming1hzsampling12hz'], :override => true)
-        Orocos.conf.apply( @exoter_odometry, ['default', 'bessel50'], :override => true)
-        @exoter_odometry.urdf_file = Bundles.find_file('data/odometry', 'exoter_odometry_model.urdf')
+        Orocos.conf.apply( @ptu_directedperception, ['default'], :override => true)
+        #Orocos.conf.apply( @localization_frontend, ['default', 'hamming1hzsampling12hz'], :override => true)
+        #Orocos.conf.apply( @exoter_odometry, ['default', 'bessel50'], :override => true)
+        #@exoter_odometry.urdf_file = Bundles.find_file('data/odometry', 'exoter_odometry_model.urdf')
 
-        Orocos.conf.apply( @imu_stim300, ['default','ExoTer','ESTEC','stim300_5g'], :override => true)
+        Orocos.conf.apply( @imu_stim300, ['default','exoter','ESTEC','stim300_5g'], :override => true)
         Orocos.conf.apply( @camera_firewire, ['default'], :override => true)
         Orocos.conf.apply( @camera_bb2, ['default'], :override => true)
+        Orocos.conf.apply( @pancam_left, ['grashopper2_left'], :override => true)
+        Orocos.conf.apply( @pancam_right, ['grashopper2_right'], :override => true)
+        Orocos.conf.apply( @pancam_stereo, ['default'], :override => true)
+
         Orocos.conf.apply( @camera_tof, ['default'], :override => true)
-        Orocos.conf.apply( @colorize_pointcloud, ['default'], :override => true)
+        
+        #Orocos.conf.apply( @colorize_pointcloud, ['default'], :override => true)
 
         if @configuration[:reference].casecmp("vicon").zero?
             Orocos.conf.apply( @vicon, ['default', 'exoter'], :override => true)
-            @localization_frontend.pose_reference_samples_period = 0.01 # Vicon is normally at 100Hz
+            #@localization_frontend.pose_reference_samples_period = 0.01 # Vicon is normally at 100Hz
         end
 
         if @configuration[:reference].casecmp("gnss").zero?
-            Orocos.conf.apply( @gnss_trimble, ['ExoTer', 'Netherlands', 'DECOS'], :override => true)
-            @localization_frontend.pose_reference_samples_period = 0.1 # GNSS/GPS is normally at 10Hz
+            Orocos.conf.apply( @gnss_trimble, ['EvaluationBoard', 'Netherlands', 'DECOS'], :override => true)
+#            @localization_frontend.pose_reference_samples_period = 0.1 # GNSS/GPS is normally at 10Hz
         end
 
-        Bundles.transformer.setup(@localization_frontend)
-        Bundles.transformer.setup(@exoter_odometry)
-        Bundles.transformer.setup(@colorize_pointcloud)
+#        Bundles.transformer.setup(@localization_frontend)
+#        Bundles.transformer.setup(@exoter_odometry)
+#        Bundles.transformer.setup(@colorize_pointcloud)
     end
 
     def configure()
@@ -146,50 +163,52 @@ class Startup
         # Connect ports: command_joint_dispatcher to platform_driver
         @command_joint_dispatcher.motors_commands.connect_to @platform_driver.joints_commands
 
-        # Connect ports: read_joint_dispatcher to ptu_control
-        @read_joint_dispatcher.ptu_samples.connect_to @ptu_control.ptu_samples
+        # Connect ports: read_joint_dispatcher to ptu_directedperception
+        #@read_joint_dispatcher.ptu_samples.connect_to @ptu_directedperception.ptu_samples
 
-        # Connect ports: ptu_control to command_joint_dispatcher
-        @ptu_control.ptu_commands_out.connect_to @command_joint_dispatcher.ptu_commands
+        # Connect ports: ptu_directedperception to command_joint_dispatcher
+        #@ptu_directedperception.ptu_commands_out.connect_to @command_joint_dispatcher.ptu_commands
     end
 
     def connectPerception()
 
         # Camera driver to camera bb2
         @camera_firewire.frame.connect_to @camera_bb2.frame_in
+	@pancam_left.frame.connect_to @pancam_stereo.left_frame 
+	@pancam_right.frame.connect_to @pancam_stereo.right_frame 
 
         # Camera bb2 to colorize pointcloud
-        @camera_bb2.left_frame.connect_to @colorize_pointcloud.camera
-        @localization_frontend.point_cloud_samples_out.connect_to @colorize_pointcloud.points
+        #@camera_bb2.left_frame.connect_to @colorize_pointcloud.camera
+        #@localization_frontend.point_cloud_samples_out.connect_to @colorize_pointcloud.points
     end
 
-    def connectSLAM()
+#    def connectSLAM()
 
         # Connect ports to the Front-End hub
-        @read_joint_dispatcher.joints_samples.connect_to @localization_frontend.joints_samples
-        @imu_stim300.orientation_samples_out.connect_to @localization_frontend.orientation_samples
-        @imu_stim300.compensated_sensors_out.connect_to @localization_frontend.inertial_samples
+#        @read_joint_dispatcher.joints_samples.connect_to @localization_frontend.joints_samples
+#        @imu_stim300.orientation_samples_out.connect_to @localization_frontend.orientation_samples
+#        @imu_stim300.compensated_sensors_out.connect_to @localization_frontend.inertial_samples
 
-        if @configuration[:reference].casecmp("vicon").zero?
-            @vicon.pose_samples.connect_to @localization_frontend.pose_reference_samples
-        end
+#        if @configuration[:reference].casecmp("vicon").zero?
+#            @vicon.pose_samples.connect_to @localization_frontend.pose_reference_samples
+#        end
 
-        if @configuration[:reference].casecmp("gnss").zero?
-            @gnss_trimble.pose_samples.connect_to @localization_frontend.pose_reference_samples
-        end
+#        if @configuration[:reference].casecmp("gnss").zero?
+#            @gnss_trimble.pose_samples.connect_to @localization_frontend.pose_reference_samples
+#        end
 
 
-        @camera_tof.pointcloud.connect_to @localization_frontend.point_cloud_samples
+#        @camera_tof.pointcloud.connect_to @localization_frontend.point_cloud_samples
         #@camera_bb2.left_frame.connect_to @localization_frontend.left_frame
         #@camera_bb2.right_frame.connect_to @localization_frontend.right_frame
 
         # Connect odometry ports
-        @localization_frontend.joints_samples_out.connect_to @exoter_odometry.joints_samples
-        @localization_frontend.orientation_samples_out.connect_to @exoter_odometry.orientation_samples
+#        @localization_frontend.joints_samples_out.connect_to @exoter_odometry.joints_samples
+#        @localization_frontend.orientation_samples_out.connect_to @exoter_odometry.orientation_samples
 
         # Connect port to the localization Back-End
 
-    end
+#    end
 
     def log_all()
         # Log all ports
@@ -201,7 +220,7 @@ class Startup
 
         @platform_driver.log_all_ports
         @locomotion_control.log_all_ports
-        @ptu_control.log_all_ports
+        @ptu_directedperception.log_all_ports
         @read_joint_dispatcher.log_all_ports
         @command_joint_dispatcher.log_all_ports
 
@@ -224,20 +243,25 @@ class Startup
         # The minimum all logs
         self.log_minimum_all
 
-        print "Waiting localization frontend is in state #{@localization_frontend.state}"
+#        print "Waiting localization frontend is in state #{@localization_frontend.state}"
 
         # Wait until localization initialization
-        @localization_frontend.wait_for_state(:RUNNING)
+#        @localization_frontend.wait_for_state(:RUNNING)
 
-        puts " => #{@localization_frontend.state}"
+#        puts " => #{@localization_frontend.state}"
 
         #Exteroceptive sensors
         @camera_firewire.log_all_ports
         @camera_tof.log_all_ports
+	@camera_bb2.log_all_ports
+	@pancam_left.log_all_ports
+	@pancam_right.log_all_ports
+	@pancam_stereo.log_all_ports
+	
     end
 
     def stop_ptu_to_safe_position()
-        @ptu_control.stop
+#        @ptu_directedperception.stop
     end
 
     def stop()
