@@ -64,6 +64,8 @@ buttons_changed = FALSE
 
 pan_pos = 0.00
 tilt_pos = 0.00
+old_pan=pan_pos
+old_tilt=tilt_pos
 # This offset is used cause our PTU is REFURBISHED and has an offset (Tilted about 14.6.... degrees) 
 tilt_offset= 0.25491745
 # Each discrete position (DP) of the ptu is about 185.1428 arcseconds or 0.0514285°
@@ -220,8 +222,14 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
 	    if current_buttons[1]==1.0
 		if direct_control == FALSE
 			direct_control = TRUE
+			puts "###############################"
+			puts "!Switchng to PTU Direct Control"
+			puts "###############################"
 		elsif direct_control == TRUE
 			direct_control = FALSE
+			puts "####################################"
+			puts "!Switchng to PTU Incremental Control"
+			puts "####################################"
 			pan_pos=0.00
 			tilt_pos=0.00-tilt_offset
 		end
@@ -270,14 +278,6 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
                 translation = 0.001 * max_linear_speed * rover_speed_ratio
             end
 
-            puts "*** SEND TO HDPR ***"
-            puts "rover_speed_ratio: #{rover_speed_ratio}"
-            puts "translation: #{translation}"
-            puts "rotation: #{rotation}"
-            puts "pan_position: #{pan_pos}"
-            puts "tilt_position: #{tilt_pos}"
-
-
 	    axes_changed = FALSE
             buttons_changed = FALSE
         end
@@ -286,7 +286,7 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
 	#Direct control means that the joystick is defining the direct angle of the pan tilt (max pan~=157°, min pan ~= -157°, max tilt ~= 45°, tilt = -30°
 	if direct_control == TRUE
 		pan_pos = (pan_axis * 157 * Math::PI / 180)
-		if (tilt axis >= 0)
+		if (tilt_axis >= 0)
 			tilt_pos = (tilt_axis * 45 * Math::PI / 180) - tilt_offset
 		else
 			tilt_pos = (tilt_axis * 30 * Math::PI / 180) - tilt_offset
@@ -305,8 +305,21 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick' do
 	elsif tilt_pos < min_tilt
 		tilt_pos = min_tilt
 	end
-	pan_writer.write(pan_pos)
-	tilt_writer.write(tilt_pos)
+	#puts "*** SEND TO HDPR ***"
+	#puts "rover_speed_ratio: #{rover_speed_ratio}"
+	#puts "translation: #{translation}"
+	#puts "rotation: #{rotation}"
+        #puts "pan_position: #{pan_pos}"
+        #puts "tilt_position: #{tilt_pos}"	
+	unless ( (old_pan==pan_pos) and (old_tilt==tilt_pos) )
+		puts "*** SEND TO HDPR ***"
+		puts "pan_position: #{pan_pos}"
+	        puts "tilt_position: #{tilt_pos}"	
+		pan_writer.write(pan_pos)
+		tilt_writer.write(tilt_pos)
+		old_pan=pan_pos
+		old_tilt=tilt_pos
+	end
         ## ############ ##
         # Motion commands
         ## ############ ##
