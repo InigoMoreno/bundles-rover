@@ -18,6 +18,8 @@ class Startup
     attr_accessor :camera_firewire
     attr_accessor :camera_bb2
     attr_accessor :camera_tof
+    attr_accessor :kinect2
+    attr_accessor :velodyne_lidar
     attr_accessor :pancam_left
     attr_accessor :pancam_right
     attr_accessor :pancam_stereo
@@ -84,6 +86,12 @@ class Startup
         @camera_tof = Orocos.name_service.get 'camera_tof'
         @tasks << @camera_tof
 
+        @kinect2 = Orocos.name_service.get 'kinect2'
+        @tasks << @kinect2
+
+        @velodyne_lidar = Orocos.name_service.get 'velodyne_lidar'
+        @tasks << @velodyne_lidar
+
 #        @colorize_pointcloud= Orocos.name_service.get 'colorize_pointcloud'
 #        @tasks << @colorize_pointcloud
 
@@ -119,7 +127,9 @@ class Startup
         Orocos.conf.apply( @pancam_stereo, ['default'], :override => true)
 
         Orocos.conf.apply( @camera_tof, ['default'], :override => true)
-        
+        Orocos.conf.apply( @kinect2, ['default'], :override => true)
+	Orocos.conf.apply( @velodyne_lidar, ['default'], :override => true)
+	
         #Orocos.conf.apply( @colorize_pointcloud, ['default'], :override => true)
 
         if @configuration[:reference].casecmp("vicon").zero?
@@ -253,6 +263,8 @@ class Startup
         #Exteroceptive sensors
         @camera_firewire.log_all_ports
         @camera_tof.log_all_ports
+	@kinect2.log_all_ports
+	@velodyne_lidar.log_all_ports
 	@camera_bb2.log_all_ports
 	@pancam_left.log_all_ports
 	@pancam_right.log_all_ports
