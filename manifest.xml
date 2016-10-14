@@ -8,7 +8,7 @@
 
 
   <depend package="bundles/rock" />
-  <depend package="bundles/rock_ugv_nav" />
+<!--  <depend package="bundles/rock_ugv_nav" /> -->
   <!--
    To add any dependencies use the depend tag
   <depend package="dummy-dependency-0" />

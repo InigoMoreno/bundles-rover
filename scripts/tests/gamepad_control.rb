@@ -5,9 +5,6 @@ require 'rock/bundle'
 require 'readline'
 include Orocos
 
-# Initialize orocos
-#Orocos.initialize
-
 # Initialize bundles to find the configurations for the packages
 Bundles.initialize
 

@@ -3,7 +3,7 @@ bundle:
     # List of bundles we depend on
     dependencies:
         - rock
-        - rock_ugv_nav
+#        - rock_ugv_nav
 
 # Control configuration
 engine:
