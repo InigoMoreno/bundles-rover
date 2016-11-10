@@ -9,9 +9,18 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'controldev::JoystickTask' => 'joystick', 'motion_translator::Task' => 'motion_translator' do
+Orocos::Process.run 'controldev::JoystickTask' => 'joystick',
+    'motion_translator::Task' => 'motion_translator',
+    'ptu_directedperception::Task' => 'ptu_directedperception' do
 #Orocos::Process.run 'hdpr_control' do
     # Get the task contexts
+    ptu_directedperception = Orocos.name_service.get 'ptu_directedperception'
+    #Orocos.conf.apply(ptu_directedperception, ['default'], :override => true)
+    #ptu_directedperception.reset_exception
+    port = "/dev/hdpr-ptu"
+    ptu_directedperception.io_port = ["serial://", port, ":9600"].join("")
+    ptu_directedperception.configure
+    
     joystick = Orocos.name_service.get 'joystick'
     joystick.configure
     
@@ -20,6 +29,7 @@ Orocos::Process.run 'controldev::JoystickTask' => 'joystick', 'motion_translator
     
     joystick.raw_command.connect_to motion_translator.raw_command
     
+    ptu_directedperception.start
     joystick.start
     motion_translator.start
     

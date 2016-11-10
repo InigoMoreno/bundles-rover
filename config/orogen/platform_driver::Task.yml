@@ -1,6 +1,6 @@
 --- name:default
 # device address in the system. pcan32 for USB. pcan0 for PCIe
-can_dev_address: /dev/pcan32
+can_dev_address: /dev/pcanusb32
 # 1 for Peak-Systems interface. Only device type supported so far
 can_dev_type: 1
 # activate/deactivate watchdog on can network

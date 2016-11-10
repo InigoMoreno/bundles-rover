@@ -6,6 +6,14 @@ serial_baudrate: 38400
 # the expected time (in seconds) to have a whole package in the fd (the device port)
 serial_timeout: 0.2
 
+--- name:HDPR
+# the device port
+serial_port: /dev/hdpr-dgps
+# Baud rate to open the serial com_port.
+serial_baudrate: 38400
+# the expected time (in seconds) to have a whole package in the fd (the device port)
+serial_timeout: 0.2
+
 --- name:EvaluationBoard
 # the device port
 serial_port: /dev/ttyUSB1

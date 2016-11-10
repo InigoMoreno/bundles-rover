@@ -17,7 +17,7 @@ Orocos::Process.run 'hdpr_control' do
     platform_driver = Orocos.name_service.get 'platform_driver'
     command_joint_dispatcher = Orocos.name_service.get 'command_joint_dispatcher'
     read_joint_dispatcher = Orocos.name_service.get 'read_joint_dispatcher'
-    #ptu_directedperception = Orocos.name_service.get 'ptu_directedperceptions'
+    ptu_directedperception = Orocos.name_service.get 'ptu_directedperception'
 
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -41,6 +41,8 @@ Orocos::Process.run 'hdpr_control' do
     platform_driver.configure
     Orocos.conf.apply(read_joint_dispatcher, ['reading'], :override => true)
     read_joint_dispatcher.configure
+    Orocos.conf.apply(ptu_directedperception, ['default'], :override => true)
+    ptu_directedperception.configure
     
     # Configure all the connections between the packages
     joystick.raw_command.connect_to motion_translator.raw_command
@@ -50,11 +52,16 @@ Orocos::Process.run 'hdpr_control' do
     platform_driver.joints_readings.connect_to read_joint_dispatcher.joints_readings
     read_joint_dispatcher.motors_samples.connect_to locomotion_control.joints_readings
     
+    # Connect the motion translator to the PTU control
+    motion_translator.ptu_pan_angle.connect_to ptu_directedperception.pan_set
+    motion_translator.ptu_tilt_angle.connect_to ptu_directedperception.tilt_set
+    
     # Start the packages
     platform_driver.start
     read_joint_dispatcher.start
     command_joint_dispatcher.start
     locomotion_control.start
+    ptu_directedperception.start
     motion_translator.start
     joystick.start
     

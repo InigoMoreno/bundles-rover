@@ -6,12 +6,19 @@ filter_configuration:
   use_samples_as_theoretical_gravity: true
   use_inclinometers: true
   use_magnetometers: false
-  initial_alignment_samples: 750 #10 minutes initial alignment. IMU rate is 125Hz
+  initial_alignment_samples: 7500 #1 minute(s) initial alignment. IMU rate is 125Hz
   correction_frequency: 1.0
 
 --- name:exoter
 # IMU port in ExoTer
 port: '/dev/ttyUSB0'
+revision: :REV_D
+timeout: 0.008 #in seconds
+use_filter: true
+
+--- name:HDPR
+# IMU port in ExoTer
+port: '/dev/hdpr-imu'
 revision: :REV_D
 timeout: 0.008 #in seconds
 use_filter: true
@@ -148,7 +155,6 @@ inclinometer_noise:
 
 
 --- name:stim300_5g
-
 # Adaptive estimation of external acceleration.
 adaptive_config_acc:
   M1: 5
