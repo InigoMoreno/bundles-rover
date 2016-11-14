@@ -56,6 +56,10 @@ Orocos::Process.run 'hdpr_control' do
     motion_translator.ptu_pan_angle.connect_to ptu_directedperception.pan_set
     motion_translator.ptu_tilt_angle.connect_to ptu_directedperception.tilt_set
     
+    # For feedback connect the PTU angles to motion translator
+    motion_translator.ptu_pan_angle_in.connect_to ptu_directedperception.pan_angle
+    motion_translator.ptu_tilt_angle_in.connect_to ptu_directedperception.tilt_angle
+    
     # Start the packages
     platform_driver.start
     read_joint_dispatcher.start
