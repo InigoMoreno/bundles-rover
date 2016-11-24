@@ -263,12 +263,12 @@ class Startup
         #Exteroceptive sensors
         @camera_firewire.log_all_ports
         @camera_tof.log_all_ports
-	@kinect2.log_all_ports
-	@velodyne_lidar.log_all_ports
-	@camera_bb2.log_all_ports
-	@pancam_left.log_all_ports
-	@pancam_right.log_all_ports
-	@pancam_stereo.log_all_ports
+	    @kinect2.log_all_ports
+	    @velodyne_lidar.log_all_ports
+	    @camera_bb2.log_all_ports
+	    @pancam_left.log_all_ports
+	    @pancam_right.log_all_ports
+	    @pancam_stereo.log_all_ports
 	
     end
 
@@ -293,6 +293,4 @@ class Startup
             i.cleanup()
         end
     end
-
-
 end

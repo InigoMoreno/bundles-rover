@@ -14,11 +14,11 @@ Orocos::Process.run 'hdpr_bb2' do
     loc_cam = TaskContext.get 'loc_cam'
     Orocos.conf.apply(loc_cam, ['default'], :override => true)
     loc_cam.configure
- 
+
     camera_bb2 = TaskContext.get 'camera_bb2'
     Orocos.conf.apply(camera_bb2, ['default'], :override => true)
     camera_bb2.configure
-        
+    
     loccam_stereo = TaskContext.get 'loccam_stereo'
     Orocos.conf.apply(loccam_stereo, ['locCam'], :override => true)
     loccam_stereo.configure

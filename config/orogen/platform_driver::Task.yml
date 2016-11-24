@@ -5,12 +5,12 @@ can_dev_address: /dev/pcanusb32
 can_dev_type: 1
 # activate/deactivate watchdog on can network
 watchdog: 0
-# system current measurement factor to convert from internal to physical units
+# system current measurement factor to convert from internal to physical units ==>> NOT USED IN HDPR
 current_factor: 41.6
-# system voltage measurement factor to convert from internal to physical units
+# system voltage measurement factor to convert from internal to physical units ==>> NOT USED IN HDPR
 voltage_factor: 3.93
 # system bogie angle measurement factor to convert from internal to physical units
-bogie_factor: 72
+bogie_factor: 28
 # Number of motors in the platform.
 num_motors: 10
 # Number of can nodes in the platform = Number of motors + number of group nodes
@@ -136,19 +136,21 @@ param_gear_motor_wheel:
   dAnalogFactor: 0.00067139
   dNominalCurrent: 3.17
 
-#Analog identifiers and desirable names
+#Analog identifiers and desirable names ==>> NOT USED IN HDPR
 analog_readings_config:
-    - id: 4
+    - id: 0
       name: SYSTEM_VOLTAGE
-    - id: 5
+    - id: 1
       name: SYSTEM_CURRENT
 
 #Passive joints identifiers and desirable names
 passive_readings_config:
-    - id: 0
-      name: LEFT_PASSIVE
-    - id: 1
-      name: RIGHT_PASSIVE
+    - id: 2
+      name: LEFT_ROCKER
     - id: 3
-      name: BACK_PASSIVE
+      name: RIGHT_ROCKER
+    - id: 4
+      name: LEFT_BOGIE
+    - id: 5
+      name: RIGHT_BOGIE
 

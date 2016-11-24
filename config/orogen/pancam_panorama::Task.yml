@@ -1,0 +1,13 @@
+--- name:default
+# Minimum delay in milliseconds before saving a frame after the PanCam reaches its goal position
+frameDelayTimeMs: 100
+# PanCam pan position center
+positionCenter: 0.0
+# PanCam pan position error margin
+positionErrorMargin: 0.01
+# PanCam pan position left
+positionLeft: -0.5
+# PanCam pan position right
+positionRight: 0.5
+# PanCam tilt position for all positions
+positionTilt: 0.5

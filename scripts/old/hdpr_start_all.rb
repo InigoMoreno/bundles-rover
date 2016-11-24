@@ -78,7 +78,6 @@ Bundles.run 'hdpr_control',
     #startup.connectSLAM()
     puts("done")
 
-
     # start the tasks
     puts("starting tasks")
     startup.start()
@@ -103,7 +102,6 @@ Bundles.run 'hdpr_control',
     puts "Press ENTER to stop!"
     STDIN.readline
 
-
     puts("Sending zero position to PTU")
     startup.stop_ptu_to_safe_position()
     puts("done")
@@ -114,8 +112,6 @@ Bundles.run 'hdpr_control',
     puts("Stopping tasks")
     startup.stop()
     puts("done")
-
-
 
     # cleaning up the tasks
     puts("cleaning up tasks")
