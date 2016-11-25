@@ -9,22 +9,33 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_bb3' do
-    camera_firewire = TaskContext.get 'camera_firewire'
-    Orocos.conf.apply(camera_firewire, ['bumblebee3'], :override => true)
-    camera_firewire.configure
-    
+Orocos::Process.run 'hdpr_unit_bb3' do
+
+    # Configure
+    camera_firewire_bb3 = TaskContext.get 'camera_firewire_bb3'
+    Orocos.conf.apply(camera_firewire_bb3, ['default'], :override => true)
+    camera_firewire_bb3.configure
+
     camera_bb3 = TaskContext.get 'camera_bb3'
     Orocos.conf.apply(camera_bb3, ['default'], :override => true)
     camera_bb3.configure
+    
+    stereo_bb3 = TaskContext.get 'stereo_bb3'
+    Orocos.conf.apply(stereo_bb3, ['locCam'], :override => true)
+    stereo_bb3.configure
 
-    # Log all ports
+    # Log
     Orocos.log_all_ports
     
-    camera_firewire.frame.connect_to camera_bb3.frame_in
+    # Connect
+    camera_firewire_bb3.frame.connect_to camera_bb3.frame_in
+    camera_bb3.left_frame.connect_to stereo_bb3.left_frame
+    camera_bb3.right_frame.connect_to stereo_bb3.right_frame
 
-    camera_firewire.start
+    # Start
+    camera_firewire_bb3.start
     camera_bb3.start
+    stereo_bb3.start
     
     Readline::readline("Press Enter to exit\n") do
     end

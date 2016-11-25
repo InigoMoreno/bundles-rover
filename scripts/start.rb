@@ -9,7 +9,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_full' do
+Orocos::Process.run 'hdpr_locomotion', 'hdpr_ptu', 'hdpr_vision', 'hdpr_sensors' do
     joystick = Orocos.name_service.get 'joystick'
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -87,10 +87,6 @@ Orocos::Process.run 'hdpr_full' do
     Orocos.conf.apply(pancam_right, ['grashopper2_right'], :override => true)
     pancam_right.configure
     
-    pancam_stereo = Orocos.name_service.get 'pancam_stereo'
-    Orocos.conf.apply(pancam_stereo, ['panCam'], :override => true)
-    pancam_stereo.configure
-    
     pancam_panorama = Orocos.name_service.get 'pancam_panorama'
     Orocos.conf.apply(pancam_panorama, ['default'], :override => true)
     pancam_panorama.configure
@@ -115,24 +111,21 @@ Orocos::Process.run 'hdpr_full' do
     # Connect the motion translator to the PTU control
     pancam_panorama.pan_angle_out.connect_to ptu_directedperception.pan_set
     pancam_panorama.tilt_angle_out.connect_to ptu_directedperception.tilt_set
-    # Connect the cameras to the stereo component
-    pancam_left.frame.connect_to pancam_stereo.left_frame
-    pancam_right.frame.connect_to pancam_stereo.right_frame
-    # Link the stereo task to PanCam so it would save only the relevant images
-    pancam_stereo.left_frame_sync.connect_to pancam_panorama.left_frame_in
-    pancam_stereo.right_frame_sync.connect_to pancam_panorama.right_frame_in
     
-    # Log all ports
-    # Exclude:
-    # - streams ending with *.state
-    # - streams containing "angle"
-    # - all the command messages
-    # - joystick input
-    # - IMU temp_sensors_out temperature sensor
-    # - al ptu_directedperception messages
-    # - messages sent to motors
-    Orocos.log_all_ports(exclude_ports: /state$|angle|_command|joystick|temp_sensors_out|io_|_samples/)
+    pancam_left.frame.connect_to pancam_panorama.left_frame_in
+    pancam_right.frame.connect_to pancam_panorama.right_frame_in
     
+    # Log all important outputs
+    platform_driver.log_all_ports
+    camera_bb2.log_all_ports
+    camera_bb3.log_all_ports
+    pancam_panorama.log_all_ports
+    velodyne_lidar.log_all_ports
+    tofcamera_mesasr.log_all_ports
+    imu_stim300.log_all_ports
+    gps.log_all_ports
+    #gyro.log_all_ports
+
     # Start the components
     platform_driver.start
     read_joint_dispatcher.start
@@ -141,7 +134,6 @@ Orocos::Process.run 'hdpr_full' do
     ptu_directedperception.start
     pancam_left.start
     pancam_right.start
-    pancam_stereo.start
     pancam_panorama.start
     motion_translator.start
     joystick.start

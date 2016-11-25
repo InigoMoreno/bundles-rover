@@ -9,15 +9,17 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'gnss_trimble::Task' => 'gps' do
+Orocos::Process.run 'hdpr_unit_gps' do
+
+    # Configure
     gps = TaskContext.get 'gps'
     Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'ESTEC'], :override => true)
-    
     gps.configure
 
-    # Log all ports
+    # Log
     Orocos.log_all_ports
 
+    # Start
     gps.start
     
     Readline::readline("Press Enter to exit\n") do

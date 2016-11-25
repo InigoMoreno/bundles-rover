@@ -53,8 +53,8 @@ sparse_config:
     mserParam: 3.0
     starParam: 9.0
     fastParam: 12.0
-  descriptorType: :DESCRIPTOR_SURF
-  detectorType: :DETECTOR_SURF
+  descriptorType: :DESCRIPTOR_PSURF
+  detectorType: :DETECTOR_MSER
   filterType: :FILTER_STEREO
 # calibration parameters for stereo camera setup
 stereoCameraCalibration:
