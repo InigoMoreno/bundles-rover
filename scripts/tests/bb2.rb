@@ -13,7 +13,7 @@ Orocos::Process.run 'hdpr_unit_bb2' do
 
     # Configure
     camera_firewire_bb2 = TaskContext.get 'camera_firewire_bb2'
-    Orocos.conf.apply(camera_firewire_bb2, ['default'], :override => true)
+    Orocos.conf.apply(camera_firewire_bb2, ['bumblebee2','bumblebee2_new'], :override => true)
     camera_firewire_bb2.configure
 
     camera_bb2 = TaskContext.get 'camera_bb2'
@@ -21,7 +21,7 @@ Orocos::Process.run 'hdpr_unit_bb2' do
     camera_bb2.configure
     
     stereo_bb2 = TaskContext.get 'stereo_bb2'
-    Orocos.conf.apply(stereo_bb2, ['locCam'], :override => true)
+    Orocos.conf.apply(stereo_bb2, ['exoter_bb2'], :override => true)
     stereo_bb2.configure
 
     # Log
