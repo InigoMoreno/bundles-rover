@@ -64,7 +64,7 @@ Orocos::Process.run 'hdpr_locomotion', 'hdpr_ptu', 'hdpr_vision', 'hdpr_sensors'
     gps.configure
 
     camera_firewire_bb2 = TaskContext.get 'camera_firewire_bb2'
-    Orocos.conf.apply(camera_firewire_bb2, ['default'], :override => true)
+    Orocos.conf.apply(camera_firewire_bb2, ['bumblebee2'], :override => true)
     camera_firewire_bb2.configure
     
     camera_bb2 = TaskContext.get 'camera_bb2'
@@ -72,7 +72,7 @@ Orocos::Process.run 'hdpr_locomotion', 'hdpr_ptu', 'hdpr_vision', 'hdpr_sensors'
     camera_bb2.configure
 
     camera_firewire_bb3 = TaskContext.get 'camera_firewire_bb3'
-    Orocos.conf.apply(camera_firewire_bb3, ['default'], :override => true)
+    Orocos.conf.apply(camera_firewire_bb3, ['bumblebee3'], :override => true)
     camera_firewire_bb3.configure
     
     camera_bb3 = TaskContext.get 'camera_bb3'
