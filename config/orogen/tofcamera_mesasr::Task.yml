@@ -2,7 +2,7 @@
 # Acquisition mode, use bitwise OR operator to turn on multiple modes at the same time;
 # possible values: AM_COR_FIX_PTRN, AM_MEDIAN, AM_TOGGLE_FRQ, AM_CONV_GRAY, AM_SW_ANF, AM_RESERVED0,
 # AM_RESERVED1, AM_CONF_MAP, AM_HW_TRIGGER, AM_SW_TRIGGER, AM_DENOISE_ANF, AM_MEDIANCROSS
-acquisition_mode: ''
+acquisition_mode: 'AM_COR_FIX_PTRN'
 # Timeout in ms for reading and writing
 timeout: 3000
 # Integration time of the camera; [0,255]
@@ -18,7 +18,7 @@ percent_over_pos: 0
 # Desired position for auto exposure; [0,255]
 desired_pos: 0
 # The coordinate of points with lower amplitude than threshold will set to zero. [0, 65535]
-amplitude_threshold: 255
+amplitude_threshold: 0
 # The coordinate of points with lower confidence than threshold will set to zero. [0, 65535]
 confidence_threshold: 0
 # Remove the points with zero coordinates
