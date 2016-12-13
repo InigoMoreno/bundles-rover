@@ -25,7 +25,8 @@ Orocos::Process.run 'hdpr_unit_bb3' do
     stereo_bb3.configure
 
     # Log
-    Orocos.log_all_ports
+    #Orocos.log_all_ports
+    camera_firewire_bb3.log_all_ports
     
     # Connect
     camera_firewire_bb3.frame.connect_to camera_bb3.frame_in

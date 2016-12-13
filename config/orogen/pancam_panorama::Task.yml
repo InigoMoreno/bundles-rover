@@ -6,8 +6,10 @@ positionCenter: 0.0
 # PanCam pan position error margin
 positionErrorMargin: 0.01
 # PanCam pan position left
-positionLeft: -0.5
+positionLeft: -30
 # PanCam pan position right
-positionRight: 0.5
+positionRight: 30
 # PanCam tilt position for all positions
-positionTilt: 0.5
+positionTilt: 30
+# Axis resolution per position moved (in seconds/arc)
+resolutionPerPosition: 185.1429

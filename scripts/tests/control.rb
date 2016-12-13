@@ -44,7 +44,15 @@ Orocos::Process.run 'hdpr_unit_control' do
     ptu_directedperception.configure
 
     # Log
-    Orocos.log_all_ports
+    #Orocos.log_all_ports
+    platform_driver.log_all_ports
+    #camera_bb2.log_all_ports
+    #camera_bb3.log_all_ports
+    #pancam_panorama.log_all_ports
+    #velodyne_lidar.log_all_ports
+    #tofcamera_mesasr.log_all_ports
+    #imu_stim300.log_all_ports
+    #gps.log_all_ports
     
     # Connect
     joystick.raw_command.connect_to motion_translator.raw_command

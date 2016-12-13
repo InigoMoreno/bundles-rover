@@ -25,7 +25,9 @@ Orocos::Process.run 'hdpr_unit_pancam' do
     stereo_pancam.configure
 
     # Log
-    Orocos.log_all_ports
+    #Orocos.log_all_ports
+    pancam_left.log_all_ports
+    pancam_right.log_all_ports
     
     # Connect
     pancam_left.frame.connect_to stereo_pancam.left_frame
