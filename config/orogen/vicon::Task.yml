@@ -30,11 +30,11 @@ uncertainty_samples: 75
 #  input_ports: []
 #  output_ports: []
 
---- name:exoter
+--- name:hdpr
 # the segment of the subject that is tracked
-segment: 'body'
+segment: 'hdpr'
 # the subject that is being tracked
-subject: 'exoter'
+subject: 'hdpr'
 
 # transformation between segment cs (vicon data) and a chosen body fixed reference cs
 # Assuming the translation is before the rotation in the task. Tselected_marker_to_body_vicon
@@ -45,9 +45,9 @@ body_reference:
   targetFrame: 'selected_marker'
   position:
     data:
-    - 0.234 #0.16879
-    - 0.16879 #-0.09
-    - -0.09 #0.234
+    - 0.0 #0.234 #0.16879
+    - 0.0 #0.16879 #-0.09
+    - 0.0 #-0.09 #0.234
   cov_position:
     data:
     - 0.00
@@ -61,10 +61,10 @@ body_reference:
     - 0.00
   orientation:
     im:
-    - 0.49004229064263805
-    - -0.49004229064263816
-    - -0.5097632326695547
-    re: 0.5097632326695547
+    - 0.0 #0.49004229064263805
+    - 0.0 #-0.49004229064263816
+    - 0.0 #-0.5097632326695547
+    re: 1.0 #0.5097632326695547
   cov_orientation:
     data:
     - 0.00
