@@ -4,7 +4,7 @@ frameDelayTimeMs: 100
 # PanCam pan position center
 positionCenter: 0.0
 # PanCam pan position error margin
-positionErrorMargin: 0.01
+positionErrorMargin: 0.1
 # PanCam pan position left
 positionLeft: -30
 # PanCam pan position right

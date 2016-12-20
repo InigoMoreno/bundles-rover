@@ -3,13 +3,14 @@
 require 'orocos'
 require 'rock/bundle'
 require 'readline'
+#require 'vizkit'
 include Orocos
 
 # Initialize bundles to find the configurations for the packages
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_locomotion', 'hdpr_ptu', 'hdpr_vision', 'hdpr_sensors' do
+Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps' do
     joystick = Orocos.name_service.get 'joystick'
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -22,7 +23,7 @@ Orocos::Process.run 'hdpr_locomotion', 'hdpr_ptu', 'hdpr_vision', 'hdpr_sensors'
         abort("Cannot configure the joystick, is the dongle connected to HDPR?")
     end
     
-    # Configure the packages
+    # Configure the control packages
     motion_translator = Orocos.name_service.get 'motion_translator'
     motion_translator.configure
     
@@ -46,11 +47,11 @@ Orocos::Process.run 'hdpr_locomotion', 'hdpr_ptu', 'hdpr_vision', 'hdpr_sensors'
     Orocos.conf.apply(ptu_directedperception, ['default'], :override => true)
     ptu_directedperception.configure
     
+    # Configure the sensor packages
     velodyne_lidar = TaskContext.get 'velodyne_lidar'
     Orocos.conf.apply(velodyne_lidar, ['default'], :override => true)
     velodyne_lidar.configure
     
-    # SwissRanger SR4500 Mesa Time-of-Flight camera
     tofcamera_mesasr = TaskContext.get 'tofcamera_mesasr'
     Orocos.conf.apply(tofcamera_mesasr, ['default'], :override => true)
     tofcamera_mesasr.configure
@@ -87,44 +88,79 @@ Orocos::Process.run 'hdpr_locomotion', 'hdpr_ptu', 'hdpr_vision', 'hdpr_sensors'
     Orocos.conf.apply(pancam_right, ['grashopper2_right'], :override => true)
     pancam_right.configure
     
+    # Configure the processing packages
     pancam_panorama = Orocos.name_service.get 'pancam_panorama'
     Orocos.conf.apply(pancam_panorama, ['default'], :override => true)
     pancam_panorama.configure
     
-    # Configure all the connections between the components
-    joystick.raw_command.connect_to pancam_panorama.raw_command
-    joystick.raw_command.connect_to motion_translator.raw_command
-    
-    motion_translator.motion_command.connect_to locomotion_control.motion_command
-    locomotion_control.joints_commands.connect_to command_joint_dispatcher.joints_commands
+    # Configure the connections between the components
+    joystick.raw_command.connect_to                     pancam_panorama.raw_command
+    joystick.raw_command.connect_to                     motion_translator.raw_command
+    motion_translator.motion_command.connect_to         locomotion_control.motion_command
+    locomotion_control.joints_commands.connect_to       command_joint_dispatcher.joints_commands
     command_joint_dispatcher.motors_commands.connect_to platform_driver.joints_commands
-    platform_driver.joints_readings.connect_to read_joint_dispatcher.joints_readings
-    read_joint_dispatcher.motors_samples.connect_to locomotion_control.joints_readings
+    platform_driver.joints_readings.connect_to          read_joint_dispatcher.joints_readings
+    read_joint_dispatcher.motors_samples.connect_to     locomotion_control.joints_readings
+    camera_firewire_bb2.frame.connect_to                camera_bb2.frame_in
+    camera_firewire_bb3.frame.connect_to                camera_bb3.frame_in
+    pancam_panorama.pan_angle_in.connect_to             ptu_directedperception.pan_angle
+    pancam_panorama.tilt_angle_in.connect_to            ptu_directedperception.tilt_angle
+    pancam_panorama.pan_angle_out.connect_to            ptu_directedperception.pan_set
+    pancam_panorama.tilt_angle_out.connect_to           ptu_directedperception.tilt_set
+    pancam_left.frame.connect_to                        pancam_panorama.left_frame_in
+    pancam_right.frame.connect_to                       pancam_panorama.right_frame_in
     
-    # Bumblebee cameras
-    camera_firewire_bb2.frame.connect_to camera_bb2.frame_in
-    camera_firewire_bb3.frame.connect_to camera_bb3.frame_in
+    # Define loggers
+    logger_control = Orocos.name_service.get 'hdpr_control_Logger'
+    logger_control.file = "control.log"
+    logger_control.log(platform_driver.joints_readings)
     
-    # For feedback connect the PTU angles to the pancam_panorama
-    pancam_panorama.pan_angle_in.connect_to ptu_directedperception.pan_angle
-    pancam_panorama.tilt_angle_in.connect_to ptu_directedperception.tilt_angle
-    # Connect the motion translator to the PTU control
-    pancam_panorama.pan_angle_out.connect_to ptu_directedperception.pan_set
-    pancam_panorama.tilt_angle_out.connect_to ptu_directedperception.tilt_set
+    logger_pancam = Orocos.name_service.get 'hdpr_pancam_Logger'
+    logger_pancam.file = "pancam.log"
+    logger_pancam.log(pancam_panorama.frame)
     
-    pancam_left.frame.connect_to pancam_panorama.left_frame_in
-    pancam_right.frame.connect_to pancam_panorama.right_frame_in
+    logger_bb2 = Orocos.name_service.get 'hdpr_bb2_Logger'
+    logger_bb2.file = "bb2.log"
+    logger_bb2.log(camera_firewire_bb2.frame)
     
-    # Log all important outputs
-    platform_driver.log_all_ports
-    camera_bb2.log_all_ports
-    camera_bb3.log_all_ports
-    pancam_panorama.log_all_ports
-    velodyne_lidar.log_all_ports
-    tofcamera_mesasr.log_all_ports
-    imu_stim300.log_all_ports
-    gps.log_all_ports
-    #gyro.log_all_ports
+    logger_bb3 = Orocos.name_service.get 'hdpr_bb3_Logger'
+    logger_bb3.file = "bb3.log"
+    logger_bb3.log(camera_firewire_bb3.frame)
+    
+    logger_tof = Orocos.name_service.get 'hdpr_tof_Logger'
+    logger_tof.file = "tof.log"
+    logger_tof.log(tofcamera_mesasr.distance_frame)
+    logger_tof.log(tofcamera_mesasr.ir_frame)
+    logger_tof.log(tofcamera_mesasr.tofscan)
+    
+    logger_lidar = Orocos.name_service.get 'hdpr_lidar_Logger'
+    logger_lidar.file = "lidar.log"
+    logger_lidar.log(velodyne_lidar.ir_frame)
+    logger_lidar.log(velodyne_lidar.laser_scans)
+    logger_lidar.log(velodyne_lidar.range_frame)
+    
+    logger_gps = Orocos.name_service.get 'hdpr_gps_Logger'
+    logger_gps.file = "gps.log"
+    logger_gps.log(gps.pose_samples)
+    logger_gps.log(gps.time)
+    
+    logger_imu = Orocos.name_service.get 'hdpr_imu_Logger'
+    logger_imu.file = "imu.log"
+    logger_imu.log(imu_stim300.inertial_sensors_out)
+    logger_imu.log(imu_stim300.temp_sensors_out)
+    logger_imu.log(imu_stim300.orientation_samples_out)
+    
+    #Orocos.log_all_ports
+    
+    # Start loggers
+    logger_control.start
+    logger_pancam.start
+    logger_bb2.start
+    logger_bb3.start
+    logger_tof.start
+    logger_lidar.start
+    logger_gps.start
+    logger_imu.start
 
     # Start the components
     platform_driver.start
@@ -146,6 +182,17 @@ Orocos::Process.run 'hdpr_locomotion', 'hdpr_ptu', 'hdpr_vision', 'hdpr_sensors'
     camera_bb3.start
     camera_firewire_bb3.start
     
+    # Show camera output
+    #Vizkit.display pancam_panorama.left_frame_out
+    #Vizkit.display pancam_panorama.right_frame_out
+    #Vizkit.display camera_bb2.left_frame
+    #Vizkit.display camera_bb3.left_frame
+    #Vizkit.display tofcamera_mesasr.distance_frame
+    #Vizkit.display velodyne_lidar.ir_interp_frame
+    
+    #Vizkit.exec
+    
+    # Not needed when Vizkit is running
     Readline::readline("Press Enter to exit\n") do
     end
 end 

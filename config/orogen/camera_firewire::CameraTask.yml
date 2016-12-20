@@ -257,6 +257,7 @@ exposure: 250
 # exposure mode (auto, manual, external, none)
 exposure_mode: auto
 # frames per second
+# The PanCam does not need to be very fast, it uses a lot of bandwidth so low FPS is good
 #fps: 3.75
 fps: 1.875
 # size of the frame buffer

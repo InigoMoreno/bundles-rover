@@ -17,7 +17,7 @@ Orocos::Process.run 'hdpr_unit_lidar' do
     velodyne_lidar.configure
 
     # Log
-    Orocos.log_all_ports
+    #Orocos.log_all_ports
 
     # Start
     velodyne_lidar.start

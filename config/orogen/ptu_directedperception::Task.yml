@@ -2,3 +2,6 @@
 #The device address. It can either be serial://PATH[:baudrate], udp://IP_OR_HOSTNAME[:PORT] or tcp://IP_OR_HOSTNAME[:PORT]. Leave empty if you mean to use the io_raw_in and io_raw_out ports.
 io_port: "serial:///dev/hdpr-ptu:9600"
 
+# This does not work and it was never intended to work this way:
+#io_port: "tcp://192.168.1.12:4000"
+

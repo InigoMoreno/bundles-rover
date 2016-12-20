@@ -1,0 +1,13 @@
+--- name:default
+# Minimum delay in milliseconds before saving a frame after the PanCam reaches its goal position
+frameDelayTimeMs: 100
+# How many pictures to take for a 360 panorama picture, must be an odd number
+panoramaPictures: 9
+# PanCam pan and tilt position error margin
+positionErrorMargin: 0.1
+# Angle separation between pictures, in degrees
+positionSeparation: 30.0
+# PanCam tilt position for all positions in degrees
+positionTilt: 30.0
+# Axis resolution per position moved (in seconds/arc)
+resolutionPerPosition: 185.1429
