@@ -6,20 +6,24 @@ filter_configuration:
   use_samples_as_theoretical_gravity: true
   use_inclinometers: true
   use_magnetometers: false
+  initial_alignment_samples: 750 # 150000 # 20 minute(s) initial alignment. IMU rate is 125Hz. Set it to 7500 for 1 minute.
+  correction_frequency: 1.0
+use_input_bias: true
+biasacc: [3.03041e-06,1.33228e-05,0]
+biasgyro: [-0.000598881,-0.000108661,0.000379243]
+init_heading: 0.0
+
+--- name:calibration
+# General configuration values to run the task
+filter_configuration:
+  source_frame_name: 'imu' # transformer names. No transformation convention
+  target_frame_name: 'world_osg' # transformer names. No transformation convention
+  use_samples_as_theoretical_gravity: true
+  use_inclinometers: true
+  use_magnetometers: false
   initial_alignment_samples: 150000 # 150000 # 20 minute(s) initial alignment. IMU rate is 125Hz. Set it to 7500 for 1 minute.
   correction_frequency: 1.0
-
-#
-init_heading: 45.0
-
-#
 use_input_bias: false
-
-#
-biasacc: [0.0,0.0,0.0]
-#
-biasgyro: [0.0,0.0,0.0]
-
 
 --- name:exoter
 # IMU port in ExoTer

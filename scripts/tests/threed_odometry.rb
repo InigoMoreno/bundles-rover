@@ -8,6 +8,8 @@ include Orocos
 # Initialize bundles to find the configurations for the packages
 Bundles.initialize
 
+Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb'))
+
 # Execute the task
 Orocos::Process.run 'hdpr_unit_odometry' do
 
@@ -27,14 +29,16 @@ Orocos::Process.run 'hdpr_unit_odometry' do
     Orocos.conf.apply(read_joint_dispatcher, ['reading'], :override => true)
     read_joint_dispatcher.configure
     
-    # Finally, configure the skid odometry task
-    skid_odometry = Orocos.name_service.get 'skid_odometry'
-    Orocos.conf.apply(skid_odometry, ['default', 'HDPR'], :override => true)
-    skid_odometry.configure
+    # Finally, configure the threed odometry task
+    threed_odometry = Orocos.name_service.get 'threed_odometry'
+    Orocos.conf.apply(threed_odometry, ['default', 'HDPR'], :override => true)
+    Bundles.transformer.setup(threed_odometry)
+    threed_odometry.configure
     
     # Connections
     platform_driver.joints_readings.connect_to          read_joint_dispatcher.joints_readings
-    read_joint_dispatcher.motors_samples.connect_to     skid_odometry.actuator_samples
+    read_joint_dispatcher.joints_samples.connect_to     threed_odometry.joints_samples
+    imu_stim300.orientation_samples_out.connect_to	threed_odometry.orientation_samples
 
     # Log all ports
     Orocos.log_all_ports
@@ -43,7 +47,7 @@ Orocos::Process.run 'hdpr_unit_odometry' do
     imu_stim300.start
     #platform_driver.start
     read_joint_dispatcher.start
-    skid_odometry.start
+    #threed_odometry.start
     
     Readline::readline("Press Enter to exit\n") do
     end

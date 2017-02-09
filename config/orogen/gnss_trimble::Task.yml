@@ -10,7 +10,7 @@ serial_timeout: 0.2
 # the device port
 serial_port: /dev/hdpr-dgps
 # Baud rate to open the serial com_port.
-serial_baudrate: 38400
+serial_baudrate: 115200
 # the expected time (in seconds) to have a whole package in the fd (the device port)
 serial_timeout: 0.2
 
@@ -49,9 +49,25 @@ pose_origin:
 # Origin in UTM coordinates, that is used for position readings.
 pose_origin:
   data:
-  - 597472.183
-  - 5785991.8953
-  - 1.95
+  - 597481.68
+  - 5785983.94
+  - 5.87
+
+--- name:Tenerife
+# Origin in UTM coordinates, that is used for position readings.
+pose_origin:
+  data:
+  - 0.0
+  - 0.0
+  - 0.0
+
+--- name:calibration
+# Offset to 0 so the value in rock-display would show the value needed to set here
+pose_origin:
+  data:
+  - 0.0
+  - 0.0
+  - 0.0
 
 
 # no documentation available for this property

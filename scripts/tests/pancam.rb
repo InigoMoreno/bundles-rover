@@ -41,6 +41,16 @@ Orocos::Process.run 'hdpr_unit_pancam' do
     # Connect
     pancam_left.frame.connect_to stereo_pancam.left_frame
     pancam_right.frame.connect_to stereo_pancam.right_frame
+
+    logfile = Pocolog::Logfiles.create(File.expand_path('pancam_properties', Bundles.log_dir))
+
+    property_left_exp = pancam_left.property('exposure')
+    property_left_exp.log_stream = logfile.create_stream "pancam.left_exposure", property_left_exp.type, property_left_exp.name
+    property_left_exp.log_current_value
+
+    property_right_exp = pancam_right.property('exposure')
+    property_right_exp.log_stream = logfile.create_stream "pancam.right_exposure", property_right_exp.type, property_right_exp.name
+    property_right_exp.log_current_value
     
     # Start
     pancam_left.start

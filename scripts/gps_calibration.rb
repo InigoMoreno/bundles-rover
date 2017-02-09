@@ -9,18 +9,19 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_lidar' do
+Orocos::Process.run 'hdpr_unit_gps' do
 
     # Configure
-    velodyne_lidar = TaskContext.get 'velodyne_lidar'
-    Orocos.conf.apply(velodyne_lidar, ['default'], :override => true)
-    velodyne_lidar.configure
+    gps = TaskContext.get 'gps'
+    # Change the country configuration depeding on where on Earth the rover is
+    Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'calibration'], :override => true)
+    gps.configure
 
     # Log
-    Orocos.log_all_ports
+    #Orocos.log_all_ports
 
     # Start
-    velodyne_lidar.start
+    gps.start
     
     Readline::readline("Press Enter to exit\n") do
     end

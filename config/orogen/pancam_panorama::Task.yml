@@ -10,6 +10,6 @@ positionLeft: -30
 # PanCam pan position right
 positionRight: 30
 # PanCam tilt position for all positions
-positionTilt: 30
+positionTilt: 40
 # Axis resolution per position moved (in seconds/arc)
 resolutionPerPosition: 185.1429
