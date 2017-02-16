@@ -12,38 +12,55 @@
 #
 # It first translates by the Vector3d and then rotates
 #######
-## TODO: NEEDS GEOMETRICAL INFO UPDATE
+## MS: GEOMETRICAL INFO UPDATE
+## * According to the paper 'The Katwijk beach planetary rover dataset' the frames have been expressed wrt. to the IMU frame:
+##   To get them to the body frame, the signs of x and y have to be changed
 
 ############################
 # Static transformations
 ############################
 
 # Transformation Body to IMU (IMU frame expressed in Body frame) but transformer expects the other sense
+# MS: In HDPR, BODY and IMU frame coincide wrt. translation but are different wrt. orientation
 static_transform Eigen::Quaternion.from_angle_axis(Math::PI, Eigen::Vector3.UnitZ),
-    Eigen::Vector3.new( 0.00417, -0.0399, 0.0052 ), "imu" => "body"
+    Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "imu" => "body"
 
 # Transformation Body to Mast top (Mast top frame expressed in Body frame) but transformations expects the other sense
+# MS: In HDPR, the mast is called PAN-TILT-FRAME
 static_transform Eigen::Quaternion.Identity(),
-    Eigen::Vector3.new( 0.076, 0.0, 0.63275 ), "mast" => "body"
+    Eigen::Vector3.new( 0.138, -0.005, 1.286 ), "mast" => "body"
 
 # Transformation Body to GPS (GPS frame expressed in Body frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.Identity(),
-    Eigen::Vector3.new( -0.1705, 0.0745, 0.2206 ), "gps" => "body"
+    Eigen::Vector3.new( -0.2209, 0.0515, 1.5025 ), "gps" => "body"
 
 # Transformation PTU to Left camera (Left camera frame expressed in PTU frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -Math::PI/2.0), 2,1,0),
-    Eigen::Vector3.new( 0.0, 0.0602, 0.035 ), "left_camera" => "ptu"
+    Eigen::Vector3.new( 0.01, 0.25, 0.055 ), "left_camera" => "ptu"
 
 # Transformation Left camera to Right camera (Right camera frame expressed in Left camera frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.Identity(),
-    Eigen::Vector3.new( 0.12, 0.0, 0.0 ), "right_camera" => "left_camera"
+    Eigen::Vector3.new( 0.5, 0.0, 0.0 ), "right_camera" => "left_camera"
 
 # Transformation Left camera to ToF camera (ToF camera frame expressed in Left camera frame) but transformer expects the other sense
 #static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI/2.0, 0.00, Math::PI/2.0), 2,1,0),
-static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI, 0.00, 0.00), 2,1,0),
-    Eigen::Vector3.new( 0.0602, -0.0625, 0.026), "tof_camera" => "left_camera"
+# MS: Renamed left_camera frame to reflect that the BB3 used as the front cam is different from the mast frame
+# TODO: Measure again when final position has come up
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.6, 0.0, 0.2), "tof_camera" => "body"
 
 # Transformation front BB2 to body center
-static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(0.0, 0.5759, 0.0), 2,1,0),
-    Eigen::Vector3.new(0.04843, 0.54309, 0.01713), "left_camera" => "body"
+#static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.5759, 0.0), 2,1,0),
+#    Eigen::Vector3.new(0.04843, 0.54309, 0.01713), "left_camera" => "body"
+# TODO: Not verified
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.5759, -Math::PI/2.0), 2,1,0),
+    Eigen::Vector3.new(0.54309, 0.04843, 0.01713), "left_camera_bb3" => "body"
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.12, 0.0, 0.0 ), "center_camera_bb3" => "left_camera_bb3"
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.12, 0.0, 0.0 ), "right_camera_bb3" => "center_camera_bb3"
 
+# MS: Transformation Body to Velodyne (Velodyne frame expressed in Body frame)
+# TODO: Measure the height again, since its not tilted anymore
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new(0.54309, 0.018, 0.717), "velodyne_lidar" => "body"
