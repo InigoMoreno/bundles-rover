@@ -21,7 +21,7 @@ Orocos::Process.run 'hdpr_unit_bb2' do
     camera_bb2.configure
     
     stereo_bb2 = TaskContext.get 'stereo_bb2'
-    Orocos.conf.apply(stereo_bb2, ['exoter_bb2'], :override => true)
+    Orocos.conf.apply(stereo_bb2, ['hdpr_bb2'], :override => true)
     stereo_bb2.configure
 
     # Log
