@@ -15,7 +15,7 @@ Orocos::Process.run 'hdpr_unit_gps' do
 
     # Configure
     gps = TaskContext.get 'gps'
-    Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'ESTEC'], :override => true)
+    Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS'], :override => true)
     gps.configure
 
     # Log

@@ -10,6 +10,6 @@ positionErrorMargin: 0.1
 # Angle separation between pictures, in degrees
 positionSeparation: 30.0
 # PanCam tilt position for all positions in degrees
-positionTilt: 30.0
+positionTilt: 20.0
 # Tilt axis resolution (deg/pos)
 tiltResolution: 0.012857

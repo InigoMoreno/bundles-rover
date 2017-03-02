@@ -37,20 +37,37 @@ Orocos::Process.run 'hdpr_unit_360' do
     pancam_right.frame.connect_to pancam_360.right_frame_in
     
     #pancam_360.log_all_ports
-
+    
+    logger_360 = Orocos.name_service.get 'hdpr_unit_360_Logger'
+    logger_360.file = "pancam_360.log"
+    logger_360.log(pancam_360.left_frame_out)
+    logger_360.log(pancam_360.right_frame_out)
+    logger_360.log(pancam_360.pan_angle_out_degrees)
+    logger_360.log(pancam_360.tilt_angle_out_degrees)
+    logger_360.log(pancam_360.set_id)
+    logger_360.start
+    
     # Start the components
     pancam_left.start
     pancam_right.start
     ptu_directedperception.start
     
+    $pass = 1
     while true
         if pancam_360.state == :RUNNING
             puts "Still taking a picture, waiting 5 seconds"
             sleep 5
-        elsif pancam_360.state == :STOPPED
-            puts "360 degree picture done, waiting 5 seconds"
-            sleep 5
-            puts "Taking new 360 degree picture"
+        elsif pancam_360.state == :STOPPED and $pass == 1
+            puts "360 degree picture done, waiting 1 second"
+            sleep 1
+            puts "Taking new 360 degree picture with a tilt of 40 degrees"
+            $pass = 2
+            pancam_360.positionTilt = 20
+            pancam_360.start
+        elsif pancam_360.state == :STOPPED and $pass == 2
+            puts "Taking new 360 degree picture with a tilt of 80 degrees"
+            $pass = 1
+            pancam_360.positionTilt = 40
             pancam_360.start
         end
     end
