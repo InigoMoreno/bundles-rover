@@ -24,19 +24,6 @@
 </link>
 
 
-<!-- Differential Link definition -->
-<link name="differential">
-    <visual>
-        <geometry>
-            <box size="0.7 0.02 0.02"/> <!-- length, width, height-->
-        </geometry>
-        <origin xyz="0.0 0.0 0.0" rpy="0 0 1.552"/>
-        <material name="Black" >
-            <color rgba="0.0 0.0 0.0 1.0"/>
-        </material>
-    </visual>
-</link>
-
 <!-- Front Left Rocker (greater ones) Link definition -->
 <link name="left_rocker">
     <visual>
@@ -317,58 +304,6 @@
     </visual>
 </link>
 
-<!-- Mast Assembly  -->
-<link name="mast_assembly">
-    <visual>
-        <geometry>
-            <mesh filename="./meshes/exoter/mast_assembly.stl" scale = "1 1 1"/>
-        </geometry>
-        <origin xyz="0.0 0.0 0.0" rpy="0 0 0.0"/>
-        <material name="Black" >
-            <color rgba="0.0 0.0 0.0 1.0"/>
-        </material>
-    </visual>
-</link>
-
-<!-- Pan drive  -->
-<link name="pan_drive">
-    <visual>
-        <geometry>
-            <mesh filename="./meshes/exoter/pan_drive.stl" scale = "1 1 1"/>
-        </geometry>
-        <origin xyz="0.0 0.0 0.0" rpy="0 0 0.0"/>
-        <material name="Black" >
-            <color rgba="0.0 0.0 0.0 1.0"/>
-        </material>
-    </visual>
-</link>
-
-<!-- Tilt drive  -->
-<link name="tilt_drive">
-    <visual>
-        <geometry>
-            <mesh filename="./meshes/exoter/tilt_drive.stl" scale = "1 1 1"/>
-        </geometry>
-        <origin xyz="0.0 0.0 0.0" rpy="0 0 0.0"/>
-        <material name="Black" >
-            <color rgba="0.0 0.0 0.0 1.0"/>
-        </material>
-    </visual>
-</link>
-
-<!-- Cameras assembly  -->
-<link name="camera_assembly">
-    <visual>
-        <geometry>
-            <mesh filename="./meshes/exoter/bb2_and_tof_camera.stl" scale = "1 1 1"/>
-        </geometry>
-        <origin xyz="0.0 0.0 0.0" rpy="0 0 0.0"/>
-        <material name="White" >
-            <color rgba="1.0 1.0 1.0 1.0"/>
-        </material>
-    </visual>
-</link>
-
 <!-- ====== SPECIAL 3D ODOMETRY VIRTUAL LINKS ====== -->
 <!-- Taken from exoter odometry model. However minimal version only needs 3 virtual links/(leg||wheel) -->
 
@@ -470,17 +405,9 @@
 
 <!-- ====================Joint Descriptions =================================================================================-->
 
-<!-- rear joint that connects base and the differential with a revolute joint -->
-<joint name="front_passive" type="continuous">
-    <parent link="body"/>
-    <child link="differential"/>
-    <origin xyz="0.5 0 0" rpy="0.0 0.0 0.00"/> 
-    <axis xyz="1 0 0 " /> <!-- revolute rotation about X axis -->
-    <limit lower="-1.6" upper="1.6" velocity="6.28" effort="100"/>
-</joint>
-
 <!-- right joint that connects base and right_rocker with a revolute joint -->
-<joint name="right_passive" type="continuous">
+<!-- FIXME: Currently the passive joints have been FIXED until we can measure or derive them -->
+<joint name="right_passive" type="fixed">
     <parent link="body"/>
     <child link="right_rocker"/>
     <origin xyz="0.0 -0.41 0.0" rpy="0 0.00 0"/> 
@@ -490,7 +417,7 @@
 </joint>
 
 <!-- left joint that connects base and left_rocker with a revolute joint -->
-<joint name="left_passive" type="continuous">
+<joint name="left_passive" type="fixed">
     <parent link="body"/>
     <child link="left_rocker"/>
     <origin xyz="0.0 0.41 0" rpy="0 0.00 0"/> 
@@ -500,7 +427,7 @@
 </joint>
 
 <!-- left joint that connects left_bogie and left rocker with a revolute -->
-<joint name="left_rocker_bogie" type="continuous">
+<joint name="left_rocker_bogie" type="fixed">
     <parent link="left_rocker"/>
     <child link="left_bogie"/>
     <origin xyz="-0.375 0.0 -0.260" rpy="0 0.0 0"/>
@@ -509,7 +436,7 @@
 </joint>
 
 <!-- right joint that connects right_bogie and right rocker with a revolute -->
-<joint name="right_rocker_bogie" type="continuous">
+<joint name="right_rocker_bogie" type="fixed">
     <parent link="right_rocker"/>
     <child link="right_bogie"/>
     <origin xyz="-0.375 0 -0.260" rpy="0 0.0 0"/>
@@ -643,40 +570,6 @@
     <origin xyz="0 0.0 -0.0953" rpy="0 0.00 0"/> 
     <axis xyz="0 1 0" /> <!-- revolute rotation about y axis -->
     <limit lower="-3.14" upper="3.14" velocity="6.28" effort="100"/>
-</joint>
-
-<!-- Mast assembly with a fixed joint -->
-<joint name="mast_joint" type="fixed">
-    <parent link="body"/>
-    <child link="mast_assembly"/>
-    <origin xyz="0.076 0.0 0.0" rpy="0 0.0 0"/> 
-    <limit lower="-1.6" upper="1.6" velocity="6.28" effort="100"/>
-</joint>
-
-<!--Pan assembly with a fixed joint -->
-<joint name="mast_top_joint" type="fixed">
-    <parent link="mast_assembly"/>
-    <child link="pan_drive"/>
-    <origin xyz="0.0 0.0 0.64" rpy="0 0.0 0"/> 
-    <limit lower="-1.6" upper="1.6" velocity="6.28" effort="100"/>
-</joint>
-
-<!-- Pan joint with a revolute joint -->
-<joint name="pan_joint" type="continuous">
-    <parent link="pan_drive"/>
-    <child link="tilt_drive"/>
-    <origin xyz="0.0 0.0 0.0" rpy="0 0.0 0"/> 
-    <axis xyz="0 0 1" /> <!-- revolute rotation about z axis -->
-    <limit lower="-1.6" upper="1.6" velocity="6.28" effort="100"/>
-</joint>
-
-<!-- Tilt joint with a revolute joint -->
-<joint name="tilt_joint" type="continuous">
-    <parent link="tilt_drive"/>
-    <child link="camera_assembly"/>
-    <origin xyz="0.0 0.0 0.03" rpy="0 0.0 0"/> 
-    <axis xyz="0 1 0" /> <!-- revolute rotation about y axis -->
-    <limit lower="-1.6" upper="1.6" velocity="6.28" effort="100"/>
 </joint>
 
 <!-- ===== VIRTUAL JOINTS FOR 3D ODOMETRY ===== -->
