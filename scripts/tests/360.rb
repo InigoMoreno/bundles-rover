@@ -23,7 +23,7 @@ Orocos::Process.run 'hdpr_unit_360' do
     pancam_right.configure
     
     pancam_360 = Orocos.name_service.get 'pancam_360'
-    Orocos.conf.apply(pancam_360, ['default'], :override => true)
+    Orocos.conf.apply(pancam_360, ['default', 'separation_40_30'], :override => true)
     pancam_360.configure
     
     # For feedback connect the PTU angles to the pancam_360
@@ -51,24 +51,16 @@ Orocos::Process.run 'hdpr_unit_360' do
     pancam_left.start
     pancam_right.start
     ptu_directedperception.start
+    pancam_360.start
     
-    $pass = 1
+    $pass = 0
     while true
         if pancam_360.state == :RUNNING
             puts "Still taking a picture, waiting 5 seconds"
             sleep 5
-        elsif pancam_360.state == :STOPPED and $pass == 1
-            puts "360 degree picture done, waiting 1 second"
-            sleep 1
-            puts "Taking new 360 degree picture with a tilt of 40 degrees"
-            $pass = 2
-            pancam_360.positionTilt = 20
-            pancam_360.start
-        elsif pancam_360.state == :STOPPED and $pass == 2
-            puts "Taking new 360 degree picture with a tilt of 80 degrees"
-            $pass = 1
-            pancam_360.positionTilt = 40
-            pancam_360.start
+        else
+            puts "Finished all sets"
+            break
         end
     end
 end

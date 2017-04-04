@@ -8,21 +8,19 @@ include Orocos
 # Initialize bundles to find the configurations for the packages
 Bundles.initialize
 
-$gps_last_position = 0
-
 # Execute the task
-Orocos::Process.run 'hdpr_unit_gps' do
-
+Orocos::Process.run 'hdpr_unit_temperature' do
     # Configure
-    gps = TaskContext.get 'gps'
-    Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'calibration'], :override => true)
-    gps.configure
+    temperature = TaskContext.get 'temperature'
+    Orocos.conf.apply(temperature, ['default'], :override => true)
+    temperature.configure
 
     # Log
-    Orocos.log_all_ports
+    Orocos.log_all_configuration
+    temperature.log_all_ports
 
     # Start
-    gps.start
+    temperature.start
     
     Readline::readline("Press Enter to exit\n") do
     end

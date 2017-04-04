@@ -1,0 +1,17 @@
+--- name:default
+# The device port
+port: /dev/hdpr-gyro
+# The device baudrate
+baudrate: 921600
+# Nominal samping frequency of the sensor in Hz
+sampling_frequency: 10
+# Start sensor calibration. Read during runtime so the calibration can be started at any time. By default set to false.
+calibrate: false
+# Number of samples to average over for bias calibration.
+calibration_samples: 30
+# Bias of the gyroscope z-axis.
+bias: 0.001
+
+# Calibrated bias value
+--- name:calibration
+calibrate: true

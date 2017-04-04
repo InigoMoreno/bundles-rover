@@ -1,0 +1,13 @@
+--- name:default
+# The device baudrate
+baudrate: 9600
+# The device port
+port: /dev/hdpr-temp
+# Temperature sensor names, also defined the logged sensor number
+sensor_names:
+  - "FR"
+  - "CR"
+  - "RR"
+  - "FL"
+  - "CL"
+  - "RL"

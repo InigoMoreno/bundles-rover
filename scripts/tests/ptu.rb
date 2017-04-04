@@ -36,7 +36,7 @@ Orocos::Process.run 'hdpr_unit_ptu' do
     pancam_left.frame.connect_to pancam_panorama.left_frame_in
     pancam_right.frame.connect_to pancam_panorama.right_frame_in
     
-    pancam_panorama.log_all_ports
+    #pancam_panorama.log_all_ports
 
     # Start the components
     pancam_left.start

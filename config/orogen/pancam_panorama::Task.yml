@@ -1,17 +1,19 @@
 --- name:default
 # Minimum delay in milliseconds before saving a frame after the PanCam reaches its goal position
 frameDelayTimeMs: 100
-# Pan axis resolution (deg/pos)
-panResolution: 0.051429
-# PanCam pan position center in degrees
-positionCenter: 0.0
 # PanCam pan and tilt position error margin
 positionErrorMargin: 0.1
-# PanCam pan position left in degrees
-positionLeft: -50.0
-# PanCam pan position right in degrees
-positionRight: 50.0
-# PanCam tilt position for all positions in degrees
-positionTilt: 20.0
-# Tilt axis resolution (deg/pos)
-tiltResolution: 0.012857
+# Camera pan/tilt orientations for pictures
+cameraPositions:
+  - data:
+    - -30.0
+    - 20.0
+  - data:
+    - 0.0
+    - 20.0
+  - data:
+    - 30.0
+    - 20.0
+  - data:
+    - 0.0
+    - 20.0

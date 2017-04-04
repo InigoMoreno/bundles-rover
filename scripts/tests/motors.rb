@@ -39,20 +39,10 @@ Orocos::Process.run 'hdpr_unit_control' do
     Orocos.conf.apply(read_joint_dispatcher, ['reading'], :override => true)
     read_joint_dispatcher.configure
     
-    ptu_directedperception = Orocos.name_service.get 'ptu_directedperception'
-    Orocos.conf.apply(ptu_directedperception, ['default'], :override => true)
-    ptu_directedperception.configure
-
     # Log
     #Orocos.log_all_ports
     #platform_driver.log_all_ports
-    #camera_bb2.log_all_ports
-    #camera_bb3.log_all_ports
     #pancam_panorama.log_all_ports
-    #velodyne_lidar.log_all_ports
-    #tofcamera_mesasr.log_all_ports
-    #imu_stim300.log_all_ports
-    #gps.log_all_ports
     
     # Connect
     joystick.raw_command.connect_to motion_translator.raw_command
@@ -61,15 +51,12 @@ Orocos::Process.run 'hdpr_unit_control' do
     command_joint_dispatcher.motors_commands.connect_to platform_driver.joints_commands
     platform_driver.joints_readings.connect_to read_joint_dispatcher.joints_readings
     read_joint_dispatcher.motors_samples.connect_to locomotion_control.joints_readings
-    motion_translator.ptu_pan_angle.connect_to ptu_directedperception.pan_set
-    motion_translator.ptu_tilt_angle.connect_to ptu_directedperception.tilt_set
     
     # Start
     platform_driver.start
     read_joint_dispatcher.start
     command_joint_dispatcher.start
     locomotion_control.start
-    ptu_directedperception.start
     motion_translator.start
     joystick.start
     

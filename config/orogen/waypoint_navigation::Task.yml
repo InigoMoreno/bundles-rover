@@ -36,9 +36,9 @@ ptConfig:
   minTurnRadius: 0.95
   translationalVelocity: 0.2
   rotationalVelocity: 0.15
-  corridor: 1.1
+  corridor: 1.5
   maxDisalignment: 1.0
-  lookaheadDistance: 3.0
+  lookaheadDistance: 3.5
   backwards: false
 
 pdConfig:
@@ -46,3 +46,7 @@ pdConfig:
   D: 0.025
   saturation: 0.3491
 
+# Do not care about the heading
+tolHeading: 360
+# 50cm is precise enough for HDPR
+tolPos:     0.5

@@ -27,7 +27,7 @@ Orocos::Process.run 'hdpr_unit_bb2' do
     # Log
     #Orocos.log_all_ports
     #camera_firewire_bb2.log_all_ports
-    #camera_bb2.log_all_ports
+    camera_bb2.log_all_ports
     
     # Connect
     camera_firewire_bb2.frame.connect_to camera_bb2.frame_in

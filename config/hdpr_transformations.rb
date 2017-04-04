@@ -50,8 +50,8 @@ static_transform Eigen::Quaternion.Identity(),
     Eigen::Vector3.new( 0.6, 0.0, 0.2), "tof_camera" => "body"
 
 # Transformation front BB2 to body center
-#static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.5759, 0.0), 2,1,0),
-#    Eigen::Vector3.new(0.04843, 0.54309, 0.01713), "left_camera" => "body"
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.5759, 0.0), 2,1,0),
+    Eigen::Vector3.new(0.04843, 0.54309, 0.01713), "left_camera_bb2" => "body"
 # TODO: Not verified
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.5759, -Math::PI/2.0), 2,1,0),
     Eigen::Vector3.new(0.54309, 0.04843, 0.01713), "left_camera_bb3" => "body"

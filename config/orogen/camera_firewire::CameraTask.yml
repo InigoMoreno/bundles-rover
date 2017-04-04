@@ -46,7 +46,7 @@ frame_buffer_size: 60
 frame_start_trigger_event: EdgeRising
 # gain value
 # Set to high for low motion blur, but high noise, set to low for smooth picture, but lots of motion blur
-gain: 100
+gain: 0
 #gain: 683
 # gain mode 
 gain_mode_auto: false 
@@ -64,6 +64,8 @@ hdr_voltage_3: 0
 hdr_voltage_4: 0
 # height of the camera frame
 height: 768
+# image count per packet, 2 images per one packet for the BB2
+image_count: 2
 # interval for logging a statistic about valid and invalid frames per second (0= logging of) -> it is saved as frame attrib StatFrameRate
 log_interval_in_sec: 5
 # opening mode (Master, Monitor, MasterMulticast)
@@ -111,7 +113,7 @@ sharpness: 340
 # decides if auto exposure has control or not over the shutter (auto, manual)
 shutter_mode: manual
 # time that the shutter is open when taking an image
-shutter_time: 340
+shutter_time: 40
 # set whitebalance to on/off
 whitebalance_power: true
 # How fast the Auto white balance will update.
@@ -119,11 +121,11 @@ whitebalance_auto_rate: 100
 # Sets a range of scene color changes in which the automatic whitebalance will not respond.
 whitebalance_auto_threshold: 5
 # Blue gain expressed as a percentage of the camera default setting.
-whitebalance_blue: 616
+whitebalance_blue: 602
 # whitebalance mode (auto, manual, auto_once, none)
 whitebalance_mode: manual
 # Red gain expressed as a percentage of the camera default setting.
-whitebalance_red: 551
+whitebalance_red: 550
 # width of the camera frame
 width: 1024
 
@@ -177,7 +179,7 @@ exposure: 390
 # exposure mode (auto, manual, external, none)
 exposure_mode: manual
 # frames per second
-fps: 11.25 # 3.75*3 (3 images with 1280*960 resolution each time)
+fps: 12.0 # 4*3 (3 images with 1280*960 resolution each time)
 # size of the frame buffer
 frame_buffer_size: 60
 # External trigger event, allowed values:  EdgeRising, EdgeFalling, EdgeAny, LevelHigh, LevelLow, none
@@ -201,6 +203,8 @@ hdr_voltage_3: 0
 hdr_voltage_4: 0
 # height of the camera frame
 height: 960
+# image count per packet, 3 images per one packet for the BB3
+image_count: 1
 # Bus speed, legacy mode allows up to 400, mode B allows up to 800
 isochronous_speed: 800
 # interval for logging a statistic about valid and invalid frames per second (0= logging of) -> it is saved as frame attrib StatFrameRate
@@ -252,7 +256,7 @@ sharpness: 340
 # decides if auto exposure has control or not over the shutter (auto, manual)
 shutter_mode: manual
 # time that the shutter is open when taking an image
-shutter_time: 350
+shutter_time: 17
 # set whitebalance to on/off
 whitebalance_power: true
 # How fast the Auto white balance will update.
@@ -260,11 +264,11 @@ whitebalance_auto_rate: 100
 # Sets a range of scene color changes in which the automatic whitebalance will not respond.
 whitebalance_auto_threshold: 5
 # Blue gain expressed as a percentage of the camera default setting.
-whitebalance_blue: 616
+whitebalance_blue: 692
 # whitebalance mode (auto, manual, auto_once, none)
 whitebalance_mode: manual
 # Red gain expressed as a percentage of the camera default setting.
-whitebalance_red: 551
+whitebalance_red: 550
 # width of the camera frame
 width: 1280
 #     ___                _                        ___   _         __ _    
@@ -310,7 +314,7 @@ exposure: 1023
 exposure_mode: manual
 # frames per second
 # The PanCam does not need to be very fast, it uses a lot of bandwidth so low FPS is good
-#fps: 3.75
+#fps: 1.875, 3.75, 7.5, 15, 30, 60, 120, 240
 fps: 1.875
 # size of the frame buffer
 frame_buffer_size: 60
@@ -318,7 +322,7 @@ frame_buffer_size: 60
 frame_start_trigger_event: EdgeRising
 # gain value
 #gain: 104
-gain: 345
+gain: 0
 # gain mode
 gain_mode_auto: false
 # turns gamma on or off
@@ -386,7 +390,8 @@ sharpness: 340
 # decides if auto exposure has control or not over the shutter (auto, manual)
 shutter_mode: manual
 # time that the shutter is open when taking an image
-shutter_time: 350
+#shutter_time: 350
+shutter_time: 35
 # set whitebalance to on/off
 whitebalance_power: true
 # How fast the Auto white balance will update.
@@ -394,11 +399,11 @@ whitebalance_auto_rate: 100
 # Sets a range of scene color changes in which the automatic whitebalance will not respond.
 whitebalance_auto_threshold: 5
 # Blue gain expressed as a percentage of the camera default setting.
-whitebalance_blue: 616
+whitebalance_blue: 679
 # whitebalance mode (auto, manual, auto_once, none)
 whitebalance_mode: manual
 # Red gain expressed as a percentage of the camera default setting.
-whitebalance_red: 551
+whitebalance_red: 478
 # width of the camera frame
 width: 1280
 #     ___                _                        ___   ___ _      _   _    
@@ -443,7 +448,7 @@ exposure: 1023
 # exposure mode (auto, manual, external, none)
 exposure_mode: manual
 # frames per second
-#fps: 3.75
+#fps: 1.875, 3.75, 7.5, 15, 30, 60, 120, 240
 fps: 1.875
 # size of the frame buffer
 frame_buffer_size: 60
@@ -451,7 +456,7 @@ frame_buffer_size: 60
 frame_start_trigger_event: EdgeRising
 # gain value
 #gain: 104
-gain: 345
+gain: 0
 # gain mode
 gain_mode_auto: false
 # turns gamma on or off
@@ -519,7 +524,8 @@ sharpness: 340
 # decides if auto exposure has control or not over the shutter (auto, manual)
 shutter_mode: manual
 # time that the shutter is open when taking an image
-shutter_time: 350
+#shutter_time: 350
+shutter_time: 35
 # set whitebalance to on/off
 whitebalance_power: true
 # How fast the Auto white balance will update.
@@ -527,11 +533,11 @@ whitebalance_auto_rate: 100
 # Sets a range of scene color changes in which the automatic whitebalance will not respond.
 whitebalance_auto_threshold: 5
 # Blue gain expressed as a percentage of the camera default setting.
-whitebalance_blue: 616
+whitebalance_blue: 679
 # whitebalance mode (auto, manual, auto_once, none)
 whitebalance_mode: manual
 # Red gain expressed as a percentage of the camera default setting.
-whitebalance_red: 551
+whitebalance_red: 478
 # width of the camera frame
 width: 1280
 #http://patorjk.com/software/taag/#p=display&h=2&v=2&c=bash&w=%20&f=Small&t=Grasshoper%202%20Left

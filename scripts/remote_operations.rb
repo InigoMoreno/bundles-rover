@@ -3,28 +3,21 @@
 require 'orocos'
 require 'rock/bundle'
 require 'readline'
-require 'optparse'
 #require 'vizkit'
 include Orocos
 
-# Command line options for the script, default values
-options = {:bb2 => true, :bb3 => true}
-
-# Options parser
-OptionParser.new do |opts|
-  opts.banner = "Usage: start.rb [options]"
-  opts.on('-bb2', '--bb2 state', 'Enable/disable BB2 camera') { |state| options[:bb2] = state }
-  opts.on('-bb3', '--bb3 state', 'Enable/disable BB3 camera') { |state| options[:bb3] = state }
-end.parse!
-
 # Initialize bundles to find the configurations for the packages
 Bundles.initialize
+
+## Transformation for the transformer
+Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb'))
 
 # Distance to move between 360 picture taking
 $distance_360_picture = 30
 
 # Execute the task
-Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_gps_heading', 'hdpr_navigation', 'hdpr_temperature' do
+Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_gps_heading', 'hdpr_navigation', 'hdpr_tmtchandling' do
+
     joystick = Orocos.name_service.get 'joystick'
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -82,29 +75,21 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     Orocos.conf.apply(gps_heading, ['default'], :override => true)
     gps_heading.configure
 
-    if options[:bb2] == true
-        puts "Startng BB2"
+    camera_firewire_bb2 = TaskContext.get 'camera_firewire_bb2'
+    Orocos.conf.apply(camera_firewire_bb2, ['bumblebee2'], :override => true)
+    camera_firewire_bb2.configure
     
-        camera_firewire_bb2 = TaskContext.get 'camera_firewire_bb2'
-        Orocos.conf.apply(camera_firewire_bb2, ['bumblebee2'], :override => true)
-        camera_firewire_bb2.configure
-    
-        camera_bb2 = TaskContext.get 'camera_bb2'
-        Orocos.conf.apply(camera_bb2, ['default'], :override => true)
-        camera_bb2.configure
-    end
+    camera_bb2 = TaskContext.get 'camera_bb2'
+    Orocos.conf.apply(camera_bb2, ['default'], :override => true)
+    camera_bb2.configure
 
-    if options[:bb3] == true
-        puts "Startng BB3"
-        
-        camera_firewire_bb3 = TaskContext.get 'camera_firewire_bb3'
-        Orocos.conf.apply(camera_firewire_bb3, ['bumblebee3'], :override => true)
-        camera_firewire_bb3.configure
-        
-        camera_bb3 = TaskContext.get 'camera_bb3'
-        Orocos.conf.apply(camera_bb3, ['default'], :override => true)
-        camera_bb3.configure
-    end
+    camera_firewire_bb3 = TaskContext.get 'camera_firewire_bb3'
+    Orocos.conf.apply(camera_firewire_bb3, ['bumblebee3'], :override => true)
+    camera_firewire_bb3.configure
+    
+    camera_bb3 = TaskContext.get 'camera_bb3'
+    Orocos.conf.apply(camera_bb3, ['default'], :override => true)
+    camera_bb3.configure
     
     pancam_left = Orocos.name_service.get 'pancam_left'
     Orocos.conf.apply(pancam_left, ['grashopper2_left'], :override => true)
@@ -119,7 +104,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     pancam_panorama.configure
     
     pancam_360 = Orocos.name_service.get 'pancam_360'
-    Orocos.conf.apply(pancam_360, ['default', 'separation_40_30'], :override => true)
+    Orocos.conf.apply(pancam_360, ['default'], :override => true)
     pancam_360.configure
     
      # Setup Waypoint_navigation 
@@ -141,11 +126,13 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     simple_pose = Orocos.name_service.get 'simple_pose'
     Orocos.conf.apply(simple_pose, ['default'], :override => true)
     simple_pose.configure
-
-    temperature = TaskContext.get 'temperature'
-    Orocos.conf.apply(temperature, ['default'], :override => true)
-    temperature.configure
     
+    # setup telemetry_telecommand
+    telemetry_telecommand = Orocos.name_service.get 'telemetry_telecommand'
+    Orocos.conf.apply(telemetry_telecommand, ['default'], :override => true)
+    #Bundles.transformer.setup(telemetry_telecommand)
+    telemetry_telecommand.configure
+   
     # Configure the connections between the components
     joystick.raw_command.connect_to                     motion_translator.raw_command
     joystick.raw_command.connect_to                     command_arbiter.raw_command
@@ -159,13 +146,8 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     platform_driver.joints_readings.connect_to          read_joint_dispatcher.joints_readings
     #read_joint_dispatcher.joints_samples.connect_to     locomotion_control.joints_readings
     read_joint_dispatcher.motors_samples.connect_to     locomotion_control.joints_readings
-    
-    if options[:bb2] == true
-        camera_firewire_bb2.frame.connect_to                camera_bb2.frame_in
-    end
-    if options[:bb3] == true
-        camera_firewire_bb3.frame.connect_to                camera_bb3.frame_in
-    end
+    camera_firewire_bb2.frame.connect_to                camera_bb2.frame_in
+    camera_firewire_bb3.frame.connect_to                camera_bb3.frame_in
     
     # Waypoint navigation inputs:
     #imu_stim300.orientation_samples_out.connect_to      simple_pose.imu_pose
@@ -173,11 +155,9 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     #simple_pose.pose.connect_to                         waypoint_navigation.pose
     gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
     imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples
-    command_arbiter.motion_command.connect_to           gps_heading.motion_command
-    gps.raw_data.connect_to                             gps_heading.gps_raw_data
+    #command_arbiter.motion_command.connect_to           gps_heading.motion_command
     trajectoryGen.trajectory.connect_to                 waypoint_navigation.trajectory
     gps_heading.pose_samples_out.connect_to             waypoint_navigation.pose
-
     
     # PanCam connections to panorama and 360 components (must function exclusivly)
     pancam_panorama.pan_angle_in.connect_to             ptu_directedperception.pan_angle
@@ -204,27 +184,16 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     
     logger_pancam = Orocos.name_service.get 'hdpr_pancam_Logger'
     logger_pancam.file = "pancam.log"
-    logger_pancam.log(pancam_panorama.left_frame_out)
-    logger_pancam.log(pancam_panorama.right_frame_out)
-    logger_pancam.log(pancam_panorama.pan_angle_out_degrees)
-    logger_pancam.log(pancam_panorama.tilt_angle_out_degrees)
-    logger_pancam.log(pancam_360.left_frame_out)
-    logger_pancam.log(pancam_360.right_frame_out)
-    logger_pancam.log(pancam_360.pan_angle_out_degrees)
-    logger_pancam.log(pancam_360.tilt_angle_out_degrees)
-    logger_pancam.log(pancam_360.set_id)
+    logger_pancam.log(pancam_panorama.frame)
+    logger_pancam.log(pancam_360.frame)
     
-    if options[:bb2] == true
-        logger_bb2 = Orocos.name_service.get 'hdpr_bb2_Logger'
-        logger_bb2.file = "bb2.log"
-        logger_bb2.log(camera_firewire_bb2.frame)
-    end
+    logger_bb2 = Orocos.name_service.get 'hdpr_bb2_Logger'
+    logger_bb2.file = "bb2.log"
+    logger_bb2.log(camera_firewire_bb2.frame)
     
-    if options[:bb3] == true
-        logger_bb3 = Orocos.name_service.get 'hdpr_bb3_Logger'
-        logger_bb3.file = "bb3.log"
-        logger_bb3.log(camera_firewire_bb3.frame)
-    end
+    logger_bb3 = Orocos.name_service.get 'hdpr_bb3_Logger'
+    logger_bb3.file = "bb3.log"
+    logger_bb3.log(camera_firewire_bb3.frame)
     
     logger_tof = Orocos.name_service.get 'hdpr_tof_Logger'
     logger_tof.file = "tof.log"
@@ -252,27 +221,17 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_imu.log(imu_stim300.temp_sensors_out)
     logger_imu.log(imu_stim300.orientation_samples_out)
     logger_imu.log(imu_stim300.compensated_sensors_out)
-
-    logger_temperature = Orocos.name_service.get 'hdpr_temperature_Logger'
-    logger_temperature.file = "temperature.log"
-    logger_temperature.log(temperature.temperature_samples)
-
     #Orocos.log_all_ports
     
     # Start loggers
     logger_control.start
     logger_pancam.start
-    if options[:bb2] == true
-        logger_bb2.start
-    end
-    if options[:bb3] == true
-        logger_bb3.start
-    end
+    logger_bb2.start
+    logger_bb3.start
     logger_tof.start
     logger_lidar.start
     logger_gps.start
     logger_imu.start
-    logger_temperature.start
 
     # Start the components
     platform_driver.start
@@ -289,28 +248,23 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     imu_stim300.start
     gps.start
     gps_heading.start
-    if options[:bb2] == true
-        camera_bb2.start
-        camera_firewire_bb2.start
-    end
-    if options[:bb3] == true
-        camera_bb3.start
-        camera_firewire_bb3.start
-    end
-    temperature.start
+    camera_bb2.start
+    camera_firewire_bb2.start
+    camera_bb3.start
+    camera_firewire_bb3.start
     command_arbiter.start
-
+    trajectoryGen.start
+    #simple_pose.start
+    waypoint_navigation.start
+    
     # Race condition with internal gps_heading states. This check is here to only trigger the 
     # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
-    puts "Move rover forward to initialise the gps_heading component"
     while gps_heading.state != :RUNNING
         sleep 1
     end
-
     # Trigger the trojectory generation, waypoint_navigation must be running at this point
-    waypoint_navigation.start
-    trajectoryGen.start
-    trajectoryGen.trigger    
+    trajectoryGen.trigger
+    
     # Waypoint navigation needs to be stopped at the beginning
     waypoint_navigation.stop
     
@@ -320,14 +274,27 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     # Initialise GPS position
     $last_gps_position = 0
     $distance = 0
+    $pass_360 = 0
     
-    # 2-state machine toggling between waypoint navigation and 360 image taking
+    # 3-state machine toggling between waypoint navigation and 360 image taking (2 passes at different tilts)
     # If the user is controlling the platform it will still switch between the states
     while true
         if pancam_360.state == :RUNNING
             puts "Still taking a picture, waiting 1 seconds"
             sleep 1
-        else
+        elsif pancam_360.state == :STOPPED and $pass_360 == 1
+            puts "360 degree picture done, waiting 1 second"
+            sleep 1
+            puts "360 pass 1"
+            $pass_360 = 2
+            pancam_360.positionTilt = 20
+            pancam_360.start
+        elsif pancam_360.state == :STOPPED and $pass_360 == 2
+            puts "360 pass 2"
+            $pass = 0
+            pancam_360.positionTilt = 40
+            pancam_360.start
+        elsif pancam_360.state == :STOPPED
             puts "360 degree picture done"
             pancam_panorama.start
             
@@ -348,11 +315,10 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
                     dy = sample.position[1] - $last_gps_position.position[1]
                     # Cumulative distance
                     $distance += Math.sqrt(dx*dx + dy*dy)
-                    #puts "Distance: #{$distance}"
+                    $last_gps_position = sample
                 end
             end
             $distance = 0
-            $last_gps_position = sample
             
             # Stop sending waypoint navigation commands, this should also stop the rover now so the following lines are not required
             waypoint_navigation.stop
@@ -361,6 +327,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
             pancam_panorama.stop
             puts "Taking new 360 degree picture"
             pancam_360.start
+            $pass_360 = 1
         end
     end
     
@@ -370,7 +337,8 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     #Vizkit.display camera_bb2.left_frame
     #Vizkit.display camera_bb3.left_frame
     #Vizkit.display tofcamera_mesasr.distance_frame
-    #Vizkit.display velodyne_lidar.ir_interp_frame    
+    #Vizkit.display velodyne_lidar.ir_interp_frame
+    
     #Vizkit.exec
     
     # Not needed when Vizkit is running
