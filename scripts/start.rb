@@ -24,7 +24,7 @@ Bundles.initialize
 $distance_360_picture = 30
 
 # Execute the task
-Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_gps_heading', 'hdpr_navigation', 'hdpr_temperature' do
+Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_gps_heading', 'hdpr_navigation', 'hdpr_temperature', 'hdpr_shutter_controller', 'hdpr_unit_gyro' do
     joystick = Orocos.name_service.get 'joystick'
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -113,6 +113,10 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     pancam_right = Orocos.name_service.get 'pancam_right'
     Orocos.conf.apply(pancam_right, ['grashopper2_right'], :override => true)
     pancam_right.configure
+
+    shutter_controller = Orocos.name_service.get 'shutter_controller'
+    Orocos.conf.apply(shutter_controller, ['default'], :override => true)
+    shutter_controller.configure
     
     pancam_panorama = Orocos.name_service.get 'pancam_panorama'
     Orocos.conf.apply(pancam_panorama, ['default'], :override => true)
@@ -145,6 +149,10 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     temperature = TaskContext.get 'temperature'
     Orocos.conf.apply(temperature, ['default'], :override => true)
     temperature.configure
+
+    gyro = TaskContext.get 'dsp1760'
+    Orocos.conf.apply(gyro, ['default'], :override => true)
+    gyro.configure
     
     # Configure the connections between the components
     joystick.raw_command.connect_to                     motion_translator.raw_command
@@ -192,6 +200,11 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     pancam_360.tilt_angle_out.connect_to                ptu_directedperception.tilt_set
     pancam_left.frame.connect_to                        pancam_360.left_frame_in
     pancam_right.frame.connect_to                       pancam_360.right_frame_in
+
+    # PanCam connections to shutter controller
+    pancam_left.frame.connect_to shutter_controller.frame
+    pancam_left.shutter_value.connect_to shutter_controller.shutter_value
+    pancam_right.shutter_value.connect_to shutter_controller.shutter_value
     
     # Log all the properties of the components
     Orocos.log_all_configuration
@@ -213,6 +226,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_pancam.log(pancam_360.pan_angle_out_degrees)
     logger_pancam.log(pancam_360.tilt_angle_out_degrees)
     logger_pancam.log(pancam_360.set_id)
+    logger_pancam.log(shutter_controller.shutter_value)
     
     if options[:bb2] == true
         logger_bb2 = Orocos.name_service.get 'hdpr_bb2_Logger'
@@ -257,6 +271,13 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_temperature.file = "temperature.log"
     logger_temperature.log(temperature.temperature_samples)
 
+    logger_gyro = Orocos.name_service.get 'hdpr_unit_gyro_Logger'
+    logger_gyro.file = "gyro.log"
+    logger_gyro.log(gyro.rotation)
+    logger_gyro.log(gyro.orientation_samples)
+    logger_gyro.log(gyro.bias_samples)
+    logger_gyro.log(gyro.bias_values)
+
     #Orocos.log_all_ports
     
     # Start loggers
@@ -273,6 +294,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_gps.start
     logger_imu.start
     logger_temperature.start
+    logger_gyro.start
 
     # Start the components
     platform_driver.start
@@ -287,6 +309,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     velodyne_lidar.start
     tofcamera_mesasr.start
     imu_stim300.start
+    gyro.start
     gps.start
     gps_heading.start
     if options[:bb2] == true
@@ -303,9 +326,10 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     # Race condition with internal gps_heading states. This check is here to only trigger the 
     # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
     puts "Move rover forward to initialise the gps_heading component"
-    while gps_heading.state != :RUNNING
+    while gps_heading.ready == false
         sleep 1
     end
+    puts "GPS heading calibration done"
 
     # Trigger the trojectory generation, waypoint_navigation must be running at this point
     waypoint_navigation.start
@@ -330,6 +354,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         else
             puts "360 degree picture done"
             pancam_panorama.start
+            shutter_controller.start
             
             # Start waypoint navigation
             waypoint_navigation.start
@@ -347,7 +372,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
                     dx = sample.position[0] - $last_gps_position.position[0]
                     dy = sample.position[1] - $last_gps_position.position[1]
                     # Cumulative distance
-                    $distance += Math.sqrt(dx*dx + dy*dy)
+                    $distance = Math.sqrt(dx*dx + dy*dy)
                     #puts "Distance: #{$distance}"
                 end
             end
@@ -359,6 +384,9 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
             
             # Stop the panorama taking
             pancam_panorama.stop
+            # Stop shutter controller for the duration of a 360
+            shutter_controller.stop
+
             puts "Taking new 360 degree picture"
             pancam_360.start
         end

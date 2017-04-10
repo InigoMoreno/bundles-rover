@@ -10,8 +10,9 @@ calibrate: false
 # Number of samples to average over for bias calibration.
 calibration_samples: 30
 # Bias of the gyroscope z-axis.
-bias: 0
-latitude: 0
+bias: 7.0514832631e-06
+
+latitude
 
 # Calibrated bias value
 --- name:calibration

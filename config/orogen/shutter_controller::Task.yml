@@ -12,4 +12,4 @@ config:
   factNumTooDark: 0.10
   factMinMean: 0.30
   factMaxMean: 0.40
-  precision: 16.0
+  precision: 64.0

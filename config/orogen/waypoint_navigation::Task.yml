@@ -34,7 +34,7 @@ ptConfig:
 # Configuration of Path Tracker parameters, namely distances, velocities and turn radius
 ptConfig:
   minTurnRadius: 0.95
-  translationalVelocity: 0.2
+  translationalVelocity: 0.4
   rotationalVelocity: 0.15
   corridor: 1.5
   maxDisalignment: 1.0
@@ -50,3 +50,5 @@ pdConfig:
 tolHeading: 360
 # 50cm is precise enough for HDPR
 tolPos:     0.5
+# boolean to choose if output commands should be resend even when they are the same
+repeatCommand: true
