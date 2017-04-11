@@ -252,6 +252,9 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_lidar.log(velodyne_lidar.ir_frame)
     logger_lidar.log(velodyne_lidar.laser_scans)
     logger_lidar.log(velodyne_lidar.range_frame)
+    logger_lidar.log(velodyne_lidar.velodyne_time)
+    logger_lidar.log(velodyne_lidar.accumulated_velodyne_time)
+    logger_lidar.log(velodyne_lidar.estimated_clock_offset)
     
     logger_gps = Orocos.name_service.get 'hdpr_gps_Logger'
     logger_gps.file = "gps.log"
