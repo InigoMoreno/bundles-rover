@@ -12,7 +12,7 @@ Bundles.initialize
 Orocos::Process.run 'hdpr_unit_lidar' do
 
     # Log
-    #Orocos.log_all
+    Orocos.log_all
 
     # Configure
     velodyne_lidar = TaskContext.get 'velodyne_lidar'

@@ -1,0 +1,113 @@
+--- name:exoter_bb2
+# no documentation available for this property
+cameraCalibration:
+  fx: 840.919396
+  fy: 843.876013
+  cx: 517.845770
+  cy: 379.251908
+  d0: -0.348848 
+  d1: 0.139364 
+  d2: -0.000173 
+  d3: -0.000284
+  width: 1024
+  height: 768
+# A configuration property (here, a std::string). Its value can be retrieved
+# in the C++ code with # _config_value.get() and _config_value.set(new_value).
+camera_name: 'HAZCAM'
+# no documentation available for this property
+save_directory: '/home/fjalar/ROCK_DEM/'
+# K points for statistical pc filter
+k_points: 20
+# Leaf size of pc voxel filter
+leaf_size: 0.05
+
+# Maximum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_max:
+  data:
+  - 4.0
+  - 4.0
+  - 4.0
+  - 0.0
+# Minimum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_min:
+  data:
+  - -4.0
+  - -4.0
+  - 0.5
+  - 0.0
+
+--- name:mesa
+# no documentation available for this property
+cameraCalibration:
+  fx: 0.0
+  fy: 0.0
+  cx: 0.0
+  cy: 0.0
+  d0: 0.0 
+  d1: 0.0 
+  d2: 0.0 
+  d3: 0.0
+  width: 176
+  height: 144
+# A configuration property (here, a std::string). Its value can be retrieved
+# in the C++ code with # _config_value.get() and _config_value.set(new_value).
+camera_name: 'TOF'
+# no documentation available for this property
+save_directory: '/home/fjalar/ROCK_DEM/'
+# K points for statistical pc filter
+k_points: 20
+# Leaf size of pc voxel filter
+leaf_size: 0.05
+
+# Maximum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_max:
+  data:
+  - 6.0
+  - 6.0
+  - 6.0
+  - 0.0
+# Minimum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_min:
+  data:
+  - -6.0
+  - -6.0
+  - 0.8
+  - 0.0
+
+--- name:velodyne
+# no documentation available for this property
+cameraCalibration:
+  fx: 0.0
+  fy: 0.0
+  cx: 0.0
+  cy: 0.0
+  d0: 0.0 
+  d1: 0.0 
+  d2: 0.0 
+  d3: 0.0
+  width: 1808
+  height: 16
+# A configuration property (here, a std::string). Its value can be retrieved
+# in the C++ code with # _config_value.get() and _config_value.set(new_value).
+camera_name: 'LIDAR'
+# no documentation available for this property
+save_directory: '/home/fjalar/ROCK_DEM/'
+# K points for statistical pc filter
+k_points: 20
+# Leaf size of pc voxel filter
+leaf_size: 0.05
+
+# Maximum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_max:
+  data:
+  - 100.0
+  - 100.0
+  - 100.0
+  - 0.0
+# Minimum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_min:
+  data:
+  - -100.0
+  - -100.0
+  - -100.0
+  - 0.0
