@@ -111,3 +111,40 @@ pointcloud_cut_min:
   - -100.0
   - -100.0
   - 0.0
+
+--- name:panCam
+cameraCalibration:
+  fx: 1433.170895
+  fy: 1440.286963
+  cx: 654.601374
+  cy: 481.618275
+  d0: -0.242066
+  d1: 0.104381
+  d2: -0.000596
+  d3: 0.002281
+  width: 1280
+  height: 960
+# A configuration property (here, a std::string). Its value can be retrieved
+# in the C++ code with # _config_value.get() and _config_value.set(new_value).
+camera_name: 'MAST'
+# no documentation available for this property
+save_directory: '/home/marta/ROCK_DEM/'
+# K points for statistical pc filter
+k_points: 20
+# Leaf size of pc voxel filter
+leaf_size: 0.05
+
+# Maximum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_max:
+  data:
+  - 10.0
+  - 10.0
+  - 10.0
+  - 0.0
+# Minimum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_min:
+  data:
+  - -10.0
+  - -10.0
+  - 0.5
+  - 0.0
