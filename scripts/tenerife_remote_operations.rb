@@ -181,6 +181,18 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     Orocos.conf.apply(pancam_360, ['default', 'separation_40_30'], :override => true)
     pancam_360.configure
     
+    trigger_360 = TaskContext.get 'trigger_360'
+    #Orocos.conf.apply(trigger_360, ['default'], :override => true)
+    trigger_360.configure
+
+    stereo_360 = TaskContext.get 'stereo_360'
+    Orocos.conf.apply(stereo_360, ['panCam'], :override => true)
+    stereo_360.configure
+
+    dem_generation_360 = TaskContext.get 'dem_generation_360'
+    Orocos.conf.apply(dem_generation_360, ['hdpr_pancam'], :override => true)
+    dem_generation_360.configure
+
     # Setup Waypoint_navigation 
     waypoint_navigation = Orocos.name_service.get 'waypoint_navigation'
     Orocos.conf.apply(waypoint_navigation, ['default','hdpr'], :override => true)
@@ -262,7 +274,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     gps_heading.pose_samples_out.connect_to             waypoint_navigation.pose
 
     
-    # PanCam connections to panorama and 360 components (must function exclusivly)
+    # PanCam connections to panorama and 360 components (must function exclusively)
     #pancam_panorama.pan_angle_in.connect_to             ptu_directedperception.pan_angle
     #pancam_panorama.tilt_angle_in.connect_to            ptu_directedperception.tilt_angle
     #pancam_panorama.pan_angle_out.connect_to            ptu_directedperception.pan_set
@@ -275,8 +287,13 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     pancam_360.tilt_angle_out.connect_to                ptu_directedperception.tilt_set
     pancam_left.frame.connect_to                        pancam_360.left_frame_in
     pancam_right.frame.connect_to                       pancam_360.right_frame_in
-    pancam_left.frame.connect_to                        pancam_360.left_frame_in
-    pancam_right.frame.connect_to                       pancam_360.right_frame_in
+    pancam_360.left_frame_in.connect_to                 trigger_360.frame_left_in
+    pancam_360.right_frame_in.connect_to                trigger_360.frame_right_in
+    trigger_360.frame_left_out.connect_to               stereo_360.left_frame
+    trigger_360.frame_right_out.connect_toi             stereo_360.right_frame
+    stereo_360.distance_frame.connect_to                dem_generation_360.distance_frame
+    stereo_360.left_frame_sync.connect_to               dem_generation_360.left_frame_rect
+    stereo_360.right_frame_sync.connect_to              dem_generation_360.right_frame_rect
 
     # PanCam connections to shutter controller
     pancam_left.frame.connect_to                        shutter_controller.frame
@@ -290,6 +307,22 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     stereo_pancam.left_frame_sync.connect_to            dem_generation_pancam.left_frame_rect
     stereo_pancam.right_frame_sync.connect_to           dem_generation_pancam.right_frame_rect
 
+    # ToF connections
+    tofcamera_mesasr.ir_frame.connect_to                trigger_tof.frame_left_in
+    tofcamera_mesasr.distance_frame.connect_to          trigger_tof.distance_frame_in
+    tofcamera_mesasr.pointcloud.connect_to              trigger_tof.poincloud_in
+    trigger_tof.frame_left_out.connect_to               dem_generation_tof.ir_interp_frame
+    trigger_tof.distance_frame_out.connecto_to          dem_generation_tof.range_interp_frame
+    trigger_tof.pointcloud_out.connect_to               dem_generation_tof.poincloud
+
+    # Lidar connections
+    velodyne_lidar.ir_interp_frame.connect_to           trigger_lidar.frame_left_in
+    velodyne_lidar.range_interp_frame.connect_to        trigger_lidar.distance_frame_in
+    velodyne_lidar.laser_scans.connect_to               trigger_lidar.laser_scans_in
+    trigger_lidar.frame_left_out.connect_to             dem_generation_lidar.ir_interp_frame
+    trigger_lidar.distance_frame_out.connecto_to        dem_generation_lidar.range_interp_frame
+    trigger_lidar.laser_scans_out.connect_to            dem_generation_lidar.laser_scans
+   
     # Telemetry Telecommand connections
     telemetry_telecommand.locomotion_command.connect_to locomotion_control.motion_command
     telemetry_telecommand.mast_pan.connect_to           ptu_directedperception.pan_set
@@ -301,8 +334,16 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     telemetry_telecommand.current_tilt.connect_to       ptu_directedperception.tilt_anglei
     temperature.temperature_samples.connect_to          telemetry_telecommand.motor_temperatures
 
-
-
+    telemetry_telecommand.mast_trigger.connect_to       trigger_pancam.telecommand_in
+    telemetry_telecommand.front_trigger.connect_to      trigger_bb3.telecommand_in
+    telemetry_telecommand.haz_front_trigger.connect_to  trigger_bb2.telecommand_in
+    telemetry_telecommand.tof_trigger.connect_to        trigger_tof.telecommand_in
+    telemetry_telecommand.lidar_trigger.connect_to      trigger_lidar.telecommand_in
+    dem_generation_pancam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product
+    dem_generation_bb3.telemetry_out.connect_to         telemetry_telecommand.telemetry_product
+    dem_generation_bb2.telemetry_out.connect_to         telemetry_telecommand.telemetry_product
+    dem_generation_tof.telemetry_out.connect_to         telemetry_telecommand.telemetry_product
+    dem_generation_lidar.telemetry_out.connect_to       telemetry_telecommand.telemetry_product
 
     # Log all the properties of the components
     Orocos.log_all_configuration
@@ -379,6 +420,8 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_gyro.log(gyro.bias_samples)
     logger_gyro.log(gyro.bias_values)
 
+    # No loggers needed for triggers, stereo, dem_generation or telemetry_telecommand
+
     #Orocos.log_all_ports
     
     # Start loggers
@@ -403,26 +446,44 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     command_joint_dispatcher.start
     locomotion_control.start
     ptu_directedperception.start
+    command_arbiter.start
     pancam_left.start
     pancam_right.start
+    shutter_controller.start
+    trigger_pancan.start
+    stereo_pancam.start
+    dem_generation_pancam.start
+    pancam_360.start
+    trigger_360.start
+    stereo_360.start
+    dem_generation_360.start
     motion_translator.start
     joystick.start
     velodyne_lidar.start
+    trigger_lidar.start
+    dem_generation_lidar.start
     tofcamera_mesasr.start
+    trigger_tof.start
+    dem_generation_tof.start
     imu_stim300.start
     gyro.start
+    temperature.start
     gps.start
     gps_heading.start
     if options[:bb2] == true
         camera_bb2.start
         camera_firewire_bb2.start
+        trigger_bb2.start
+        stereo_bb2.start
+        dem_generation_bb2.start
     end
     if options[:bb3] == true
         camera_bb3.start
         camera_firewire_bb3.start
+        trigger_bb3.start
+        stereo_bb3.start
+        dem_generation_bb3.start
     end
-    temperature.start
-    command_arbiter.start
 
     # Race condition with internal gps_heading states. This check is here to only trigger the 
     # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
@@ -434,75 +495,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
 
     # Trigger the trojectory generation, waypoint_navigation must be running at this point
     waypoint_navigation.start
-    trajectoryGen.start
-    trajectoryGen.trigger    
-    # Waypoint navigation needs to be stopped at the beginning
-    waypoint_navigation.stop
-    
-    # Get a reader instance for the GPS
-    reader_gps_position = gps.pose_samples.reader
-    
-    # Initialise GPS position
-    $last_gps_position = 0
-    $distance = 0
-    
-    # 2-state machine toggling between waypoint navigation and 360 image taking
-    # If the user is controlling the platform it will still switch between the states
-    while true
-        if pancam_360.state == :RUNNING
-            puts "Still taking a picture, waiting 1 seconds"
-            sleep 1
-        else
-            puts "360 degree picture done"
-            pancam_panorama.start
-            shutter_controller.start
             
-            # Start waypoint navigation
-            waypoint_navigation.start
-            
-            # Wait for the rover to move for a defined distance in meters
-            while $distance < $distance_360_picture or $distance.nan?
-                sample = reader_gps_position.read_new
-                if sample
-                    # Initialise GPS position
-                    if $last_gps_position == 0
-                        $last_gps_position = sample
-                    end
-                    
-                    # Evaluate distance from last position
-                    dx = sample.position[0] - $last_gps_position.position[0]
-                    dy = sample.position[1] - $last_gps_position.position[1]
-                    # Cumulative distance
-                    $distance = Math.sqrt(dx*dx + dy*dy)
-                    #puts "Distance: #{$distance}"
-                end
-            end
-            $distance = 0
-            $last_gps_position = sample
-            
-            # Stop sending waypoint navigation commands, this should also stop the rover now so the following lines are not required
-            waypoint_navigation.stop
-            
-            # Stop the panorama taking
-            pancam_panorama.stop
-            # Stop shutter controller for the duration of a 360
-            shutter_controller.stop
-
-            puts "Taking new 360 degree picture"
-            pancam_360.start
-        end
-    end
-    
-    # Show camera output
-    #Vizkit.display pancam_panorama.left_frame_out
-    #Vizkit.display pancam_panorama.right_frame_out
-    #Vizkit.display camera_bb2.left_frame
-    #Vizkit.display camera_bb3.left_frame
-    #Vizkit.display tofcamera_mesasr.distance_frame
-    #Vizkit.display velodyne_lidar.ir_interp_frame    
-    #Vizkit.exec
-    
-    # Not needed when Vizkit is running
     Readline::readline("Press Enter to exit\n") do
     end
 end 
