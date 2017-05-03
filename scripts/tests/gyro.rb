@@ -26,6 +26,7 @@ Orocos::Process.run 'hdpr_unit_gyro' do
     logger_gyro.log(gyro.orientation_samples)
     logger_gyro.log(gyro.bias_samples)
     logger_gyro.log(gyro.bias_values)
+    logger_gyro.log(gyro.temperature)
     logger_gyro.start
 
     # Start

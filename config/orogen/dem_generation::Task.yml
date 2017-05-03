@@ -1,21 +1,21 @@
---- name:exoter_bb2
+--- name:hdpr_bb2
 # no documentation available for this property
 cameraCalibration:
-  fx: 840.919396
-  fy: 843.876013
-  cx: 517.845770
-  cy: 379.251908
-  d0: -0.348848 
-  d1: 0.139364 
-  d2: -0.000173 
-  d3: -0.000284
-  width: 1024
-  height: 768
+    fx: 837.253850
+    fy: 838.490409
+    cx: 500.836269
+    cy: 396.129781
+    d0: -0.350699 
+    d1: 0.143871 
+    d2: 0.000772 
+    d3: 0.000436
+    width: 1024
+    height: 768
 # A configuration property (here, a std::string). Its value can be retrieved
 # in the C++ code with # _config_value.get() and _config_value.set(new_value).
 camera_name: 'HAZCAM'
 # no documentation available for this property
-save_directory: '/home/fjalar/ROCK_DEM/'
+save_directory: '/media/logs/Products/'
 # K points for statistical pc filter
 k_points: 20
 # Leaf size of pc voxel filter
@@ -36,6 +36,82 @@ pointcloud_cut_min:
   - 0.5
   - 0.0
 
+--- name:exoter_bb2
+# no documentation available for this property
+cameraCalibration:
+  fx: 840.919396
+  fy: 843.876013
+  cx: 517.845770
+  cy: 379.251908
+  d0: -0.348848 
+  d1: 0.139364 
+  d2: -0.000173 
+  d3: -0.000284
+  width: 1024
+  height: 768
+# A configuration property (here, a std::string). Its value can be retrieved
+# in the C++ code with # _config_value.get() and _config_value.set(new_value).
+camera_name: 'HAZCAM'
+# no documentation available for this property
+save_directory: '/media/logs/Products/'
+# K points for statistical pc filter
+k_points: 20
+# Leaf size of pc voxel filter
+leaf_size: 0.05
+
+# Maximum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_max:
+  data:
+  - 4.0
+  - 4.0
+  - 4.0
+  - 0.0
+# Minimum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_min:
+  data:
+  - -4.0
+  - -4.0
+  - 0.5
+  - 0.0
+
+--- name:hdpr_bb3
+# no documentation available for this property
+cameraCalibration:
+    fx: 1624.646083
+    fy: 1629.037008
+    cx: 633.800760
+    cy: 489.614872
+    d0: -0.604146 
+    d1: 0.401654 
+    d2: -0.001994 
+    d3: 0.003990
+    width: 1280
+    height: 960
+# A configuration property (here, a std::string). Its value can be retrieved
+# in the C++ code with # _config_value.get() and _config_value.set(new_value).
+camera_name: 'FRONT'
+# no documentation available for this property
+save_directory: '/media/logs/Products/'
+# K points for statistical pc filter
+k_points: 20
+# Leaf size of pc voxel filter
+leaf_size: 0.05
+
+# Maximum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_max:
+  data:
+  - 7.0
+  - 7.0
+  - 7.0
+  - 0.0
+# Minimum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_min:
+  data:
+  - -7.0
+  - -7.0
+  - 0.5
+  - 0.0
+
 --- name:mesa
 # no documentation available for this property
 cameraCalibration:
@@ -53,7 +129,7 @@ cameraCalibration:
 # in the C++ code with # _config_value.get() and _config_value.set(new_value).
 camera_name: 'TOF'
 # no documentation available for this property
-save_directory: '/home/fjalar/ROCK_DEM/'
+save_directory: '/media/logs/Products/'
 # K points for statistical pc filter
 k_points: 20
 # Leaf size of pc voxel filter
@@ -91,7 +167,7 @@ cameraCalibration:
 # in the C++ code with # _config_value.get() and _config_value.set(new_value).
 camera_name: 'LIDAR'
 # no documentation available for this property
-save_directory: '/home/fjalar/ROCK_DEM/'
+save_directory: '/media/logs/Products/'
 # K points for statistical pc filter
 k_points: 20
 # Leaf size of pc voxel filter
@@ -128,7 +204,7 @@ cameraCalibration:
 # in the C++ code with # _config_value.get() and _config_value.set(new_value).
 camera_name: 'MAST'
 # no documentation available for this property
-save_directory: '/home/marta/ROCK_DEM/'
+save_directory: '/media/logs/Products/'
 # K points for statistical pc filter
 k_points: 20
 # Leaf size of pc voxel filter

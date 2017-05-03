@@ -9,10 +9,10 @@ filter_configuration:
   initial_alignment_samples: 750 # 150000 # 20 minute(s) initial alignment. IMU rate is 125Hz. Set it to 7500 for 1 minute.
   correction_frequency: 1.0
 use_input_bias: true
-biasacc: [-7.53918e-05,0.000136312,0]
-biasgyro: [-0.000500988,-6.90466e-05,0.000505138]
-#init_heading: -150.0
-init_heading: -60.0
+biasacc: [-2.02015e-05,-1.33468e-05,0]
+biasgyro: [-0.000589651,-5.6127e-05,0.000533983]
+
+init_heading: -160.0
 
 --- name:calibration
 # General configuration values to run the task
@@ -28,7 +28,7 @@ use_input_bias: false
 
 --- name:exoter
 # IMU port in ExoTer
-port: '/dev/ttyUSB0'
+port: '/dev/ttyUSB1'
 revision: :REV_D
 timeout: 0.008 #in seconds
 use_filter: true

@@ -8,13 +8,14 @@ require 'optparse'
 include Orocos
 
 # Command line options for the script, default values
-options = {:bb2 => true, :bb3 => true}
+options = {:bb2 => true, :bb3 => true, :v => false}
 
 # Options parser
 OptionParser.new do |opts|
   opts.banner = "Usage: start.rb [options]"
   opts.on('-bb2', '--bb2 state', 'Enable/disable BB2 camera') { |state| options[:bb2] = state }
   opts.on('-bb3', '--bb3 state', 'Enable/disable BB3 camera') { |state| options[:bb3] = state }
+  opts.on('-v', '--vicon state', 'Enable vicon over gps') { |state| options[:v] = state }
 end.parse!
 
 # Initialize bundles to find the configurations for the packages
@@ -24,7 +25,7 @@ Bundles.initialize
 Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb'))
 
 # Execute the task
-Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_gps_heading', 'hdpr_navigation', 'hdpr_temperature', 'hdpr_shutter_controller', 'hdpr_unit_gyro', 'hdpr_stereo', 'hdpr_tmtchandling' do
+Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_gps_heading', 'hdpr_navigation', 'hdpr_temperature', 'hdpr_shutter_controller', 'hdpr_unit_gyro', 'hdpr_stereo', 'hdpr_tmtchandling', 'hdpr_vicon_unit' do
     joystick = Orocos.name_service.get 'joystick'
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -78,7 +79,6 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     
     trigger_tof = TaskContext.get 'trigger_tof'
 
-
     dem_generation_tof = TaskContext.get 'dem_generation_tof'
     Orocos.conf.apply(dem_generation_tof, ['mesa'], :override => true)
     dem_generation_tof.configure
@@ -87,12 +87,19 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'ESTEC', 'stim300_5g'], :override => true)
     imu_stim300.configure
     
-    gps = TaskContext.get 'gps'
-    Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS'], :override => true)
-    gps.configure
-    
+    if options[:v] == false
+   	gps = TaskContext.get 'gps'
+    	Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS'], :override => true)
+    	gps.configure
+    else
+   	vicon = TaskContext.get 'vicon'
+    	Orocos.conf.apply(vicon, ['default','hdpr'], :override => true)
+    	vicon.configure
+    end	
+
     gps_heading = TaskContext.get 'gps_heading'
     Orocos.conf.apply(gps_heading, ['default'], :override => true)
+    gps_heading.calibration_dist_min = 0
     gps_heading.configure
 
     if options[:bb2] == true
@@ -169,7 +176,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     Orocos.conf.apply(pancam_360, ['default', 'separation_40_30'], :override => true)
     pancam_360.configure
     
-    trigger_360 = TaskContext.get 'trigger_360'
+    #trigger_360 = TaskContext.get 'trigger_360'
 
     stereo_360 = TaskContext.get 'stereo_360'
     Orocos.conf.apply(stereo_360, ['panCam'], :override => true)
@@ -181,7 +188,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
 
     # Setup Waypoint_navigation 
     waypoint_navigation = Orocos.name_service.get 'waypoint_navigation'
-    Orocos.conf.apply(waypoint_navigation, ['default','hdpr'], :override => true)
+    Orocos.conf.apply(waypoint_navigation, ['default','hdpr_lab'], :override => true)
     waypoint_navigation.configure
 
     # Setup command arbiter
@@ -195,7 +202,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
 
     gyro = TaskContext.get 'dsp1760'
     Orocos.conf.apply(gyro, ['default'], :override => true)
-    gyro.configure
+    #gyro.configure
  
     # setup telemetry_telecommand
     telemetry_telecommand = Orocos.name_service.get 'telemetry_telecommand'
@@ -241,16 +248,21 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
    end
     
     # Waypoint navigation inputs:
-    #imu_stim300.orientation_samples_out.connect_to      simple_pose.imu_pose
-    #gps.pose_samples.connect_to                         simple_pose.gps_pose
-    #simple_pose.pose.connect_to                         waypoint_navigation.pose
-    gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
-    imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples
+    imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples    
     command_arbiter.motion_command.connect_to           gps_heading.motion_command
-    gps.raw_data.connect_to                             gps_heading.gps_raw_data
-    gps_heading.pose_samples_out.connect_to             waypoint_navigation.pose
 
-    
+    if options[:v] == false
+    	gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
+    	gps.raw_data.connect_to                             gps_heading.gps_raw_data
+    	gps_heading.pose_samples_out.connect_to             waypoint_navigation.pose
+    	gps_heading.pose_samples_out.connect_to             telemetry_telecommand.current_pose
+	puts "using gps"
+    else
+    	vicon.pose_samples.connect_to             	waypoint_navigation.pose
+    	vicon.pose_samples.connect_to             	telemetry_telecommand.current_pose
+	puts "using vicon"
+    end
+
     # PanCam connections to panorama and 360 components (must function exclusively)
     #pancam_panorama.pan_angle_in.connect_to             ptu_directedperception.pan_angle
     #pancam_panorama.tilt_angle_in.connect_to            ptu_directedperception.tilt_angle
@@ -264,13 +276,12 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     pancam_360.tilt_angle_out.connect_to                ptu_directedperception.tilt_set
     pancam_left.frame.connect_to                        pancam_360.left_frame_in
     pancam_right.frame.connect_to                       pancam_360.right_frame_in
-    pancam_360.left_frame_out.connect_to                trigger_360.frame_left_in
-    pancam_360.right_frame_out.connect_to               trigger_360.frame_right_in
-    trigger_360.frame_left_out.connect_to               stereo_360.left_frame
-    trigger_360.frame_right_out.connect_to              stereo_360.right_frame
+    pancam_360.left_frame_out.connect_to                stereo_360.left_frame
+    pancam_360.right_frame_out.connect_to               stereo_360.right_frame
     stereo_360.distance_frame.connect_to                dem_generation_360.distance_frame
     stereo_360.left_frame_sync.connect_to               dem_generation_360.left_frame_rect
     stereo_360.right_frame_sync.connect_to              dem_generation_360.right_frame_rect
+    #dem_generation_360.sync_out.connect_to		pancam_360.frame_processed
 
     # PanCam connections to shutter controller
     pancam_left.frame.connect_to                        shutter_controller.frame
@@ -306,25 +317,27 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     telemetry_telecommand.mast_pan.connect_to           ptu_directedperception.pan_set
     telemetry_telecommand.mast_tilt.connect_to          ptu_directedperception.tilt_set
     telemetry_telecommand.trajectory.connect_to         waypoint_navigation.trajectory
+    telemetry_telecommand.trajectory_speed.connect_to   waypoint_navigation.speed_input
     #waypoint_navigation.motion_command.connect_to locomotion_control.motion_command # uncomment if command_arbitrer is removed
     waypoint_navigation.trajectory_status.connect_to    telemetry_telecommand.trajectory_status
     telemetry_telecommand.current_pan.connect_to        ptu_directedperception.pan_angle
     telemetry_telecommand.current_tilt.connect_to       ptu_directedperception.tilt_angle
-    telemetry_telecommand.current_imu.connect_to        imu_stim300.orientation_samples_out
+#    telemetry_telecommand.current_imu.connect_to        imu_stim300.orientation_samples_out
     read_joint_dispatcher.joints_samples.connect_to     telemetry_telecommand.joint_samples
     temperature.temperature_samples.connect_to          telemetry_telecommand.motor_temperatures
-    gps_heading.pose_samples_out.connect_to             telemetry_telecommand.current_pose
 
     telemetry_telecommand.mast_trigger.connect_to       trigger_pancam.telecommand_in
     telemetry_telecommand.front_trigger.connect_to      trigger_bb3.telecommand_in
     telemetry_telecommand.haz_front_trigger.connect_to  trigger_bb2.telecommand_in
     telemetry_telecommand.tof_trigger.connect_to        trigger_tof.telecommand_in
     telemetry_telecommand.lidar_trigger.connect_to      trigger_lidar.telecommand_in
-    trigger_lidar.telecommands_out.connect_to            dem_generation_lidar.telecommands_in
-    trigger_tof.telecommands_out.connect_to              dem_generation_tof.telecommands_in
-    trigger_bb2.telecommands_out.connect_to              dem_generation_bb2.telecommands_in
-    trigger_bb3.telecommands_out.connect_to              dem_generation_bb3.telecommands_in
-    trigger_pancam.telecommands_out.connect_to           dem_generation_pancam.telecommands_in
+    telemetry_telecommand.panorama_trigger.connect_to   pancam_360.trigger_tilt
+
+    trigger_lidar.telecommands_out.connect_to           dem_generation_lidar.telecommands_in
+    trigger_tof.telecommands_out.connect_to             dem_generation_tof.telecommands_in
+    trigger_bb2.telecommands_out.connect_to             dem_generation_bb2.telecommands_in
+    trigger_bb3.telecommands_out.connect_to             dem_generation_bb3.telecommands_in
+    trigger_pancam.telecommands_out.connect_to          dem_generation_pancam.telecommands_in
     dem_generation_pancam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
     dem_generation_bb3.telemetry_out.connect_to         telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
     dem_generation_bb2.telemetry_out.connect_to         telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
@@ -337,7 +350,6 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     trigger_bb2.configure
     trigger_bb3.configure
     trigger_pancam.configure
-    #trigger_360.configure
 
     # Log all the properties of the components
     Orocos.log_all_configuration
@@ -372,7 +384,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         logger_bb3.file = "bb3.log"
         logger_bb3.log(camera_firewire_bb3.frame)
     end
-    
+
     logger_tof = Orocos.name_service.get 'hdpr_tof_Logger'
     logger_tof.file = "tof.log"
     logger_tof.log(tofcamera_mesasr.distance_frame)
@@ -388,14 +400,16 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_lidar.log(velodyne_lidar.velodyne_time)
     logger_lidar.log(velodyne_lidar.accumulated_velodyne_time)
     logger_lidar.log(velodyne_lidar.estimated_clock_offset)
-    
-    logger_gps = Orocos.name_service.get 'hdpr_gps_Logger'
-    logger_gps.file = "gps.log"
-    logger_gps.log(gps.pose_samples)
-    logger_gps.log(gps.raw_data)
-    logger_gps.log(gps.time)
-    logger_gps.log(gps_heading.pose_samples_out)
-    
+
+    if options[:v] == false        
+    	logger_gps = Orocos.name_service.get 'hdpr_gps_Logger'
+    	logger_gps.file = "gps.log"
+    	logger_gps.log(gps.pose_samples)
+    	logger_gps.log(gps.raw_data)
+    	logger_gps.log(gps.time)
+    	logger_gps.log(gps_heading.pose_samples_out)
+    end
+
     logger_imu = Orocos.name_service.get 'hdpr_imu_Logger'
     logger_imu.file = "imu.log"
     logger_imu.log(imu_stim300.inertial_sensors_out)
@@ -407,32 +421,32 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_temperature.file = "temperature.log"
     logger_temperature.log(temperature.temperature_samples)
 
-    logger_gyro = Orocos.name_service.get 'hdpr_unit_gyro_Logger'
-    logger_gyro.file = "gyro.log"
-    logger_gyro.log(gyro.rotation)
-    logger_gyro.log(gyro.orientation_samples)
-    logger_gyro.log(gyro.bias_samples)
-    logger_gyro.log(gyro.bias_values)
+    #logger_gyro = Orocos.name_service.get 'hdpr_unit_gyro_Logger'
+    #logger_gyro.file = "gyro.log"
+    #logger_gyro.log(gyro.rotation)
+    #logger_gyro.log(gyro.orientation_samples)
+    #logger_gyro.log(gyro.bias_samples)
+    #logger_gyro.log(gyro.bias_values)
 
     # No loggers needed for triggers, stereo, dem_generation or telemetry_telecommand
 
     #Orocos.log_all_ports
     
     # Start loggers
-    logger_control.start
-    logger_pancam.start
+#    logger_control.start
+#    logger_pancam.start
     if options[:bb2] == true
-        logger_bb2.start
+#        logger_bb2.start
     end
     if options[:bb3] == true
-        logger_bb3.start
+#        logger_bb3.start
     end
-    logger_tof.start
-    logger_lidar.start
-    logger_gps.start
-    logger_imu.start
-    logger_temperature.start
-    logger_gyro.start
+#    logger_tof.start
+#    logger_lidar.start
+#    logger_gps.start
+#    logger_imu.start
+#    logger_temperature.start
+#    logger_gyro.start
 
     # Start the components
     platform_driver.start
@@ -460,9 +474,13 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     trigger_tof.start
     dem_generation_tof.start
     imu_stim300.start
-    gyro.start
+   # gyro.start
     temperature.start
-    gps.start
+    if options[:v] == false
+    	gps.start
+    else
+	vicon.start
+    end
     gps_heading.start
     if options[:bb2] == true
         camera_bb2.start
@@ -494,3 +512,4 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     Readline::readline("Press Enter to exit\n") do
     end
 end 
+v

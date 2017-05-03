@@ -15,15 +15,19 @@ Orocos::Process.run 'hdpr_gps_heading' do
 
     # Connect the tasks to the logs
     if ARGV.size == 1 then
-        log_replay = Orocos::Log::Replay.open(ARGV[0] + "gps.log", ARGV[0] + "imu.log", ARGV[0] + "control.log")
+        log_replay = Orocos::Log::Replay.open(ARGV[0] + "control2.log", ARGV[0] + "gps.log", ARGV[0] + "imu.log")
     end
     
     Orocos.log_all_ports
 
+    log_replay.use_sample_time = true
+ 
     # Connect
     log_replay.gps.pose_samples.connect_to                    gps_heading.gps_pose_samples
     log_replay.imu_stim300.orientation_samples_out.connect_to gps_heading.imu_pose_samples
-    #log_replay.command_arbiter.motion_command                 gps_heading.motion_command
+    log_replay.gps.raw_data.connect_to                        gps_heading.gps_raw_data
+    # Motion command is not timestamped and cannot be used in the replay
+    log_replay.command_arbiter.motion_command.connect_to      gps_heading.motion_command
 
     # Start
     gps_heading.start

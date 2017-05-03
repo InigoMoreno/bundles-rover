@@ -11,3 +11,8 @@ offset:
     - 0.6
     - 0
     - -0.3
+
+gnss_source_frame: "body" #transformer names. No transformation convention
+# to frame for the transformer
+gnss_target_frame: "gnss_utm" #transformer names. No transformation convention
+

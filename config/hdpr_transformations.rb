@@ -28,15 +28,22 @@ static_transform Eigen::Quaternion.from_angle_axis(Math::PI, Eigen::Vector3.Unit
 # Transformation Body to Mast top (Mast top frame expressed in Body frame) but transformations expects the other sense
 # MS: In HDPR, the mast is called PAN-TILT-FRAME
 static_transform Eigen::Quaternion.Identity(),
-    Eigen::Vector3.new( 0.138, -0.005, 1.286 ), "mast" => "body"
+    Eigen::Vector3.new( 0.138, -0.005, 1.286 ), "ptu_base" => "body"
 
 # Transformation Body to GPS (GPS frame expressed in Body frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.Identity(),
-    Eigen::Vector3.new( -0.2209, 0.0515, 1.5025 ), "gps" => "body"
+    Eigen::Vector3.new( -0.6, 0.0, 0.3 ), "gps" => "body"
+
+# Transformation GPS to Lab for naming convention (GPS frame expressed in Body frame) but transformer expects the other sense
+static_transform Eigen::Quaternion.Identity(),
+#    Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "imu" => "lab"
+    Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "gnss_utm" => "lab" # Original, meantime switched to imu to have quaternions
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "world_osg" => "lab" # tp be used in the actual lab
 
 # Transformation PTU to Left camera (Left camera frame expressed in PTU frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -Math::PI/2.0), 2,1,0),
-    Eigen::Vector3.new( 0.01, 0.25, 0.055 ), "left_camera" => "ptu"
+    Eigen::Vector3.new( 0.01, 0.25, 0.055 ), "left_camera_pancam" => "ptu_head"
 
 # Transformation Left camera to Right camera (Right camera frame expressed in Left camera frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.Identity(),
@@ -47,7 +54,7 @@ static_transform Eigen::Quaternion.Identity(),
 # MS: Renamed left_camera frame to reflect that the BB3 used as the front cam is different from the mast frame
 # TODO: Measure again when final position has come up
 static_transform Eigen::Quaternion.Identity(),
-    Eigen::Vector3.new( 0.6, 0.0, 0.2), "tof_camera" => "body"
+    Eigen::Vector3.new( 0.6, 0.0, 0.2), "tof" => "body"
 
 # Transformation front BB2 to body center
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.5759, 0.0), 2,1,0),
@@ -63,4 +70,4 @@ static_transform Eigen::Quaternion.Identity(),
 # MS: Transformation Body to Velodyne (Velodyne frame expressed in Body frame)
 # TODO: Measure the height again, since its not tilted anymore
 static_transform Eigen::Quaternion.Identity(),
-    Eigen::Vector3.new(0.54309, 0.018, 0.717), "velodyne_lidar" => "body"
+    Eigen::Vector3.new(0.54309, 0.018, 0.717), "lidar" => "body"

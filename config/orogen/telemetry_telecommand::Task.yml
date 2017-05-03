@@ -3,7 +3,7 @@
 # in the C++ code with # _config_value.get() and _config_value.set(new_value).
 activeMQ_brokerURI: 'failover:(tcp://192.168.200.213:9009)'
 # no documentation available for this property
-#productsFolder: '\\/media\\/logs\\/Images\\/' 
+productsFolder: '\/media\/logs\/Products\/' 
 # no documentation available for this property
 initial_pose:
   time:
