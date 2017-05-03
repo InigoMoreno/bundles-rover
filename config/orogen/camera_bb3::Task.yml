@@ -42,6 +42,6 @@ calibration_parameters_right:
   ex: 0.0
   ey: 0.0
 # The frames coming from the input port are converted into this format before they are written to the output port. Used for De-Bayering here.
-output_format: :MODE_BAYER_GBRG
+output_format: :MODE_BAYER_RGB
 # output the camera images undistorted/rectified
 undistort: false
