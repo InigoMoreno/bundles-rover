@@ -23,11 +23,8 @@ Bundles.initialize
 ## Transformation for the transformer
 Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb'))
 
-# Distance to move between 360 picture taking
-$distance_360_picture = 30
-
 # Execute the task
-Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_gps_heading', 'hdpr_navigation', 'hdpr_temperature', 'hdpr_shutter_controller', 'hdpr_unit_gyro', 'hdpr_tmtchandling' do
+Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_gps_heading', 'hdpr_navigation', 'hdpr_temperature', 'hdpr_shutter_controller', 'hdpr_unit_gyro', 'hdpr_stereo', 'hdpr_tmtchandling' do
     joystick = Orocos.name_service.get 'joystick'
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -70,8 +67,6 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     velodyne_lidar.configure
    
     trigger_lidar = TaskContext.get 'trigger_lidar'
-    #Orocos.conf.apply(trigger_lidar, ['default'], :override => true)
-    trigger_lidar.configure
 
     dem_generation_lidar = TaskContext.get 'dem_generation_lidar'
     Orocos.conf.apply(dem_generation_lidar, ['velodyne'], :override => true)
@@ -82,8 +77,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     tofcamera_mesasr.configure
     
     trigger_tof = TaskContext.get 'trigger_tof'
-    #Orocos.conf.apply(trigger_tof, ['default'], :override => true)
-    trigger_tof.configure
+
 
     dem_generation_tof = TaskContext.get 'dem_generation_tof'
     Orocos.conf.apply(dem_generation_tof, ['mesa'], :override => true)
@@ -113,8 +107,6 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         camera_bb2.configure
 
         trigger_bb2 = TaskContext.get 'trigger_bb2'
-        #Orocos.conf.apply(trigger_bb2, ['default'], :override => true)
-        trigger_bb2.configure
        
         stereo_bb2 = TaskContext.get 'stereo_bb2'
         Orocos.conf.apply(stereo_bb2, ['hdpr_bb2'], :override => true)
@@ -137,8 +129,6 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         camera_bb3.configure
 
         trigger_bb3 = TaskContext.get 'trigger_bb3'
-        #Orocos.conf.apply(trigger_bb3, ['default'], :override => true)
-        trigger_bb3.configure
 
         stereo_bb3 = TaskContext.get 'stereo_bb3'
         Orocos.conf.apply(stereo_bb3, ['hdpr_bb3_left_right'], :override => true)
@@ -158,15 +148,13 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     pancam_right.configure
 
     trigger_pancam = TaskContext.get 'trigger_pancam'
-    #Orocos.conf.apply(trigger_pancam, ['default'], :override => true)
-    trigger_pancam.configure
     
     stereo_pancam = TaskContext.get 'stereo_pancam'
     Orocos.conf.apply(stereo_pancam, ['panCam'], :override => true)
     stereo_pancam.configure
     
     dem_generation_pancam = TaskContext.get 'dem_generation_pancam'
-    Orocos.conf.apply(dem_generation_pancam, ['hdpr_pancam'], :override => true)
+    Orocos.conf.apply(dem_generation_pancam, ['panCam'], :override => true)
     dem_generation_pancam.configure
 
     shutter_controller = Orocos.name_service.get 'shutter_controller'
@@ -182,15 +170,13 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     pancam_360.configure
     
     trigger_360 = TaskContext.get 'trigger_360'
-    #Orocos.conf.apply(trigger_360, ['default'], :override => true)
-    trigger_360.configure
 
     stereo_360 = TaskContext.get 'stereo_360'
     Orocos.conf.apply(stereo_360, ['panCam'], :override => true)
     stereo_360.configure
 
     dem_generation_360 = TaskContext.get 'dem_generation_360'
-    Orocos.conf.apply(dem_generation_360, ['hdpr_pancam'], :override => true)
+    Orocos.conf.apply(dem_generation_360, ['panCam'], :override => true)
     dem_generation_360.configure
 
     # Setup Waypoint_navigation 
@@ -201,18 +187,8 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     # Setup command arbiter
     command_arbiter = Orocos.name_service.get 'command_arbiter'
     Orocos.conf.apply(command_arbiter, ['default'], :override => true)
-    command_arbiter.configure
-    
-	# Add the trajectory generation component
-    trajectoryGen = Orocos.name_service.get 'trajectoryGen'
-    Orocos.conf.apply(trajectoryGen, ['hdprtest','decos'], :override => true)
-    trajectoryGen.configure
-    
-    # "Fuse" GPS position and IMU orientation to get rover pose
-    simple_pose = Orocos.name_service.get 'simple_pose'
-    Orocos.conf.apply(simple_pose, ['default'], :override => true)
-    simple_pose.configure
-
+    command_arbiter.configure  
+	    
     temperature = TaskContext.get 'temperature'
     Orocos.conf.apply(temperature, ['default'], :override => true)
     temperature.configure
@@ -247,6 +223,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         camera_bb2.right_frame.connect_to                   trigger_bb2.frame_right_in
         trigger_bb2.frame_left_out.connect_to               stereo_bb2.left_frame
         trigger_bb2.frame_right_out.connect_to              stereo_bb2.right_frame
+        trigger_bb2.frame_left_out.connect_to               dem_generation_bb2.left_frame_rect
         stereo_bb2.distance_frame.connect_to                dem_generation_bb2.distance_frame
         stereo_bb2.left_frame_sync.connect_to               dem_generation_bb2.left_frame_rect
         stereo_bb2.right_frame_sync.connect_to              dem_generation_bb2.right_frame_rect
@@ -257,6 +234,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         camera_bb3.right_frame.connect_to                   trigger_bb3.frame_right_in
         trigger_bb3.frame_left_out.connect_to               stereo_bb3.left_frame
         trigger_bb3.frame_right_out.connect_to              stereo_bb3.right_frame
+        trigger_bb3.frame_left_out.connect_to               dem_generation_bb3.left_frame_rect
         stereo_bb3.distance_frame.connect_to                dem_generation_bb3.distance_frame
         stereo_bb3.left_frame_sync.connect_to               dem_generation_bb3.left_frame_rect
         stereo_bb3.right_frame_sync.connect_to              dem_generation_bb3.right_frame_rect
@@ -270,7 +248,6 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples
     command_arbiter.motion_command.connect_to           gps_heading.motion_command
     gps.raw_data.connect_to                             gps_heading.gps_raw_data
-    trajectoryGen.trajectory.connect_to                 waypoint_navigation.trajectory
     gps_heading.pose_samples_out.connect_to             waypoint_navigation.pose
 
     
@@ -287,10 +264,10 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     pancam_360.tilt_angle_out.connect_to                ptu_directedperception.tilt_set
     pancam_left.frame.connect_to                        pancam_360.left_frame_in
     pancam_right.frame.connect_to                       pancam_360.right_frame_in
-    pancam_360.left_frame_in.connect_to                 trigger_360.frame_left_in
-    pancam_360.right_frame_in.connect_to                trigger_360.frame_right_in
+    pancam_360.left_frame_out.connect_to                trigger_360.frame_left_in
+    pancam_360.right_frame_out.connect_to               trigger_360.frame_right_in
     trigger_360.frame_left_out.connect_to               stereo_360.left_frame
-    trigger_360.frame_right_out.connect_toi             stereo_360.right_frame
+    trigger_360.frame_right_out.connect_to              stereo_360.right_frame
     stereo_360.distance_frame.connect_to                dem_generation_360.distance_frame
     stereo_360.left_frame_sync.connect_to               dem_generation_360.left_frame_rect
     stereo_360.right_frame_sync.connect_to              dem_generation_360.right_frame_rect
@@ -303,25 +280,26 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     pancam_right.frame.connect_to                       trigger_pancam.frame_right_in
     trigger_pancam.frame_left_out.connect_to            stereo_pancam.left_frame
     trigger_pancam.frame_right_out.connect_to           stereo_pancam.right_frame
+    trigger_pancam.frame_left_out.connect_to            dem_generation_pancam.left_frame_rect            
     stereo_pancam.distance_frame.connect_to             dem_generation_pancam.distance_frame
     stereo_pancam.left_frame_sync.connect_to            dem_generation_pancam.left_frame_rect
     stereo_pancam.right_frame_sync.connect_to           dem_generation_pancam.right_frame_rect
 
     # ToF connections
     tofcamera_mesasr.ir_frame.connect_to                trigger_tof.frame_left_in
-    tofcamera_mesasr.distance_frame.connect_to          trigger_tof.distance_frame_in
-    tofcamera_mesasr.pointcloud.connect_to              trigger_tof.poincloud_in
-    trigger_tof.frame_left_out.connect_to               dem_generation_tof.ir_interp_frame
-    trigger_tof.distance_frame_out.connecto_to          dem_generation_tof.range_interp_frame
-    trigger_tof.pointcloud_out.connect_to               dem_generation_tof.poincloud
+    #tofcamera_mesasr.distance_frame.connect_to          trigger_tof.distance_frame_in
+    tofcamera_mesasr.pointcloud.connect_to              trigger_tof.pointcloud_in
+    trigger_tof.frame_left_out.connect_to               dem_generation_tof.left_frame_rect
+    trigger_tof.distance_frame_out.connect_to           dem_generation_tof.range_interp_frame
+    trigger_tof.pointcloud_out.connect_to               dem_generation_tof.pointcloud
 
     # Lidar connections
     velodyne_lidar.ir_interp_frame.connect_to           trigger_lidar.frame_left_in
-    velodyne_lidar.range_interp_frame.connect_to        trigger_lidar.distance_frame_in
-    velodyne_lidar.laser_scans.connect_to               trigger_lidar.laser_scans_in
-    trigger_lidar.frame_left_out.connect_to             dem_generation_lidar.ir_interp_frame
-    trigger_lidar.distance_frame_out.connecto_to        dem_generation_lidar.range_interp_frame
-    trigger_lidar.laser_scans_out.connect_to            dem_generation_lidar.laser_scans
+    #velodyne_lidar.range_interp_frame.connect_to        trigger_lidar.distance_frame_in
+    velodyne_lidar.laser_scans.connect_to               trigger_lidar.laser_scan_in
+    trigger_lidar.frame_left_out.connect_to             dem_generation_lidar.left_frame_rect
+    trigger_lidar.distance_frame_out.connect_to         dem_generation_lidar.range_interp_frame
+    trigger_lidar.laser_scan_out.connect_to             dem_generation_lidar.laser_scans
    
     # Telemetry Telecommand connections
     telemetry_telecommand.locomotion_command.connect_to locomotion_control.motion_command
@@ -331,19 +309,35 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     #waypoint_navigation.motion_command.connect_to locomotion_control.motion_command # uncomment if command_arbitrer is removed
     waypoint_navigation.trajectory_status.connect_to    telemetry_telecommand.trajectory_status
     telemetry_telecommand.current_pan.connect_to        ptu_directedperception.pan_angle
-    telemetry_telecommand.current_tilt.connect_to       ptu_directedperception.tilt_anglei
+    telemetry_telecommand.current_tilt.connect_to       ptu_directedperception.tilt_angle
+    telemetry_telecommand.current_imu.connect_to        imu_stim300.orientation_samples_out
+    read_joint_dispatcher.joints_samples.connect_to     telemetry_telecommand.joint_samples
     temperature.temperature_samples.connect_to          telemetry_telecommand.motor_temperatures
+    gps_heading.pose_samples_out.connect_to             telemetry_telecommand.current_pose
 
     telemetry_telecommand.mast_trigger.connect_to       trigger_pancam.telecommand_in
     telemetry_telecommand.front_trigger.connect_to      trigger_bb3.telecommand_in
     telemetry_telecommand.haz_front_trigger.connect_to  trigger_bb2.telecommand_in
     telemetry_telecommand.tof_trigger.connect_to        trigger_tof.telecommand_in
     telemetry_telecommand.lidar_trigger.connect_to      trigger_lidar.telecommand_in
-    dem_generation_pancam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product
-    dem_generation_bb3.telemetry_out.connect_to         telemetry_telecommand.telemetry_product
-    dem_generation_bb2.telemetry_out.connect_to         telemetry_telecommand.telemetry_product
-    dem_generation_tof.telemetry_out.connect_to         telemetry_telecommand.telemetry_product
-    dem_generation_lidar.telemetry_out.connect_to       telemetry_telecommand.telemetry_product
+    trigger_lidar.telecommands_out.connect_to            dem_generation_lidar.telecommands_in
+    trigger_tof.telecommands_out.connect_to              dem_generation_tof.telecommands_in
+    trigger_bb2.telecommands_out.connect_to              dem_generation_bb2.telecommands_in
+    trigger_bb3.telecommands_out.connect_to              dem_generation_bb3.telecommands_in
+    trigger_pancam.telecommands_out.connect_to           dem_generation_pancam.telecommands_in
+    dem_generation_pancam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
+    dem_generation_bb3.telemetry_out.connect_to         telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
+    dem_generation_bb2.telemetry_out.connect_to         telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
+    dem_generation_tof.telemetry_out.connect_to         telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
+    dem_generation_lidar.telemetry_out.connect_to       telemetry_telecommand.telemetry_product, :type => :buffer, :size => 20
+
+    # Configure the sensor trigger after the ports are connected
+    trigger_lidar.configure
+    trigger_tof.configure
+    trigger_bb2.configure
+    trigger_bb3.configure
+    trigger_pancam.configure
+    #trigger_360.configure
 
     # Log all the properties of the components
     Orocos.log_all_configuration
@@ -450,11 +444,11 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     pancam_left.start
     pancam_right.start
     shutter_controller.start
-    trigger_pancan.start
+    trigger_pancam.start
     stereo_pancam.start
     dem_generation_pancam.start
-    pancam_360.start
-    trigger_360.start
+    #pancam_360.start
+    #trigger_360.start
     stereo_360.start
     dem_generation_360.start
     motion_translator.start
@@ -484,13 +478,14 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         stereo_bb3.start
         dem_generation_bb3.start
     end
+    telemetry_telecommand.start
 
     # Race condition with internal gps_heading states. This check is here to only trigger the 
     # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
     puts "Move rover forward to initialise the gps_heading component"
-    while gps_heading.ready == false
-        sleep 1
-    end
+    #while gps_heading.ready == false
+    #    sleep 1
+    #end
     puts "GPS heading calibration done"
 
     # Trigger the trojectory generation, waypoint_navigation must be running at this point
