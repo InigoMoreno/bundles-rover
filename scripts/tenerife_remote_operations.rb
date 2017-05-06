@@ -25,7 +25,7 @@ Bundles.initialize
 Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb'))
 
 # Execute the task
-Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_gps_heading', 'hdpr_navigation', 'hdpr_temperature', 'hdpr_shutter_controller', 'hdpr_unit_gyro', 'hdpr_stereo', 'hdpr_tmtchandling', 'hdpr_vicon_unit' do
+Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_temperature', 'hdpr_shutter_controller', 'hdpr_unit_gyro', 'hdpr_stereo', 'hdpr_tmtchandling', 'hdpr_vicon_unit' do
     joystick = Orocos.name_service.get 'joystick'
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -99,7 +99,6 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
 
     gps_heading = TaskContext.get 'gps_heading'
     Orocos.conf.apply(gps_heading, ['default'], :override => true)
-    gps_heading.calibration_dist_min = 0
     gps_heading.configure
 
     if options[:bb2] == true
@@ -331,7 +330,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     telemetry_telecommand.haz_front_trigger.connect_to  trigger_bb2.telecommand_in
     telemetry_telecommand.tof_trigger.connect_to        trigger_tof.telecommand_in
     telemetry_telecommand.lidar_trigger.connect_to      trigger_lidar.telecommand_in
-    telemetry_telecommand.panorama_trigger.connect_to   pancam_360.trigger_tilt
+#    telemetry_telecommand.panorama_trigger.connect_to   pancam_360.trigger_tilt
 
     trigger_lidar.telecommands_out.connect_to           dem_generation_lidar.telecommands_in
     trigger_tof.telecommands_out.connect_to             dem_generation_tof.telecommands_in
@@ -512,4 +511,4 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     Readline::readline("Press Enter to exit\n") do
     end
 end 
-v
+

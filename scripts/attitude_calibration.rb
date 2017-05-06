@@ -9,8 +9,7 @@ include Orocos
 Bundles.initialize
 
 # Actual time is defined in the config files of the sensors
-#$calibration_seconds = 72000.0 # 20 minutes in seconds
-$calibration_seconds = 60.0
+$calibration_seconds = 1200.0 # 20 minutes in seconds
 $elapsed_time = 0.0
 $percent_complete = 0.0
 

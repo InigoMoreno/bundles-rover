@@ -12,10 +12,10 @@ calibrate: false
 # Number of samples to average over for bias calibration.
 calibration_samples: 30
 # Bias of the gyroscope z-axis.
-bias: 0
+bias: -5.6821389404368461e-05
 latitude: 52
 
 # Calibrated bias value
 --- name:calibration
 calibrate: true
-calibration_samples: 120000
+calibration_samples: 120000 # 120000 at 100Hz = 20 minutes

@@ -53,15 +53,15 @@ static_transform Eigen::Quaternion.Identity(),
 #static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI/2.0, 0.00, Math::PI/2.0), 2,1,0),
 # MS: Renamed left_camera frame to reflect that the BB3 used as the front cam is different from the mast frame
 # TODO: Measure again when final position has come up
-static_transform Eigen::Quaternion.Identity(),
-    Eigen::Vector3.new( 0.6, 0.0, 0.2), "tof" => "body"
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.0, -0.506-Math::PI/2.0), 2,1,0),
+    Eigen::Vector3.new( 0.6, 0.0, 0.1), "tof" => "body"
 
 # Transformation front BB2 to body center
-static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.5759, 0.0), 2,1,0),
-    Eigen::Vector3.new(0.04843, 0.54309, 0.01713), "left_camera_bb2" => "body"
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.0, -0.593-Math::PI/2.0), 2,1,0),
+    Eigen::Vector3.new(0.54309, 0.06, 0.01713), "left_camera_bb2" => "body"
 # TODO: Not verified
-static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.5759, -Math::PI/2.0), 2,1,0),
-    Eigen::Vector3.new(0.54309, 0.04843, 0.01713), "left_camera_bb3" => "body"
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.0, -0.314-Math::PI/2.0), 2,1,0),
+    Eigen::Vector3.new(0.46, 0.12, 0.455), "left_camera_bb3" => "body"
 static_transform Eigen::Quaternion.Identity(),
     Eigen::Vector3.new( 0.12, 0.0, 0.0 ), "center_camera_bb3" => "left_camera_bb3"
 static_transform Eigen::Quaternion.Identity(),
@@ -69,5 +69,5 @@ static_transform Eigen::Quaternion.Identity(),
 
 # MS: Transformation Body to Velodyne (Velodyne frame expressed in Body frame)
 # TODO: Measure the height again, since its not tilted anymore
-static_transform Eigen::Quaternion.Identity(),
-    Eigen::Vector3.new(0.54309, 0.018, 0.717), "lidar" => "body"
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(Math::PI, 0.0, 0.0), 2,1,0),
+    Eigen::Vector3.new(0.46, 0.018, 0.55), "lidar" => "body"

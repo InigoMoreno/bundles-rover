@@ -24,7 +24,7 @@ Bundles.initialize
 $distance_360_picture = 50
 
 # Execute the task
-Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_gps_heading', 'hdpr_navigation', 'hdpr_temperature', 'hdpr_shutter_controller', 'hdpr_unit_gyro' do
+Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_temperature', 'hdpr_shutter_controller', 'hdpr_unit_gyro' do
     joystick = Orocos.name_service.get 'joystick'
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -283,6 +283,11 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_gyro.log(gyro.bias_values)
     logger_gyro.log(gyro.temperature)
 
+    logger_waypoint = Orocos.name_service.get 'hdpr_gps_Logger'
+    logger_waypoint.file = "waypoint_navigation.log"
+    logger_waypoint.log(trajectoryGen.trajectory)
+    logger_waypoint.log(waypoint_navigation.currentWaypoint)
+    logger_waypoint.log(waypoint_navigation.motion_command)
     #Orocos.log_all_ports
     
     # Start loggers

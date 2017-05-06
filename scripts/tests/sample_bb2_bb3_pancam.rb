@@ -9,7 +9,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_bb3', 'hdpr_unit_bb2', 'hdpr_unit_pancam', 'hdpr_unit_mesa' do
+Orocos::Process.run 'hdpr_unit_bb3', 'hdpr_unit_bb2', 'hdpr_unit_pancam' do
 
     # Configure
     camera_firewire_bb3 = TaskContext.get 'camera_firewire_bb3'
@@ -35,10 +35,6 @@ Orocos::Process.run 'hdpr_unit_bb3', 'hdpr_unit_bb2', 'hdpr_unit_pancam', 'hdpr_
     pancam_right = Orocos.name_service.get 'pancam_right'
     Orocos.conf.apply(pancam_right, ['grashopper2_right'], :override => true)
     pancam_right.configure
-    
-    tofcamera_mesasr = TaskContext.get 'tofcamera_mesasr'
-    Orocos.conf.apply(tofcamera_mesasr, ['default'], :override => true)
-    tofcamera_mesasr.configure
 
     # Log
     logger_pancam = Orocos.name_service.get 'hdpr_unit_pancam_Logger'
@@ -60,11 +56,6 @@ Orocos::Process.run 'hdpr_unit_bb3', 'hdpr_unit_bb2', 'hdpr_unit_pancam', 'hdpr_
     logger_bb2.log(camera_bb2.right_frame)
     logger_bb2.start
     
-    #logger_tof = Orocos.name_service.get 'hdpr_unit_mesa_Logger'
-    #logger_tof.file = "tof.log"
-    #logger_tof.log(tofcamera_mesasr.ir_frame)
-    #logger_tof.start
-    
     # Connect
     camera_firewire_bb3.frame.connect_to camera_bb3.frame_in
     camera_firewire_bb2.frame.connect_to camera_bb2.frame_in
@@ -76,7 +67,6 @@ Orocos::Process.run 'hdpr_unit_bb3', 'hdpr_unit_bb2', 'hdpr_unit_pancam', 'hdpr_
     camera_bb2.start
     pancam_left.start
     pancam_right.start
-    #tofcamera_mesasr.start
     
     Readline::readline("Press Enter to exit\n") do
     end
