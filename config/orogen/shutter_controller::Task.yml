@@ -1,5 +1,6 @@
 --- name:default
-# no documentation available for this property
+# albeit producing relatively dark images,
+# this configuration has shown to yield good disparities in daylight settings
 config:
   shutterCompPeriod: 3
   initShutterTime: 3
@@ -12,4 +13,20 @@ config:
   factNumTooDark: 0.10
   factMinMean: 0.30
   factMaxMean: 0.40
+  precision: 64.0
+--- name:bright
+# this configuration focuses less on good disparities and more on producing
+# bright, nice-to-look-at images
+config:
+  shutterCompPeriod: 3
+  initShutterTime: 3
+  maxShutterTime: 3904
+  minShutterTime: 3
+  maxIntensity: 255
+  factMaxIntensity: 0.65
+  factMinIntensity: 0.35
+  factNumTooBright: 0.20
+  factNumTooDark: 0.10
+  factMinMean: 0.40
+  factMaxMean: 0.50
   precision: 64.0
