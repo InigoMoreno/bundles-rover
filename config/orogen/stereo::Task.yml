@@ -330,6 +330,41 @@ sparse_config:
   detectorType: :DETECTOR_MSER
   filterType: :FILTER_STEREO
 # calibration parameters for stereo camera setup
+#stereoCameraCalibration:
+#  camLeft:
+#    fx: 1419.81633673
+#    fy: 1422.08972277
+#    cx: 652.276264771
+#    cy: 474.063082006
+#    d0: -0.260860971312
+#    d1: 0.203367792811
+#    d2: -0.000105868303039
+#    d3: 0.000256922530508
+#    width: 1280
+#    height: 960
+#    ex: 0
+#    ey: 0
+#  camRight:
+#    fx: 1427.22875894
+#    fy: 1429.05531529
+#    cx: 659.112900174
+#    cy: 481.381478367
+#    d0: -0.262751087015
+#    d1: 0.212870266149
+#    d2: -0.000441297170617
+#    d3: 0.000205930398727
+#    width: 1280
+#    height: 960
+#    ex: 0.0
+#    ey: 0.0
+##Distance between left and right camera
+#  extrinsic:
+#    tx: -497.3478100000000
+#    ty: 1.505790000000000
+#    tz: -0.1696800000000000
+#    rx: -0.002964799474276295
+#    ry: -0.003317651237762371
+#    rz: -0.0004546792102574725
 stereoCameraCalibration:
   camLeft:
     fx: 1433.170895

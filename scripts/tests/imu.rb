@@ -17,12 +17,14 @@ Orocos::Process.run 'hdpr_unit_imu' do
     imu_stim300.configure
 
     # Log
-    logger_imu = Orocos.name_service.get 'hdpr_imu_Logger'
+    logger_imu = Orocos.name_service.get 'hdpr_unit_imu_Logger'
     logger_imu.file = "imu.log"
     logger_imu.log(imu_stim300.inertial_sensors_out)
     logger_imu.log(imu_stim300.temp_sensors_out)
     logger_imu.log(imu_stim300.orientation_samples_out)
     logger_imu.log(imu_stim300.compensated_sensors_out)
+    logger_imu.log(imu_stim300.packet_counter)
+    logger_imu.start
 
     # Start
     imu_stim300.start

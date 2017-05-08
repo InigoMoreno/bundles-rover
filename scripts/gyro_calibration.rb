@@ -19,6 +19,7 @@ Orocos::Process.run 'unit_dsp1760' do
     logger_gyro = Orocos.name_service.get 'unit_dsp1760_Logger'
     logger_gyro.file = "unit_dsp1760.log"
     logger_gyro.log(gyro.rotation)
+    logger_gyro.log(gyro.rotation_raw)
     logger_gyro.log(gyro.orientation_samples)
     logger_gyro.log(gyro.bias_samples)
     logger_gyro.log(gyro.bias_values)

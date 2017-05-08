@@ -19,6 +19,8 @@ tolHeading: 3
 # Default distance from the goal position tolerance (m).
 tolPos:     0.075
 
+repeatCommand: true
+
 --- name:exoter
 # Configuration of Path Tracker parameters, namely distances, velocities and turn radius
 ptConfig:
@@ -41,6 +43,16 @@ ptConfig:
   lookaheadDistance: 3.5
   backwards: false
 
+pdConfig:
+  P: 0.5
+  D: 0.025
+  saturation: 0.3491
+
+# Set the heading tolerance to 3 degrees
+tolHeading: 5
+# 50cm is precise enough for HDPR
+tolPos:     0.5
+
 --- name:hdpr_lab
 # Configuration of Path Tracker parameters, namely distances, velocities and turn radius
 ptConfig:
@@ -52,7 +64,6 @@ ptConfig:
   lookaheadDistance: 1.2
   backwards: false
 
-
 pdConfig:
   P: 0.5
   D: 0.025
@@ -62,5 +73,3 @@ pdConfig:
 tolHeading: 3
 # 50cm is precise enough for HDPR
 tolPos:     0.5
-# boolean to choose if output commands should be resend even when they are the same
-repeatCommand: true

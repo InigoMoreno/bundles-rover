@@ -214,6 +214,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_control.file = "control.log"
     logger_control.log(platform_driver.joints_readings)
     logger_control.log(command_arbiter.motion_command)
+    logger_control.start
     
     logger_pancam = Orocos.name_service.get 'hdpr_pancam_Logger'
     logger_pancam.file = "pancam.log"
@@ -227,17 +228,22 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_pancam.log(pancam_360.tilt_angle_out_degrees)
     logger_pancam.log(pancam_360.set_id)
     logger_pancam.log(shutter_controller.shutter_value)
+    logger_pancam.log(ptu_directedperception.pan_angle)
+    logger_pancam.log(ptu_directedperception.tilt_angle)
+    logger_pancam.start
     
     if options[:bb2] == true
         logger_bb2 = Orocos.name_service.get 'hdpr_bb2_Logger'
         logger_bb2.file = "bb2.log"
         logger_bb2.log(camera_firewire_bb2.frame)
+        logger_bb2.start
     end
     
     if options[:bb3] == true
         logger_bb3 = Orocos.name_service.get 'hdpr_bb3_Logger'
         logger_bb3.file = "bb3.log"
         logger_bb3.log(camera_firewire_bb3.frame)
+        logger_bb3.start
     end
     
     logger_tof = Orocos.name_service.get 'hdpr_tof_Logger'
@@ -246,6 +252,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_tof.log(tofcamera_mesasr.ir_frame)
     logger_tof.log(tofcamera_mesasr.pointcloud)
     logger_tof.log(tofcamera_mesasr.tofscan)
+    logger_tof.start
     
     logger_lidar = Orocos.name_service.get 'hdpr_lidar_Logger'
     logger_lidar.file = "lidar.log"
@@ -256,6 +263,8 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_lidar.log(velodyne_lidar.velodyne_time)
     logger_lidar.log(velodyne_lidar.accumulated_velodyne_time)
     logger_lidar.log(velodyne_lidar.estimated_clock_offset)
+    logger_lidar.log(velodyne_lidar.velodyne_time)
+    logger_lidar.start
     
     logger_gps = Orocos.name_service.get 'hdpr_gps_Logger'
     logger_gps.file = "gps.log"
@@ -263,6 +272,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_gps.log(gps.raw_data)
     logger_gps.log(gps.time)
     logger_gps.log(gps_heading.pose_samples_out)
+    logger_gps.start
     
     logger_imu = Orocos.name_service.get 'hdpr_imu_Logger'
     logger_imu.file = "imu.log"
@@ -270,41 +280,31 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_imu.log(imu_stim300.temp_sensors_out)
     logger_imu.log(imu_stim300.orientation_samples_out)
     logger_imu.log(imu_stim300.compensated_sensors_out)
+    logger_imu.log(imu_stim300.packet_counter)
+    logger_imu.start
 
     logger_temperature = Orocos.name_service.get 'hdpr_temperature_Logger'
     logger_temperature.file = "temperature.log"
     logger_temperature.log(temperature.temperature_samples)
+    logger_temperature.start
 
     logger_gyro = Orocos.name_service.get 'hdpr_unit_gyro_Logger'
     logger_gyro.file = "gyro.log"
     logger_gyro.log(gyro.rotation)
+    logger_gyro.log(gyro.rotation_raw)
     logger_gyro.log(gyro.orientation_samples)
     logger_gyro.log(gyro.bias_samples)
     logger_gyro.log(gyro.bias_values)
     logger_gyro.log(gyro.temperature)
+    logger_gyro.log(gyro.sequence_counter)
+    logger_gyro.start
 
     logger_waypoint = Orocos.name_service.get 'hdpr_gps_Logger'
     logger_waypoint.file = "waypoint_navigation.log"
     logger_waypoint.log(trajectoryGen.trajectory)
     logger_waypoint.log(waypoint_navigation.currentWaypoint)
     logger_waypoint.log(waypoint_navigation.motion_command)
-    #Orocos.log_all_ports
-    
-    # Start loggers
-    logger_control.start
-    logger_pancam.start
-    if options[:bb2] == true
-        logger_bb2.start
-    end
-    if options[:bb3] == true
-        logger_bb3.start
-    end
-    logger_tof.start
-    logger_lidar.start
-    logger_gps.start
-    logger_imu.start
-    logger_temperature.start
-    logger_gyro.start
+    logger_waypoint.start
 
     # Start the components
     platform_driver.start
