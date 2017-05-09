@@ -23,7 +23,7 @@ Orocos::Process.run 'hdpr_unit_360' do
     pancam_right.configure
     
     pancam_360 = Orocos.name_service.get 'pancam_360'
-    Orocos.conf.apply(pancam_360, ['default', 'separation_40_30'], :override => true)
+    Orocos.conf.apply(pancam_360, ['default', 'apriltag'], :override => true)
     pancam_360.configure
     
     # For feedback connect the PTU angles to the pancam_360

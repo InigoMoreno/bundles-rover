@@ -27,7 +27,6 @@ Orocos::Process.run 'hdpr_unit_shutter_controller' do
 
     shutter_controller = Orocos.name_service.get 'shutter_controller'
     Orocos.conf.apply(shutter_controller, ['default'], :override => true)
-    #Orocos.conf.apply(shutter_controller, ['bright'], :override => true)
     shutter_controller.configure
     
     #stereo_pancam.log_all_ports

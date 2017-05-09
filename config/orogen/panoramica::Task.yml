@@ -35,6 +35,43 @@ cameraPositions:
     - 155.0
     - 20.0
 
+--- name:separation_40_x
+cameraPositions:
+# Single pass, 40 degrees steps in Pan, tilt taken from input port value.
+  - data:
+    - -175.0
+    - 0.0
+  - data:
+    - -160.0
+    - 0.0
+  - data:
+    - -120.0
+    - 0.0
+  - data:
+    - -80.0
+    - 0.0
+  - data:
+    - -40.0
+    - 0.0
+  - data:
+    - 0.0
+    - 0.0
+  - data:
+    - 40.0
+    - 0.0
+  - data:
+    - 80.0
+    - 0.0
+  - data:
+    - 120.0
+    - 0.0
+  - data:
+    - 160.0
+    - 0.0
+  - data:
+    - 175.0
+    - 0.0
+
 --- name:separation_40_30
 cameraPositions:
 # First pass, 30 degrees above the horizont, 40 degrees steps

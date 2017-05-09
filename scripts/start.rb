@@ -266,13 +266,13 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_lidar.log(velodyne_lidar.velodyne_time)
     logger_lidar.start
     
-    logger_gps = Orocos.name_service.get 'hdpr_gps_Logger'
-    logger_gps.file = "gps.log"
-    logger_gps.log(gps.pose_samples)
-    logger_gps.log(gps.raw_data)
-    logger_gps.log(gps.time)
-    logger_gps.log(gps_heading.pose_samples_out)
-    logger_gps.start
+    #logger_gps = Orocos.name_service.get 'hdpr_gps_Logger'
+    #logger_gps.file = "gps.log"
+    #logger_gps.log(gps.pose_samples)
+    #logger_gps.log(gps.raw_data)
+    #logger_gps.log(gps.time)
+    #logger_gps.log(gps_heading.pose_samples_out)
+    #logger_gps.start
     
     logger_imu = Orocos.name_service.get 'hdpr_imu_Logger'
     logger_imu.file = "imu.log"
@@ -304,6 +304,10 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_waypoint.log(trajectoryGen.trajectory)
     logger_waypoint.log(waypoint_navigation.currentWaypoint)
     logger_waypoint.log(waypoint_navigation.motion_command)
+    logger_waypoint.log(gps.pose_samples)
+    logger_waypoint.log(gps.raw_data)
+    logger_waypoint.log(gps.time)
+    logger_waypoint.log(gps_heading.pose_samples_out)
     logger_waypoint.start
 
     # Start the components

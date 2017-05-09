@@ -167,23 +167,23 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     Orocos.conf.apply(shutter_controller, ['default'], :override => true)
     shutter_controller.configure
     
-    pancam_panorama = Orocos.name_service.get 'pancam_panorama'
-    Orocos.conf.apply(pancam_panorama, ['default'], :override => true)
-    pancam_panorama.configure
+    #pancam_panorama = Orocos.name_service.get 'pancam_panorama'
+    #Orocos.conf.apply(pancam_panorama, ['default'], :override => true)
+    #pancam_panorama.configure
     
-    pancam_360 = Orocos.name_service.get 'pancam_360'
-    Orocos.conf.apply(pancam_360, ['default', 'separation_40_30'], :override => true)
-    pancam_360.configure
+    panoramica = Orocos.name_service.get 'panoramica'
+    Orocos.conf.apply(panoramica, ['default', 'separation_40_x'], :override => true)
+    panoramica.configure
     
-    #trigger_360 = TaskContext.get 'trigger_360'
+    trigger_panoramica = TaskContext.get 'trigger_panoramica'
 
-    stereo_360 = TaskContext.get 'stereo_360'
-    Orocos.conf.apply(stereo_360, ['panCam'], :override => true)
-    stereo_360.configure
+    stereo_panoramica = TaskContext.get 'stereo_panoramica'
+    Orocos.conf.apply(stereo_panoramica, ['panCam'], :override => true)
+    stereo_panoramica.configure
 
-    dem_generation_360 = TaskContext.get 'dem_generation_360'
-    Orocos.conf.apply(dem_generation_360, ['panCam'], :override => true)
-    dem_generation_360.configure
+    dem_generation_panoramica = TaskContext.get 'dem_generation_panoramica'
+    Orocos.conf.apply(dem_generation_panoramica, ['panCam'], :override => true)
+    dem_generation_panoramica.configure
 
     # Setup Waypoint_navigation 
     waypoint_navigation = Orocos.name_service.get 'waypoint_navigation'
@@ -231,8 +231,8 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         trigger_bb2.frame_right_out.connect_to              stereo_bb2.right_frame
         trigger_bb2.frame_left_out.connect_to               dem_generation_bb2.left_frame_rect
         stereo_bb2.distance_frame.connect_to                dem_generation_bb2.distance_frame
-        stereo_bb2.left_frame_sync.connect_to               dem_generation_bb2.left_frame_rect
-        stereo_bb2.right_frame_sync.connect_to              dem_generation_bb2.right_frame_rect
+        #stereo_bb2.left_frame_sync.connect_to               dem_generation_bb2.left_frame_rect
+        #stereo_bb2.right_frame_sync.connect_to              dem_generation_bb2.right_frame_rect
     end
     if options[:bb3] == true
         camera_firewire_bb3.frame.connect_to                camera_bb3.frame_in
@@ -242,8 +242,8 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         trigger_bb3.frame_right_out.connect_to              stereo_bb3.right_frame
         trigger_bb3.frame_left_out.connect_to               dem_generation_bb3.left_frame_rect
         stereo_bb3.distance_frame.connect_to                dem_generation_bb3.distance_frame
-        stereo_bb3.left_frame_sync.connect_to               dem_generation_bb3.left_frame_rect
-        stereo_bb3.right_frame_sync.connect_to              dem_generation_bb3.right_frame_rect
+        #stereo_bb3.left_frame_sync.connect_to               dem_generation_bb3.left_frame_rect
+        #stereo_bb3.right_frame_sync.connect_to              dem_generation_bb3.right_frame_rect
    end
     
     # Waypoint navigation inputs:
@@ -269,18 +269,21 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     #pancam_panorama.tilt_angle_out.connect_to           ptu_directedperception.tilt_set
     #pancam_left.frame.connect_to                        pancam_panorama.left_frame_in
     #pancam_right.frame.connect_to                       pancam_panorama.right_frame_in
-    pancam_360.pan_angle_in.connect_to                  ptu_directedperception.pan_angle
-    pancam_360.tilt_angle_in.connect_to                 ptu_directedperception.tilt_angle
-    pancam_360.pan_angle_out.connect_to                 ptu_directedperception.pan_set
-    pancam_360.tilt_angle_out.connect_to                ptu_directedperception.tilt_set
-    pancam_left.frame.connect_to                        pancam_360.left_frame_in
-    pancam_right.frame.connect_to                       pancam_360.right_frame_in
-    pancam_360.left_frame_out.connect_to                stereo_360.left_frame
-    pancam_360.right_frame_out.connect_to               stereo_360.right_frame
-    stereo_360.distance_frame.connect_to                dem_generation_360.distance_frame
-    stereo_360.left_frame_sync.connect_to               dem_generation_360.left_frame_rect
-    stereo_360.right_frame_sync.connect_to              dem_generation_360.right_frame_rect
-    #dem_generation_360.sync_out.connect_to		pancam_360.frame_processed
+    panoramica.pan_angle_in.connect_to                  ptu_directedperception.pan_angle
+    panoramica.tilt_angle_in.connect_to                 ptu_directedperception.tilt_angle
+    panoramica.pan_angle_out.connect_to                 ptu_directedperception.pan_set
+    panoramica.tilt_angle_out.connect_to                ptu_directedperception.tilt_set
+    pancam_left.frame.connect_to                        panoramica.left_frame_in
+    pancam_right.frame.connect_to                       panoramica.right_frame_in
+    panoramica.left_frame_out.connect_to                trigger_panoramica.frame_left_in
+    panoramica.right_frame_out.connect_to               trigger_panoramica.frame_right_in
+    trigger_panoramica.frame_left_out.connect_to        stereo_panoramica.left_frame
+    trigger_panoramica.frame_right_out.connect_to       stereo_panoramica.right_frame
+    trigger_panoramica.frame_left_out.connect_to        dem_generation_panoramica.left_frame_rect            
+    stereo_panoramica.distance_frame.connect_to         dem_generation_panoramica.distance_frame
+    #stereo_panoramica.left_frame_sync.connect_to        dem_generation_panoramica.left_frame_rect
+    #stereo_panoramica.right_frame_sync.connect_to       dem_generation_panoramica.right_frame_rect
+    dem_generation_panoramica.sync_out.connect_to	    panoramica.sync_in
 
     # PanCam connections to shutter controller
     pancam_left.frame.connect_to                        shutter_controller.frame
@@ -292,8 +295,8 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     trigger_pancam.frame_right_out.connect_to           stereo_pancam.right_frame
     trigger_pancam.frame_left_out.connect_to            dem_generation_pancam.left_frame_rect            
     stereo_pancam.distance_frame.connect_to             dem_generation_pancam.distance_frame
-    stereo_pancam.left_frame_sync.connect_to            dem_generation_pancam.left_frame_rect
-    stereo_pancam.right_frame_sync.connect_to           dem_generation_pancam.right_frame_rect
+    #stereo_pancam.left_frame_sync.connect_to            dem_generation_pancam.left_frame_rect
+    #stereo_pancam.right_frame_sync.connect_to           dem_generation_pancam.right_frame_rect
 
     # ToF connections
     tofcamera_mesasr.ir_frame.connect_to                trigger_tof.frame_left_in
@@ -330,14 +333,17 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     telemetry_telecommand.haz_front_trigger.connect_to  trigger_bb2.telecommand_in
     telemetry_telecommand.tof_trigger.connect_to        trigger_tof.telecommand_in
     telemetry_telecommand.lidar_trigger.connect_to      trigger_lidar.telecommand_in
-#    telemetry_telecommand.panorama_trigger.connect_to   pancam_360.trigger_tilt
+    telemetry_telecommand.panoramica_trigger.connect_to trigger_panoramica.telecommand_in
+    telemetry_telecommand.panorama_tilt.connect_to      panoramica.trigger_tilt
 
     trigger_lidar.telecommands_out.connect_to           dem_generation_lidar.telecommands_in
     trigger_tof.telecommands_out.connect_to             dem_generation_tof.telecommands_in
     trigger_bb2.telecommands_out.connect_to             dem_generation_bb2.telecommands_in
     trigger_bb3.telecommands_out.connect_to             dem_generation_bb3.telecommands_in
     trigger_pancam.telecommands_out.connect_to          dem_generation_pancam.telecommands_in
+    trigger_panoramica.telecommands_out.connect_to      dem_generation_panoramica.telecommands_in
     dem_generation_pancam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
+    dem_generation_panoramica.telemetry_out.connect_to  telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
     dem_generation_bb3.telemetry_out.connect_to         telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
     dem_generation_bb2.telemetry_out.connect_to         telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
     dem_generation_tof.telemetry_out.connect_to         telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
@@ -349,6 +355,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     trigger_bb2.configure
     trigger_bb3.configure
     trigger_pancam.configure
+    trigger_panoramica.configure
 
     # Log all the properties of the components
     Orocos.log_all_configuration
@@ -361,15 +368,15 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     
     logger_pancam = Orocos.name_service.get 'hdpr_pancam_Logger'
     logger_pancam.file = "pancam.log"
-    logger_pancam.log(pancam_panorama.left_frame_out)
-    logger_pancam.log(pancam_panorama.right_frame_out)
-    logger_pancam.log(pancam_panorama.pan_angle_out_degrees)
-    logger_pancam.log(pancam_panorama.tilt_angle_out_degrees)
-    logger_pancam.log(pancam_360.left_frame_out)
-    logger_pancam.log(pancam_360.right_frame_out)
-    logger_pancam.log(pancam_360.pan_angle_out_degrees)
-    logger_pancam.log(pancam_360.tilt_angle_out_degrees)
-    logger_pancam.log(pancam_360.set_id)
+    #logger_pancam.log(pancam_panorama.left_frame_out)
+    #logger_pancam.log(pancam_panorama.right_frame_out)
+    #logger_pancam.log(pancam_panorama.pan_angle_out_degrees)
+    #logger_pancam.log(pancam_panorama.tilt_angle_out_degrees)
+    #logger_pancam.log(pancam_360.left_frame_out)
+    #logger_pancam.log(pancam_360.right_frame_out)
+    #logger_pancam.log(pancam_360.pan_angle_out_degrees)
+    #logger_pancam.log(pancam_360.tilt_angle_out_degrees)
+    #logger_pancam.log(pancam_360.set_id)
     logger_pancam.log(shutter_controller.shutter_value)
     
     if options[:bb2] == true
@@ -460,10 +467,10 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     trigger_pancam.start
     stereo_pancam.start
     dem_generation_pancam.start
-    #pancam_360.start
-    #trigger_360.start
-    stereo_360.start
-    dem_generation_360.start
+    panoramica.start
+    trigger_panoramica.start
+    stereo_panoramica.start
+    dem_generation_panoramica.start
     motion_translator.start
     joystick.start
     velodyne_lidar.start

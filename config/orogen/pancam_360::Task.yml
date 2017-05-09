@@ -173,6 +173,10 @@ cameraPositions:
   - data:
     - -175.0
     - 60.0
+# Directly point down
+  - data:
+    - -175.0
+    - 80.0
 
 --- name:separation_30
 cameraPositions:
@@ -270,19 +274,7 @@ cameraPositions:
     - 155.0
     - 20.0
 
---- name:extremes
-cameraPositions:
-  - data:
-    - -175.0
-    - 0.0
-  - data:
-    - 175.0
-    - 0.0
-  - data:
-    - 0.0
-    - 0.0
-
---- name:rover
+--- name:apriltag
 cameraPositions:
   - data:
     - -175.0
