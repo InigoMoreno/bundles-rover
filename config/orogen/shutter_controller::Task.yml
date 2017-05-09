@@ -9,8 +9,5 @@ config:
   maxIntensity: 255
   factMaxIntensity: 0.50
   factMinIntensity: 0.10
-  factNumTooBright: 0.10
-  factNumTooDark: 0.10
   factMinMean: 0.25
   factMaxMean: 0.30
-  precision: 64.0
