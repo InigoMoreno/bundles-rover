@@ -225,11 +225,6 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
 
     puts "Connecting ports"
 
-    # Connect the ports
-    camera_firewire_bb2.frame.connect_to camera_bb2.frame_in
-    camera_bb2.left_frame.connect_to stereo_bb2.left_frame
-    camera_bb2.right_frame.connect_to stereo_bb2.right_frame
-    
     # Connect gps pose tasks 
     gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
     imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples
@@ -239,7 +234,7 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     #trajectoryGen.trajectory.connect_to                 waypoint_navigation.trajectory
     
     # COnnect pancam panorama tasks
-	pancam_panorama.pan_angle_in.connect_to             ptu_directedperception.pan_angle
+    pancam_panorama.pan_angle_in.connect_to             ptu_directedperception.pan_angle
     pancam_panorama.tilt_angle_in.connect_to            ptu_directedperception.tilt_angle
     pancam_panorama.pan_angle_out.connect_to            ptu_directedperception.pan_set
     pancam_panorama.tilt_angle_out.connect_to           ptu_directedperception.tilt_set
@@ -248,16 +243,16 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     pancam_left.frame.connect_to shutter_controller.frame
     pancam_left.shutter_value.connect_to shutter_controller.shutter_value
     pancam_right.shutter_value.connect_to shutter_controller.shutter_value    
-	pancam_left.frame.connect_to stereo_pancam.left_frame
-    pancam_right.frame.connect_to stereo_pancam.right_frame
+    pancam_panorama.left_frame_out.connect_to stereo_pancam.left_frame
+    pancam_panorama.right_frame_out.connect_to stereo_pancam.right_frame
     pancam_panorama.execution_valid.connect_to cartographer.sync_out
 
     # Connect bb2 tasks (not yet to visual odometry)
-	camera_firewire_bb2.frame.connect_to camera_bb2.frame_in
+    camera_firewire_bb2.frame.connect_to camera_bb2.frame_in
     camera_bb2.left_frame.connect_to stereo_bb2.left_frame
     camera_bb2.right_frame.connect_to stereo_bb2.right_frame
 
-	# COnnect locomotion ports
+    # COnnect locomotion ports
     joystick.raw_command.connect_to                     motion_translator.raw_command
     joystick.raw_command.connect_to                     command_arbiter.raw_command
     
@@ -268,7 +263,7 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     locomotion_control.joints_commands.connect_to       command_joint_dispatcher.joints_commands
     command_joint_dispatcher.motors_commands.connect_to platform_driver.joints_commands
     platform_driver.joints_readings.connect_to          read_joint_dispatcher.joints_readings
-	#read_joint_dispatcher.joints_samples.connect_to     locomotion_control.joints_readings
+    #read_joint_dispatcher.joints_samples.connect_to     locomotion_control.joints_readings
     read_joint_dispatcher.motors_samples.connect_to     locomotion_control.joints_readings
 
     # Connect autonomy tasks
@@ -292,7 +287,7 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     refiner.waypoints_out.connect_to            waypoint_navigation.trajectory
 
     # Connect ports: Vicon 		to 	traversability explorer
-    gps_heading.pose_samples_out.connect_to      trav.robot_pose        
+    #gps_heading.pose_samples_out.connect_to      trav.robot_pose        
 
     # Connect ports: Vicon 		to 	path planner
     gps_heading.pose_samples_out.connect_to      planner.start_pose_samples
@@ -317,7 +312,7 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     refiner.start
     planner.start
     motion_translator.start
-    trav.start
+    #trav.start
     goal.start
 
 	# start cameras

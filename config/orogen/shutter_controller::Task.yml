@@ -11,4 +11,4 @@ config:
   factMinIntensity: 0.20
   factMinMean: 0.3
   factMaxMean: 0.4
-# weightOldShutterTime: 0.995
+  weightOldShutterTime: 0.99

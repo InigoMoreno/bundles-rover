@@ -508,11 +508,11 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
 
     # Race condition with internal gps_heading states. This check is here to only trigger the 
     # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
-    puts "Move rover forward to initialise the gps_heading component"
-    while gps_heading.ready == false
-        sleep 1
-    end
-    puts "GPS heading calibration done"
+#    puts "Move rover forward to initialise the gps_heading component"
+#    while gps_heading.ready == false
+#        sleep 1
+#    end
+#    puts "GPS heading calibration done"
 
     # Trigger the trojectory generation, waypoint_navigation must be running at this point
     waypoint_navigation.start
