@@ -39,8 +39,10 @@ ptConfig:
   translationalVelocity: 0.3
   rotationalVelocity: 0.15
   corridor: 1.5
+#  corridor: 1.0
   maxDisalignment: 1.0
-  lookaheadDistance: 3.5
+  lookaheadDistance: 4.0
+#  lookaheadDistance: 3.0
   backwards: false
 
 pdConfig:

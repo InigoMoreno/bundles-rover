@@ -40,6 +40,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     
     # Configure the control packages
     motion_translator = Orocos.name_service.get 'motion_translator'
+    Orocos.conf.apply(motion_translator, ['default'], :override => true)
     motion_translator.configure
     
     locomotion_control = Orocos.name_service.get 'locomotion_control'
@@ -249,6 +250,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     # Waypoint navigation inputs:
     imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples    
     command_arbiter.motion_command.connect_to           gps_heading.motion_command
+    telemetry_telecommand.locomotion_command.connect_to           gps_heading.motion_command
 
     if options[:v] == false
     	gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
@@ -507,9 +509,9 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     # Race condition with internal gps_heading states. This check is here to only trigger the 
     # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
     puts "Move rover forward to initialise the gps_heading component"
-    #while gps_heading.ready == false
-    #    sleep 1
-    #end
+    while gps_heading.ready == false
+        sleep 1
+    end
     puts "GPS heading calibration done"
 
     # Trigger the trojectory generation, waypoint_navigation must be running at this point

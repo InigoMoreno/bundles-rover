@@ -20,7 +20,7 @@ save_directory: '/media/logs/Products/'
 k_points: 20
 # Leaf size of pc voxel filter
 leaf_size: 0.05
-
+enable_compression: true
 # Maximum vertex where a local point cloud is supposed to be valid within the rover frame
 pointcloud_cut_max:
   data:
@@ -73,6 +73,7 @@ pointcloud_cut_min:
   - -4.0
   - 0.5
   - 0.0
+enable_compression: true
 
 --- name:hdpr_bb3
 # no documentation available for this property
@@ -111,6 +112,7 @@ pointcloud_cut_min:
   - -7.0
   - 0.5
   - 0.0
+enable_compression: true
 
 --- name:mesa
 # no documentation available for this property
@@ -149,6 +151,7 @@ pointcloud_cut_min:
   - -6.0
   - 0.8
   - 0.0
+enable_compression: true
 
 --- name:velodyne
 # no documentation available for this property
@@ -187,6 +190,7 @@ pointcloud_cut_min:
   - -100.0
   - -100.0
   - 0.0
+enable_compression: true
 
 --- name:panCam
 cameraCalibration:
@@ -224,3 +228,4 @@ pointcloud_cut_min:
   - -10.0
   - 0.5
   - 0.0
+enable_compression: true

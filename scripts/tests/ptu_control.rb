@@ -21,6 +21,7 @@ Orocos::Process.run 'hdpr_unit_control' do
     end
     
     motion_translator = Orocos.name_service.get 'motion_translator'
+    Orocos.conf.apply(motion_translator, ['default'], :override => true)
     motion_translator.configure
     
     ptu_directedperception = Orocos.name_service.get 'ptu_directedperception'

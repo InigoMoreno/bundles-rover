@@ -39,6 +39,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     
     # Configure the control packages
     motion_translator = Orocos.name_service.get 'motion_translator'
+    Orocos.conf.apply(motion_translator, ['default'], :override => true)
     motion_translator.configure
     
     locomotion_control = Orocos.name_service.get 'locomotion_control'
@@ -138,7 +139,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     
 	# Add the trajectory generation component
     trajectoryGen = Orocos.name_service.get 'trajectoryGen'
-    Orocos.conf.apply(trajectoryGen, ['decosEight'], :override => true)
+    Orocos.conf.apply(trajectoryGen, ['decos3DROCS'], :override => true)
     trajectoryGen.configure
     
     # "Fuse" GPS position and IMU orientation to get rover pose

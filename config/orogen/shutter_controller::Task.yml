@@ -3,11 +3,12 @@
 # this configuration has shown to yield good disparities in daylight settings
 config:
   shutterCompPeriod: 3
-  initShutterTime: 2000
+  initShutterTime: 400
   maxShutterTime: 3904
   minShutterTime: 3
   maxIntensity: 255
-  factMaxIntensity: 0.50
-  factMinIntensity: 0.10
-  factMinMean: 0.25
-  factMaxMean: 0.30
+  factMaxIntensity: 0.70
+  factMinIntensity: 0.20
+  factMinMean: 0.3
+  factMaxMean: 0.4
+# weightOldShutterTime: 0.995
