@@ -218,6 +218,11 @@ ptu_to_center:
   - 0.138 
   - -0.005
   - 1.86 # to the top plate it is 1.286
+reach_goal:
+  data:
+  - 19.37 
+  - 70.88
+  - 0.0
 # Obstacles the rover can tolerate when there is no sinkage [m] # TBD
 rover_normal_clearance: 0.22
 # Slope the rover can travel in nominal case [rad]
