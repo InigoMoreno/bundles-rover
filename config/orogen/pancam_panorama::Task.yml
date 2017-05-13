@@ -17,3 +17,24 @@ cameraPositions:
   - data:
     - 0.0
     - 20.0
+    
+    
+--- name:hdpr_autonomy
+# Minimum delay in milliseconds before saving a frame after the PanCam reaches its goal position
+frameDelayTimeMs: 100
+# PanCam pan and tilt position error margin
+positionErrorMargin: 0.1
+# Camera pan/tilt orientations for pictures
+cameraPositions:
+  - data:
+    - -40.0
+    - 30.0
+  - data:
+    - 0.0
+    - 30.0
+  - data:
+    - 40.0
+    - 30.0
+  - data:
+    - 0.0
+    - 30.0

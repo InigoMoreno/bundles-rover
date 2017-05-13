@@ -47,7 +47,7 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     shutter_controller.configure
     
     pancam_panorama = Orocos.name_service.get 'pancam_panorama'
-    Orocos.conf.apply(pancam_panorama, ['default'], :override => true)
+    Orocos.conf.apply(pancam_panorama, ['hdpr_autonomy'], :override => true)
     pancam_panorama.configure
 	puts "Done"
 
@@ -97,7 +97,7 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     # setup gps and gps heading
     puts "Setting up gps and gps heading"
     gps = TaskContext.get 'gps'
-    Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS'], :override => true)
+    Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS_AUTONOMY'], :override => true)
     gps.configure
     
     gps_heading = TaskContext.get 'gps_heading'
@@ -140,7 +140,7 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     # setup waypoint_navigation 
     puts "Setting up waypoint_navigation"
     waypoint_navigation = Orocos.name_service.get 'waypoint_navigation'
-    Orocos.conf.apply(waypoint_navigation, ['default','hdpr'], :override => true)
+    Orocos.conf.apply(waypoint_navigation, ['default','hdpr_autonomy'], :override => true)
     waypoint_navigation.configure
     puts "done"
 
@@ -191,27 +191,6 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
         p.mSBPLForwardSearch = false # ADPlanner throws 'g-values are non-decreasing' if true
     end
     planner.configure
-    puts "done"
-
-    # setup the traversability explorer
-    puts "Setting up the traversability explorer"
-    trav = Orocos.name_service.get 'traversability'
-    trav.traversability_map_id = "trav_map"
-    trav.traversability_map_scalex =  0.03
-    trav.traversability_map_scaley =  0.03
-    trav.filename = "/home/exoter/rock/planning/orogen/traversability_explorer/data/costmap_january.txt"
-    trav.robot_fov_a = 2.5
-    trav.robot_fov_b = 3.5
-    trav.robot_fov_l = 3.0
-    trav.configure
-    puts "done"
-
-    # setup goal generator 
-    puts "Setting up goal generator"
-    goal = Orocos.name_service.get 'goal_set'
-    Orocos.conf.apply(goal, ['default','prl2'], :override => true)
-    goal.goal_index = 6
-    goal.configure
     puts "done"
 
     # setup trajectory resampling 
@@ -271,10 +250,6 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     gps_heading.pose_samples_out.connect_to               	cartographer.pose_in        
     pancam_panorama.pan_angle_out_degrees.connect_to cartographer.ptu_pan
     pancam_panorama.tilt_angle_out_degrees.connect_to cartographer.ptu_tilt
-	
-	
-    # Connect ports: joystick to goal
-    #joystick.raw_command.connect_to goal.raw_command
 
     # Connect ports: traversability explorer to	planner
     #trav.traversability_map.connect_to	planner.traversability_map
@@ -293,10 +268,10 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     gps_heading.pose_samples_out.connect_to      planner.start_pose_samples
 
     # Connect ports: Goal Generator	to 	path planner
-    goal.goal_pose.connect_to                   planner.goal_pose_samples
+    cartographer.goal.connect_to                   planner.goal_pose_samples
 
     # Connect ports: Goal Generator	to 	trajectory refiner
-    goal.goal_pose.connect_to                   refiner.goal_pose
+    cartographer.goal.connect_to                   refiner.goal_pose
 
     puts "done"
 
@@ -313,7 +288,6 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     planner.start
     motion_translator.start
     #trav.start
-    goal.start
 
 	# start cameras
     camera_firewire_bb2.start
@@ -335,8 +309,6 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     sleep 1
     cartographer.start
 
- #Readline::readline("Press ENTER to generate the trajectory.")
-   #goal.trigger
     puts "Move rover forward to initialise the gps_heading component"
     while gps_heading.ready == false
         sleep 1
