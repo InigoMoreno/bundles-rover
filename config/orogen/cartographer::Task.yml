@@ -59,8 +59,6 @@ max_cost_slope: 0.63
 obstacle_blur: 35
 # Maximum cost added by obstacle blur
 obstacle_blur_max_cost: 15.0
-# Kernel size for how much an obstacle is dilated so that the rover can be considered a point
-obstacle_cost_dilation: 24
 # Number of iterations of the cost dilation
 obstacle_cost_dilation_niter: 1
 # First obstacle dilation iterations
@@ -97,6 +95,8 @@ ptu_to_center:
   - 0.09
   - 0.0
   - 0.9
+# in meters, needed for obstacle dilation
+robot_size: 0.7
 # Obstacles the rover can tolerate when there is no sinkage [m]
 rover_normal_clearance: 0.12
 # Slope the rover can travel in nominal case [rad]
@@ -105,7 +105,8 @@ rover_normal_gradeability: 0.33
 slope_map_scale: 8
 # Maximum cost added by traversable slope
 slope_max_cost: 4.0
-
+# Use statistical pc filtering or not
+use_statistical_filter: true
 
 
 
@@ -153,15 +154,15 @@ cost_offset: 3.0
 # Cost update area in meters (area around the rover where the cost map is updated)
 cost_update_area: 20.0
 # Cell that must be origin for envire
-envire_origin: 1667
+envire_origin: 700
 # In cells (same cell size as global map-1or2)
-envire_size: 4000
+envire_size: 2048
 # Resolution of each cell in meters. For the moment keep it the same as local
-global_map_resolution: 0.03
+global_map_resolution: 0.06
 # Square size of the global map in meters
 global_map_size: 200.0
 # Assuming the rover can not go into negative coordinates, how much margin more to have from (0,0) so that projected point cloud would not end up in negative coordinates
-global_safety_offset: 100.0
+global_safety_offset: 80.0
 # K points for statistical pc filter
 k_points: 20
 # Size of the kernel used in the laplacian to detect rocks edges
@@ -171,17 +172,15 @@ laplacian_threshold: 100.0
 # Leaf size of pc voxel filter
 leaf_size: 0.015
 # Resolution of each cell in meters
-local_map_resolution: 0.03
+local_map_resolution: 0.06
 # Square size f the local map in meters
-local_map_size: 15.0
+local_map_size: 22.0
 # TBD should be tied to rover_normal_gradeability but why is it double here again?
 max_cost_slope: 0.63
 # Kernel size used to blur the cost map. Represent how far the influence of an obstacle spreads from its border
 obstacle_blur: 35
 # Maximum cost added by obstacle blur
 obstacle_blur_max_cost: 15.0
-# Kernel size for how much an obstacle is dilated so that the rover can be considered a point. ATTENTION, tied to world cell size atm. Value good for 0.03
-obstacle_cost_dilation: 47
 # Number of iterations of the cost dilation
 obstacle_cost_dilation_niter: 1
 # First obstacle dilation iterations
@@ -195,16 +194,16 @@ obstacle_vicinity_kernel_size: 3
 # Maximum vertex where a local point cloud is supposed to be valid within the rover frame
 pointcloud_cut_max:
   data:
+  - 15.0
   - 10.0
-  - 6.0
-  - 3.0
+  - 10.0
   - 0.0
 # Minimum vertex where a local point cloud is supposed to be valid within the rover frame
 pointcloud_cut_min:
   data:
   - 1.0
-  - -6.0
-  - -3.0
+  - -10.0
+  - -10.0
   - 0.0
 # Rotation offset of the pan tilt unit (or the mounted camera) [yaw, pitch, roll] RADIANS
 ptu_rotation_offset:
@@ -223,6 +222,8 @@ reach_goal:
   - 19.37 
   - 70.88
   - 0.0
+# in meters, needed for obstacle dilation
+robot_size: 1.4
 # Obstacles the rover can tolerate when there is no sinkage [m] # TBD
 rover_normal_clearance: 0.22
 # Slope the rover can travel in nominal case [rad]
@@ -231,4 +232,6 @@ rover_normal_gradeability: 0.33
 slope_map_scale: 8 
 # Maximum cost added by traversable slope
 slope_max_cost: 4.0
+# Use statistical pc filtering or not
+use_statistical_filter: false
 
