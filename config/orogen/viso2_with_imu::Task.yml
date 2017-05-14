@@ -1,0 +1,72 @@
+--- name:default
+# Pose is reset to X,Y,Z and yaw of this input pose. Pitch and roll are still taken from the IMU
+initial_pose:
+  time:
+    microseconds: 0
+  sourceFrame: ''
+  targetFrame: ''
+  position:
+    data:
+    - -4.58
+    - 6.668
+    - 1.528
+  cov_position:
+    data:
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+  orientation:
+    im:
+    - .nan
+    - .nan
+    - .nan
+    re: .nan
+  cov_orientation:
+    data:
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+  velocity:
+    data:
+    - .nan
+    - .nan
+    - .nan
+  cov_velocity:
+    data:
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+  angular_velocity:
+    data:
+    - .nan
+    - .nan
+    - .nan
+  cov_angular_velocity:
+    data:
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
