@@ -1,10 +1,12 @@
 --- name:default
 # Pose is reset to X,Y,Z and yaw of this input pose. Pitch and roll are still taken from the IMU
+source_frame: 'body' # transformer names. No transformation convention
+target_frame: 'viso_world' # transformer names. No transformation convention
 initial_pose:
   time:
     microseconds: 0
-  sourceFrame: ''
-  targetFrame: ''
+  sourceFrame: 'body' # transformer names. No transformation convention
+  targetFrame: 'viso_world' # transformer names. No transformation convention
   position:
     data:
     - -4.58
@@ -23,10 +25,88 @@ initial_pose:
     - .nan
   orientation:
     im:
+    - 0.0
+    - 0.0
+    - 0.0
+    re: 1.0
+  cov_orientation:
+    data:
     - .nan
     - .nan
     - .nan
-    re: .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+  velocity:
+    data:
+    - .nan
+    - .nan
+    - .nan
+  cov_velocity:
+    data:
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+  angular_velocity:
+    data:
+    - .nan
+    - .nan
+    - .nan
+  cov_angular_velocity:
+    data:
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+
+
+
+
+--- name:hdpr_autonomy
+source_frame: 'body' # transformer names. No transformation convention
+target_frame: 'viso_world' # transformer names. No transformation convention
+# Pose is reset to X,Y,Z and yaw of this input pose. Pitch and roll are still taken from the IMU
+initial_pose:
+  time:
+    microseconds: 0
+  sourceFrame: 'body' # transformer names. No transformation convention
+  targetFrame: 'viso_world' # transformer names. No transformation convention
+  position:
+    data:
+    - 20.0
+    - 20.0
+    - 0.0
+  cov_position:
+    data:
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+    - .nan
+  orientation:
+    im:
+    - 0.0
+    - 0.0
+    - 0.0
+    re: 1.0
   cov_orientation:
     data:
     - .nan

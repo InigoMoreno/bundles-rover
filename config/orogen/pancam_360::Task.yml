@@ -277,5 +277,5 @@ cameraPositions:
 --- name:apriltag
 cameraPositions:
   - data:
-    - -175.0
+    - -180.0
     - 60.0

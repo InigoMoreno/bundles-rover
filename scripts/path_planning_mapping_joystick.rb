@@ -1,15 +1,29 @@
 #!/usr/bin/env ruby
 
 #require 'vizkit'
+require 'orocos'
 require 'rock/bundle'
 require 'readline'
+require 'optparse'
 
 include Orocos
+
+# Command line options for the script, default values
+options = {:v => false}
+
+# Options parser
+OptionParser.new do |opts|
+  opts.banner = "Usage: start.rb [options]"
+  opts.on('-v', '--vicon state', 'Enable gps') { |state| options[:v] = state }
+end.parse!
 
 ## Initialize orocos ##
 Bundles.initialize
 
-Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controller', 'hdpr_gps', 'hdpr_control', 'hdpr_autonomy', 'hdpr_unit_gyro', 'hdpr_imu' do
+## Transformation for the transformer
+Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb'))
+
+Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controller', 'hdpr_gps', 'hdpr_control', 'hdpr_autonomy', 'hdpr_unit_gyro', 'hdpr_imu', 'hdpr_unit_visual_odometry' do
 
 	# Visiodom bb2
 	puts "Startng BB2 for visiodom"
@@ -51,13 +65,6 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     pancam_panorama.configure
 	puts "Done"
 
-
-    # Autonomy
-    puts "Setting cartographer"
-    cartographer = TaskContext.get 'cartographer'
-    Orocos.conf.apply(cartographer, ['hdpr'], :override => true)
-    cartographer.configure
-    puts "done"
 
     # setup platform_driver
     puts "Setting up platform_driver"
@@ -118,7 +125,20 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     Orocos.conf.apply(gyro, ['default'], :override => true)
     gyro.configure
     puts "done"
+    
+    # Setup visual odometry
+    puts "Setting up visual odometry"
+	visual_odometry = TaskContext.get 'viso2'
+    Orocos.conf.apply(visual_odometry, ['bumblebee'], :override => true)
+    Bundles.transformer.setup(visual_odometry)
+    visual_odometry.configure
 
+    viso2_with_imu = TaskContext.get 'viso2_with_imu'
+    Orocos.conf.apply(viso2_with_imu, ['hdpr_autonomy'], :override => true)
+    Bundles.transformer.setup(viso2_with_imu)
+	viso2_with_imu.configure
+	puts "done"
+	
     # setup joystick
     puts "Setting up joystick"
     joystick = Orocos.name_service.get 'joystick'
@@ -199,17 +219,35 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     refiner.configure
     puts "done"
 
+    # Autonomy
+    puts "Setting cartographer"
+    cartographer = TaskContext.get 'cartographer'
+    Orocos.conf.apply(cartographer, ['hdpr'], :override => true)
+    Bundles.transformer.setup(cartographer)
+    cartographer.configure
+    puts "done"
+
+
     # Log all ports
     #Orocos.log_all_ports
 
     puts "Connecting ports"
 
-    # Connect gps pose tasks 
-    gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
-    imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples
-    command_arbiter.motion_command.connect_to           gps_heading.motion_command
-    gps.raw_data.connect_to                             gps_heading.gps_raw_data
-    gps_heading.pose_samples_out.connect_to             waypoint_navigation.pose
+    # Connect gps pose tasks
+    if options[:v] == true
+		gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
+		imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples
+		command_arbiter.motion_command.connect_to           gps_heading.motion_command
+		gps.raw_data.connect_to                             gps_heading.gps_raw_data
+		gps_heading.pose_samples_out.connect_to             waypoint_navigation.pose
+    else
+		camera_bb2.left_frame.connect_to                    visual_odometry.left_frame
+		camera_bb2.right_frame.connect_to                   visual_odometry.right_frame
+		imu_stim300.orientation_samples_out.connect_to  	viso2_with_imu.pose_samples_imu
+		visual_odometry.delta_pose_samples_out.connect_to 	viso2_with_imu.delta_pose_samples_in
+		gyro.orientation_samples.connect_to 				viso2_with_imu.pose_samples_imu_extra
+		viso2_with_imu.pose_samples_out.connect_to 			waypoint_navigation.pose
+	end
     #trajectoryGen.trajectory.connect_to                 waypoint_navigation.trajectory
     
     # COnnect pancam panorama tasks
@@ -247,7 +285,12 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
 
     # Connect autonomy tasks
     stereo_pancam.distance_frame.connect_to 			cartographer.distance_image
-    gps_heading.pose_samples_out.connect_to               	cartographer.pose_in        
+    if options[:v] == true
+		gps_heading.pose_samples_out.connect_to         cartographer.pose_in        
+    else
+		viso2_with_imu.pose_samples_out.connect_to		cartographer.pose_in
+	end
+	
     pancam_panorama.pan_angle_out_degrees.connect_to cartographer.ptu_pan
     pancam_panorama.tilt_angle_out_degrees.connect_to cartographer.ptu_tilt
 
@@ -265,7 +308,11 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     #gps_heading.pose_samples_out.connect_to      trav.robot_pose        
 
     # Connect ports: Vicon 		to 	path planner
-    gps_heading.pose_samples_out.connect_to      planner.start_pose_samples
+	if options[:v] == true
+		gps_heading.pose_samples_out.connect_to         planner.start_pose_samples        
+    else
+		viso2_with_imu.pose_samples_out.connect_to		planner.start_pose_samples
+	end
 
     # Connect ports: Goal Generator	to 	path planner
     cartographer.goal.connect_to                   planner.goal_pose_samples
@@ -292,7 +339,7 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
 	# start cameras
     camera_firewire_bb2.start
     camera_bb2.start
-    stereo_bb2.start
+    #stereo_bb2.start
     pancam_left.start
     pancam_right.start
     stereo_pancam.start
@@ -303,17 +350,19 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     # start sensors
     ptu_directedperception.start
     gyro.start
-    gps.start
-    gps_heading.start
-  
-    sleep 1
+    if options[:v] == true
+		gps.start
+		gps_heading.start
+		puts "------------------------------ Using GPS ------------------------------"
+	else
+		visual_odometry.start
+		viso2_with_imu.start
+		puts "------------------------------ Using VISODOM ------------------------------"
+	end
     cartographer.start
+    #sleep 1
 
-    puts "Move rover forward to initialise the gps_heading component"
-    while gps_heading.ready == false
-        sleep 1
-    end
-    puts "GPS heading calibration done"
+
     Readline::readline("Press ENTER to exit\n") do
     end
 

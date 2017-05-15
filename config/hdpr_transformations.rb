@@ -40,6 +40,8 @@ static_transform Eigen::Quaternion.Identity(),
     Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "gnss_utm" => "lab" # Original, meantime switched to imu to have quaternions
 static_transform Eigen::Quaternion.Identity(),
     Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "world_osg" => "lab" # tp be used in the actual lab
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "viso_world" => "lab" # tp be used in the actual lab
 
 # Transformation PTU to Left camera (Left camera frame expressed in PTU frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -Math::PI/2.0), 2,1,0),
@@ -71,3 +73,6 @@ static_transform Eigen::Quaternion.Identity(),
 # TODO: Measure the height again, since its not tilted anymore
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(Math::PI, 0.0, 0.0), 2,1,0),
     Eigen::Vector3.new(0.46, 0.018, 0.55), "lidar" => "body"
+
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "left_camera_bb2" => "left_camera_viso2"

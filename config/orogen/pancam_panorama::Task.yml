@@ -27,13 +27,13 @@ positionErrorMargin: 0.1
 # Camera pan/tilt orientations for pictures
 cameraPositions:
   - data:
-    - -40.0
+    - -35.0
     - 30.0
   - data:
     - 0.0
     - 30.0
   - data:
-    - 40.0
+    - 35.0
     - 30.0
   - data:
     - 0.0
