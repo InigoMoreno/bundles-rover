@@ -286,6 +286,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     #stereo_panoramica.left_frame_sync.connect_to        dem_generation_panoramica.left_frame_rect
     #stereo_panoramica.right_frame_sync.connect_to       dem_generation_panoramica.right_frame_rect
     dem_generation_panoramica.sync_out.connect_to	    panoramica.sync_in
+    panoramica.shutter_control.connect_to               shutter_controller.estop
 
     # PanCam connections to shutter controller
     pancam_left.frame.connect_to                        shutter_controller.frame

@@ -1,16 +1,28 @@
 --- name:hdpr_bb2
 # no documentation available for this property
+#cameraCalibration:
+#    fx: 837.253850
+#    fy: 838.490409
+#    cx: 500.836269
+#    cy: 396.129781
+#    d0: -0.350699 
+#    d1: 0.143871 
+#    d2: 0.000772 
+#    d3: 0.000436
+#    width: 1024
+#    height: 768
+# Kalibr results
 cameraCalibration:
-    fx: 837.253850
-    fy: 838.490409
-    cx: 500.836269
-    cy: 396.129781
-    d0: -0.350699 
-    d1: 0.143871 
-    d2: 0.000772 
-    d3: 0.000436
-    width: 1024
-    height: 768
+  fx: 833.029249273
+  fy: 834.36200043
+  cx: 503.38475908
+  cy: 394.969563968
+  d0: -0.351348570994
+  d1: 0.149480797792
+  d2: 0.000305233424184
+  d3: -0.000750163647335
+  width: 1024
+  height: 768
 # A configuration property (here, a std::string). Its value can be retrieved
 # in the C++ code with # _config_value.get() and _config_value.set(new_value).
 camera_name: 'HAZCAM'
@@ -77,17 +89,29 @@ enable_compression: true
 
 --- name:hdpr_bb3
 # no documentation available for this property
+#cameraCalibration:
+#    fx: 1624.646083
+#    fy: 1629.037008
+#    cx: 633.800760
+#    cy: 489.614872
+#    d0: -0.604146 
+#    d1: 0.401654 
+#    d2: -0.001994 
+#    d3: 0.003990
+#    width: 1280
+#    height: 960
+# Kalibr results
 cameraCalibration:
-    fx: 1624.646083
-    fy: 1629.037008
-    cx: 633.800760
-    cy: 489.614872
-    d0: -0.604146 
-    d1: 0.401654 
-    d2: -0.001994 
-    d3: 0.003990
-    width: 1280
-    height: 960
+  fx: 1636.20761888
+  fy: 1637.33777994
+  cx: 651.850565473
+  cy: 471.147308853
+  d0: -0.594977746871
+  d1: 0.325393349407
+  d2: 0.00144401244969
+  d3: 0.000959205363921
+  width: 1280
+  height: 960
 # A configuration property (here, a std::string). Its value can be retrieved
 # in the C++ code with # _config_value.get() and _config_value.set(new_value).
 camera_name: 'FRONT'
@@ -193,15 +217,27 @@ pointcloud_cut_min:
 enable_compression: true
 
 --- name:panCam
+#cameraCalibration:
+#  fx: 1433.170895
+#  fy: 1440.286963
+#  cx: 654.601374
+#  cy: 481.618275
+#  d0: -0.242066
+#  d1: 0.104381
+#  d2: -0.000596
+#  d3: 0.002281
+#  width: 1280
+#  height: 960
+# Kalibr results
 cameraCalibration:
-  fx: 1433.170895
-  fy: 1440.286963
-  cx: 654.601374
-  cy: 481.618275
-  d0: -0.242066
-  d1: 0.104381
-  d2: -0.000596
-  d3: 0.002281
+  fx: 1419.81633673
+  fy: 1422.08972277
+  cx: 652.276264771
+  cy: 474.063082006
+  d0: -0.260860971312
+  d1: 0.203367792811
+  d2: -0.000105868303039
+  d3: 0.000256922530508
   width: 1280
   height: 960
 # A configuration property (here, a std::string). Its value can be retrieved

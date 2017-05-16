@@ -27,8 +27,10 @@ static_transform Eigen::Quaternion.from_angle_axis(Math::PI, Eigen::Vector3.Unit
 
 # Transformation Body to Mast top (Mast top frame expressed in Body frame) but transformations expects the other sense
 # MS: In HDPR, the mast is called PAN-TILT-FRAME
+#static_transform Eigen::Quaternion.Identity(), #old
+#    Eigen::Vector3.new( 0.138, -0.005, 1.286 ), "ptu_base" => "body"
 static_transform Eigen::Quaternion.Identity(),
-    Eigen::Vector3.new( 0.138, -0.005, 1.286 ), "ptu_base" => "body"
+    Eigen::Vector3.new( 0.2316, -0.0174, 1.1873 ), "ptu_base" => "body"
 
 # Transformation Body to GPS (GPS frame expressed in Body frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.Identity(),
@@ -59,11 +61,16 @@ static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 
     Eigen::Vector3.new( 0.6, 0.0, 0.1), "tof" => "body"
 
 # Transformation front BB2 to body center
-static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.0, -0.593-Math::PI/2.0), 2,1,0),
-    Eigen::Vector3.new(0.54309, 0.06, 0.01713), "left_camera_bb2" => "body"
-# TODO: Not verified
-static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.0, -0.314-Math::PI/2.0), 2,1,0),
-    Eigen::Vector3.new(0.46, 0.12, 0.455), "left_camera_bb3" => "body"
+#static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.0, -0.593-Math::PI/2.0), 2,1,0), #old
+#    Eigen::Vector3.new(0.54309, 0.06, 0.01713), "left_camera_bb2" => "body"
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-1.5666, 0.02348, -2.145), 2,1,0),
+    Eigen::Vector3.new(0.527, 0.0738, 0.0588), "left_camera_bb2" => "body"
+
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -1.5655, 0.0212, -1.8671), 2,1,0),
+    Eigen::Vector3.new(0.4265, 0.129, 0.491), "left_camera_bb3" => "body"
+#TODO: Not verified
+#static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.0, -0.314-Math::PI/2.0), 2,1,0), #old
+#    Eigen::Vector3.new(0.46, 0.12, 0.455), "left_camera_bb3" => "body"
 static_transform Eigen::Quaternion.Identity(),
     Eigen::Vector3.new( 0.12, 0.0, 0.0 ), "center_camera_bb3" => "left_camera_bb3"
 static_transform Eigen::Quaternion.Identity(),
@@ -76,3 +83,12 @@ static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(Math::PI, 0.0, 
 
 static_transform Eigen::Quaternion.Identity(),
     Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "left_camera_bb2" => "left_camera_viso2"
+
+#static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(Math::PI/2.0, 0.0, 0.0), 2,1,0),
+#    Eigen::Vector3.new( -0.403, -0.086, 0.115), "apriltag" => "body"
+
+
+
+
+
+

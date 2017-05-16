@@ -339,8 +339,8 @@ ptu_to_center:
   - 1.86 # to the top plate it is 1.286
 reach_goal:
   data:
-  - 19.37 
-  - 70.88
+  - 29.37 
+  - 80.88
   - 0.0
 # in meters, needed for obstacle dilation
 robot_size: 1.4
