@@ -72,11 +72,13 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     tofcamera_mesasr.configure
     
     imu_stim300 = TaskContext.get 'imu_stim300'
-    Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'ESTEC', 'stim300_5g'], :override => true)
+    #Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'ESTEC', 'stim300_5g'], :override => true)
+    Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'Tenerife', 'stim300_5g'], :override => true)
     imu_stim300.configure
     
     gps = TaskContext.get 'gps'
-    Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS'], :override => true)
+    #Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS'], :override => true)
+    Orocos.conf.apply(gps, ['HDPR', 'Spain', 'Tenerife'], :override => true)
     gps.configure
     
     gps_heading = TaskContext.get 'gps_heading'
@@ -139,7 +141,11 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     
 	# Add the trajectory generation component
     trajectoryGen = Orocos.name_service.get 'trajectoryGen'
-    Orocos.conf.apply(trajectoryGen, ['decos3DROCS'], :override => true)
+    #Orocos.conf.apply(trajectoryGen, ['decos3DROCS'], :override => true)
+    #Orocos.conf.apply(trajectoryGen, ['tenerife0Nominal'], :override => true)
+    Orocos.conf.apply(trajectoryGen, ['tenerife0NominalReverse'], :override => true)
+    #Orocos.conf.apply(trajectoryGen, ['tenerife18Track'], :override => true)
+    #Orocos.conf.apply(trajectoryGen, ['tenerife2SideTrack'], :override => true)
     trajectoryGen.configure
     
     # "Fuse" GPS position and IMU orientation to get rover pose
@@ -303,6 +309,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_waypoint = Orocos.name_service.get 'hdpr_gps_Logger'
     logger_waypoint.file = "waypoint_navigation.log"
     logger_waypoint.log(trajectoryGen.trajectory)
+    logger_waypoint.log(waypoint_navigation.trajectory_status)
     logger_waypoint.log(waypoint_navigation.currentWaypoint)
     logger_waypoint.log(waypoint_navigation.motion_command)
     logger_waypoint.log(gps.pose_samples)

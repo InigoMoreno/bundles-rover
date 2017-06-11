@@ -12,8 +12,16 @@ calibrate: false
 # Number of samples to average over for bias calibration.
 calibration_samples: 30
 # Bias of the gyroscope z-axis.
-bias: 3.480169318976892e-06 
-latitude: 52
+#bias: 3.480169318976892e-06 # (Nethrelands)
+#bias: -2.3386862673e-06  # (Tenerife)
+#bias: 1.4037573864e-06 # Tenerife 2017-06-09
+#bias: -1.5299002624e-06 # Tenerife 2017-06-10
+bias: -8.1001809086e-06 # Tenerife 2017-06-11
+
+# Netherlands
+#latitude: 52
+# Tenerife
+latitude: 28.26
 
 # Calibrated bias value
 --- name:calibration

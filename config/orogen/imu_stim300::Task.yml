@@ -9,11 +9,10 @@ filter_configuration:
   initial_alignment_samples: 750 # 150000 # 20 minute(s) initial alignment. IMU rate is 125Hz. Set it to 7500 for 1 minute.
   correction_frequency: 1.0
 use_input_bias: true
-biasacc: [-4.01824e-06,-1.80321e-06,1.77636e-15]
-biasgyro: [-0.000421309,7.95358e-05,0.00036326]
+biasgyro: [-0.000521693,0.000177339,0.000293097]
+biasacc: [0.000401291,-0.00024222,-1.77636e-15]
 
-
-init_heading: -160.0
+init_heading: 122.0
 
 --- name:calibration
 # General configuration values to run the task
@@ -49,6 +48,16 @@ location:
   altitude: 12.0
   magnetic_declination: 0.023561944
   magnetic_declination_mode: :EAST
+  dip_angle: 1.187696556
+
+--- name:Tenerife
+# Localization properties related to the geographic place (i.e.: latitude, longitude, magnetic declination).
+location:
+  latitude: 0.49330924965399997051
+  longitude: -0.289517607421
+  altitude: 2296.0
+  magnetic_declination: -0.09128072
+  magnetic_declination_mode: :WEST
   dip_angle: 1.187696556
 
 --- name:ESTEC

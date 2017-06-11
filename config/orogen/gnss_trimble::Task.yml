@@ -11,6 +11,7 @@ serial_timeout: 0.2
 serial_port: /dev/hdpr-dgps
 # Baud rate to open the serial com_port.
 serial_baudrate: 115200
+#serial_baudrate: 9600
 # the expected time (in seconds) to have a whole package in the fd (the device port)
 serial_timeout: 0.2
 
@@ -36,6 +37,18 @@ gnss_source_frame: "body" #transformer names. No transformation convention
 # to frame for the transformer
 gnss_target_frame: "world_osg" #transformer names. No transformation convention
 
+--- name:Spain
+# UTM zone for conversion of WGS84 to UTM
+utm_zone: 28
+# UTM north for conversion of WGS84 to UTM
+utm_north: true
+# Geodetic datum typically NAD83 or WGS84 
+geodetic_datum: WGS84
+
+# from frame for the transformer
+gnss_source_frame: "body" #transformer names. No transformation convention
+# to frame for the transformer
+gnss_target_frame: "world_osg" #transformer names. No transformation convention
 
 --- name:ESTEC
 # Origin in UTM coordinates, that is used for position readings.
@@ -65,9 +78,17 @@ pose_origin:
 # Origin in UTM coordinates, that is used for position readings.
 pose_origin:
   data:
-  - 0.0
-  - 0.0
-  - 0.0
+  - 344043.0
+  - 3127403.0
+  - 2296.0
+
+--- name:Tenerife_Teleop
+# Origin in UTM coordinates, that is used for position readings.
+pose_origin:
+  data:
+  - 344182.92
+  - 3127638.37
+  - 2299.0
 
 --- name:calibration
 # Offset to 0 so the value in rock-display would show the value needed to set here

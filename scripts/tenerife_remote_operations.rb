@@ -85,12 +85,14 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     dem_generation_tof.configure
    
     imu_stim300 = TaskContext.get 'imu_stim300'
-    Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'ESTEC', 'stim300_5g'], :override => true)
+    #Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'ESTEC', 'stim300_5g'], :override => true)
+    Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'Tenerife', 'stim300_5g'], :override => true)
     imu_stim300.configure
     
     if options[:v] == false
    	gps = TaskContext.get 'gps'
-    	Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS'], :override => true)
+    	#Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS'], :override => true)
+    	Orocos.conf.apply(gps, ['HDPR', 'Spain', 'Tenerife_Teleop'], :override => true)
     	gps.configure
     else
    	vicon = TaskContext.get 'vicon'
@@ -286,7 +288,6 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     #stereo_panoramica.left_frame_sync.connect_to        dem_generation_panoramica.left_frame_rect
     #stereo_panoramica.right_frame_sync.connect_to       dem_generation_panoramica.right_frame_rect
     dem_generation_panoramica.sync_out.connect_to	    panoramica.sync_in
-    panoramica.shutter_control.connect_to               shutter_controller.estop
 
     # PanCam connections to shutter controller
     pancam_left.frame.connect_to                        shutter_controller.frame
@@ -509,11 +510,11 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
 
     # Race condition with internal gps_heading states. This check is here to only trigger the 
     # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
-#    puts "Move rover forward to initialise the gps_heading component"
-#    while gps_heading.ready == false
-#        sleep 1
-#    end
-#    puts "GPS heading calibration done"
+    puts "Move rover forward to initialise the gps_heading component"
+    while gps_heading.ready == false
+        sleep 1
+    end
+    puts "GPS heading calibration done"
 
     # Trigger the trojectory generation, waypoint_navigation must be running at this point
     waypoint_navigation.start
