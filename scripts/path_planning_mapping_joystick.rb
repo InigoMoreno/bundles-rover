@@ -23,7 +23,7 @@ Bundles.initialize
 ## Transformation for the transformer
 Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb'))
 
-Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controller', 'hdpr_gps', 'hdpr_control', 'hdpr_autonomy', 'hdpr_unit_gyro', 'hdpr_imu', 'hdpr_unit_visual_odometry' do
+Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controller', 'hdpr_gps', 'hdpr_control', 'hdpr_autonomy', 'hdpr_unit_gyro', 'hdpr_imu', 'hdpr_unit_visual_odometry', 'hdpr_shutter_controller_bumblebee' do
 
 	# Visiodom bb2
 	puts "Startng BB2 for visiodom"
@@ -60,6 +60,10 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     Orocos.conf.apply(shutter_controller, ['default'], :override => true)
     shutter_controller.configure
     
+    shutter_controller_bb2 = Orocos.name_service.get 'shutter_controller_bb2'
+    Orocos.conf.apply(shutter_controller_bb2, ['bb2tenerife'], :override => true)
+    shutter_controller_bb2.configure
+
     pancam_panorama = Orocos.name_service.get 'pancam_panorama'
     Orocos.conf.apply(pancam_panorama, ['hdpr_autonomy'], :override => true)
     pancam_panorama.configure
@@ -250,24 +254,26 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
 	end
     #trajectoryGen.trajectory.connect_to                 waypoint_navigation.trajectory
     
-    # COnnect pancam panorama tasks
+    # Connect pancam panorama tasks
     pancam_panorama.pan_angle_in.connect_to             ptu_directedperception.pan_angle
     pancam_panorama.tilt_angle_in.connect_to            ptu_directedperception.tilt_angle
     pancam_panorama.pan_angle_out.connect_to            ptu_directedperception.pan_set
     pancam_panorama.tilt_angle_out.connect_to           ptu_directedperception.tilt_set
     pancam_left.frame.connect_to                        pancam_panorama.left_frame_in
     pancam_right.frame.connect_to                       pancam_panorama.right_frame_in
-    pancam_left.frame.connect_to shutter_controller.frame
-    pancam_left.shutter_value.connect_to shutter_controller.shutter_value
-    pancam_right.shutter_value.connect_to shutter_controller.shutter_value    
-    pancam_panorama.left_frame_out.connect_to stereo_pancam.left_frame
-    pancam_panorama.right_frame_out.connect_to stereo_pancam.right_frame
-    pancam_panorama.execution_valid.connect_to cartographer.sync_out
+    pancam_left.frame.connect_to                        shutter_controller.frame
+    pancam_left.shutter_value.connect_to                shutter_controller.shutter_value
+    pancam_right.shutter_value.connect_to               shutter_controller.shutter_value
+    pancam_panorama.left_frame_out.connect_to           stereo_pancam.left_frame
+    pancam_panorama.right_frame_out.connect_to          stereo_pancam.right_frame
+    pancam_panorama.execution_valid.connect_to          cartographer.sync_out
 
     # Connect bb2 tasks (not yet to visual odometry)
-    camera_firewire_bb2.frame.connect_to camera_bb2.frame_in
-    camera_bb2.left_frame.connect_to stereo_bb2.left_frame
-    camera_bb2.right_frame.connect_to stereo_bb2.right_frame
+    camera_firewire_bb2.frame.connect_to                camera_bb2.frame_in
+    camera_bb2.left_frame.connect_to                    stereo_bb2.left_frame
+    camera_bb2.right_frame.connect_to                   stereo_bb2.right_frame
+    camera_firewire_bb2.frame.connect_to                shutter_controller_bb2.frame
+    camera_firewire_bb2.shutter_value.connect_to        shutter_controller_bb2.shutter_value
 
     # COnnect locomotion ports
     joystick.raw_command.connect_to                     motion_translator.raw_command
@@ -344,8 +350,8 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     pancam_right.start
     stereo_pancam.start
     shutter_controller.start
+    shutter_controller_bb2.start
     pancam_panorama.start
-
    
     # start sensors
     ptu_directedperception.start
