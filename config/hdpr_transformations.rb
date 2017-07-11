@@ -78,7 +78,7 @@ static_transform Eigen::Quaternion.Identity(),
 
 # MS: Transformation Body to Velodyne (Velodyne frame expressed in Body frame)
 # TODO: Measure the height again, since its not tilted anymore
-static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(Math::PI, 0.0, 0.0), 2,1,0),
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(Math::PI, -0.314,0.0), 2,1,0),
     Eigen::Vector3.new(0.46, 0.018, 0.55), "lidar" => "body"
 
 static_transform Eigen::Quaternion.Identity(),

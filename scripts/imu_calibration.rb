@@ -13,7 +13,8 @@ Orocos::Process.run 'hdpr_unit_imu' do
 
     # Configure
     imu_stim300 = TaskContext.get 'imu_stim300'
-    Orocos.conf.apply(imu_stim300, ['default', 'calibration', 'HDPR', 'ESTEC', 'stim300_5g'], :override => true)
+    #Orocos.conf.apply(imu_stim300, ['default', 'calibration', 'HDPR', 'ESTEC', 'stim300_5g'], :override => true)
+    Orocos.conf.apply(imu_stim300, ['default', 'calibration', 'HDPR', 'Tenerife', 'stim300_5g'], :override => true)
     imu_stim300.configure
 
     # Log all ports

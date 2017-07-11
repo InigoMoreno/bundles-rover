@@ -6,7 +6,9 @@ acquisition_mode: 'AM_COR_FIX_PTRN'
 # Timeout in ms for reading and writing
 timeout: 3000
 # Integration time of the camera; [0,255]
-integration_time: 200
+#integration_time: 50
+#integration_time: 15
+#integration_time: 30
 # Dual integration time; only available for firmware 0x73; [0,100]
 dual_integration_time: 0
 # Modulation frequency of the LEDs; possible values: MF_40MHz, MF_30MHz, MF_21MHz, MF_20MHz, MF_19MHz, MF_60MHz, MF_15MHz, MF_10MHz, MF_29MHz, MF_31MHz, MF_14_5MHz, MF_15_5MHz
