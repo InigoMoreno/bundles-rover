@@ -198,7 +198,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
 
     # Setup Waypoint_navigation 
     waypoint_navigation = Orocos.name_service.get 'waypoint_navigation'
-    Orocos.conf.apply(waypoint_navigation, ['default','hdpr_lab'], :override => true)
+    Orocos.conf.apply(waypoint_navigation, ['default','hdpr'], :override => true)
     waypoint_navigation.configure
 
     # Setup command arbiter
@@ -212,7 +212,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
 
     gyro = TaskContext.get 'dsp1760'
     Orocos.conf.apply(gyro, ['default'], :override => true)
-    #gyro.configure
+    gyro.configure
  
     # setup telemetry_telecommand
     telemetry_telecommand = Orocos.name_service.get 'telemetry_telecommand'
@@ -263,8 +263,11 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     
     # Waypoint navigation inputs:
     imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples    
+    gyro.orientation_samples.connect_to                 gps_heading.gyro_pose_samples
     command_arbiter.motion_command.connect_to           gps_heading.motion_command
     telemetry_telecommand.locomotion_command.connect_to           gps_heading.motion_command
+
+    telemetry_telecommand.update_pose.connect_to gps_heading.ground_truth_pose_samples
 
     if options[:v] == false
     	gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
@@ -498,7 +501,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     trigger_tof.start
     dem_generation_tof.start
     imu_stim300.start
-   # gyro.start
+    gyro.start
     temperature.start
     if options[:v] == false
     	gps.start
@@ -528,7 +531,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
     puts "Move rover forward to initialise the gps_heading component"
     while gps_heading.ready == false
-        sleep 1
+       sleep 1
     end
     puts "GPS heading calibration done"
 

@@ -108,7 +108,7 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     # setup gps and gps heading
     puts "Setting up gps and gps heading"
     gps = TaskContext.get 'gps'
-    Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS_AUTONOMY'], :override => true)
+    Orocos.conf.apply(gps, ['HDPR', 'Spain', 'TENERIFE_AUTONOMY'], :override => true)
     gps.configure
     
     gps_heading = TaskContext.get 'gps_heading'
@@ -119,7 +119,7 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     # setup imu_stim300 
     puts "Setting up imu_stim300"
     imu_stim300 = TaskContext.get 'imu_stim300'
-    Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'ESTEC', 'stim300_5g'], :override => true)
+    Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'Tenerife', 'stim300_5g'], :override => true)
     imu_stim300.configure
     puts "done"
     
@@ -233,7 +233,7 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
 
 
     # Log all ports
-    #Orocos.log_all_ports
+    Orocos.log_all_ports
 
     puts "Connecting ports"
 
@@ -314,11 +314,12 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
     #gps_heading.pose_samples_out.connect_to      trav.robot_pose        
 
     # Connect ports: Vicon 		to 	path planner
-	if options[:v] == true
-		gps_heading.pose_samples_out.connect_to         planner.start_pose_samples        
-    else
+#	if options[:v] == true
+#		gps_heading.pose_samples_out.connect_to         planner.start_pose_samples
+#		puts "GPS HEADING POSE connected to PLANNER POSE"
+#   else
 		viso2_with_imu.pose_samples_out.connect_to		planner.start_pose_samples
-	end
+#	end
 
     # Connect ports: Goal Generator	to 	path planner
     cartographer.goal.connect_to                   planner.goal_pose_samples
@@ -365,6 +366,7 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_pancam', 'hdpr_unit_shutter_controlle
 		viso2_with_imu.start
 		puts "------------------------------ Using VISODOM ------------------------------"
 	end
+    sleep 5
     cartographer.start
     #sleep 1
 
