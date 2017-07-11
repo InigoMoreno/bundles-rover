@@ -74,6 +74,14 @@ pose_origin:
   - 5785971.45 
   - 5.87
 
+--- name:TENERIFE_AUTONOMY
+# Origin in UTM coordinates where the whole DECOS area is well into positive coordinates.
+pose_origin:
+  data:
+  - 597642.22
+  - 5786059.45
+  - 2296.00
+
 --- name:Tenerife
 # Origin in UTM coordinates, that is used for position readings.
 pose_origin:
@@ -97,7 +105,6 @@ pose_origin:
   - 0.0
   - 0.0
   - 0.0
-
 
 # no documentation available for this property
 #metadata:
