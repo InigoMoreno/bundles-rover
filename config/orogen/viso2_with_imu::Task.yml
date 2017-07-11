@@ -88,7 +88,7 @@ initial_pose:
   position:
     data:
     - 20.0
-    - 20.0
+    - 90.0
     - 0.0
   cov_position:
     data:
