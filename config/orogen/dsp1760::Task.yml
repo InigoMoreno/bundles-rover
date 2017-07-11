@@ -16,7 +16,9 @@ calibration_samples: 30
 #bias: -2.3386862673e-06  # (Tenerife)
 #bias: 1.4037573864e-06 # Tenerife 2017-06-09
 #bias: -1.5299002624e-06 # Tenerife 2017-06-10
-bias: -8.1001809086e-06 # Tenerife 2017-06-11
+#bias: -8.1001809086e-06 # Tenerife 2017-06-11
+#bias: 8.1892046315e-06 # Tenerife 2017-06-12
+bias: 1.0138775120e-05 # 2017-06-13
 
 # Netherlands
 #latitude: 52
