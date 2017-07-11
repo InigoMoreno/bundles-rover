@@ -9,7 +9,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_unit_mesa' do
+Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_unit_mesa', 'hdpr_shutter_controller_bumblebee' do
 
     # Configure
     camera_firewire_bb2 = TaskContext.get 'camera_firewire_bb2'
@@ -23,6 +23,10 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_unit_mesa' do
     tofcamera_mesasr = TaskContext.get 'tofcamera_mesasr'
     Orocos.conf.apply(tofcamera_mesasr, ['default'], :override => true)
     tofcamera_mesasr.configure
+
+    shutter_controller_bb2 = Orocos.name_service.get 'shutter_controller_bb2'
+    Orocos.conf.apply(shutter_controller_bb2, ['bb2tenerife'], :override => true)
+    shutter_controller_bb2.configure
 
     # Log
     logger_bb2 = Orocos.name_service.get 'hdpr_unit_bb2_Logger'
@@ -38,11 +42,14 @@ Orocos::Process.run 'hdpr_unit_bb2', 'hdpr_unit_mesa' do
     
     # Connect
     camera_firewire_bb2.frame.connect_to camera_bb2.frame_in
+    camera_firewire_bb2.frame.connect_to                shutter_controller_bb2.frame
+    camera_firewire_bb2.shutter_value.connect_to        shutter_controller_bb2.shutter_value
 
     # Start
     camera_firewire_bb2.start
     camera_bb2.start
     tofcamera_mesasr.start
+    shutter_controller_bb2.start
     
     Readline::readline("Press Enter to exit\n") do
     end

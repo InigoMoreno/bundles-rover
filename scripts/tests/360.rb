@@ -9,7 +9,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_360' do
+Orocos::Process.run 'hdpr_unit_360', 'hdpr_unit_shutter_controller' do
     ptu_directedperception = Orocos.name_service.get 'ptu_directedperception'
     Orocos.conf.apply(ptu_directedperception, ['default'], :override => true)
     ptu_directedperception.configure
@@ -23,8 +23,13 @@ Orocos::Process.run 'hdpr_unit_360' do
     pancam_right.configure
     
     pancam_360 = Orocos.name_service.get 'pancam_360'
-    Orocos.conf.apply(pancam_360, ['default', 'apriltag'], :override => true)
+#    Orocos.conf.apply(pancam_360, ['default', 'apriltag'], :override => true)
+    Orocos.conf.apply(pancam_360, ['default', 'separation_40_30'], :override => true)
     pancam_360.configure
+
+    shutter_controller = Orocos.name_service.get 'shutter_controller'
+    Orocos.conf.apply(shutter_controller, ['default'], :override => true)
+    shutter_controller.configure
     
     # For feedback connect the PTU angles to the pancam_360
     pancam_360.pan_angle_in.connect_to ptu_directedperception.pan_angle
@@ -32,6 +37,10 @@ Orocos::Process.run 'hdpr_unit_360' do
     # Connect the motion translator to the PTU control
     pancam_360.pan_angle_out.connect_to ptu_directedperception.pan_set
     pancam_360.tilt_angle_out.connect_to ptu_directedperception.tilt_set
+
+    pancam_left.frame.connect_to shutter_controller.frame
+    pancam_left.shutter_value.connect_to shutter_controller.shutter_value
+    pancam_right.shutter_value.connect_to shutter_controller.shutter_value
     
     pancam_left.frame.connect_to pancam_360.left_frame_in
     pancam_right.frame.connect_to pancam_360.right_frame_in
@@ -50,8 +59,14 @@ Orocos::Process.run 'hdpr_unit_360' do
     # Start the components
     pancam_left.start
     pancam_right.start
-    ptu_directedperception.start
+
+    shutter_controller.start
+    puts "Waiting for shutter controller to settle"
+    sleep 10
+    shutter_controller.stop
+
     pancam_360.start
+    ptu_directedperception.start
     
     $pass = 0
     while true
