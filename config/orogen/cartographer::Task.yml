@@ -219,8 +219,8 @@ ptu_to_center:
   - 1.86 # to the top plate it is 1.286
 reach_goal:
   data:
-  - 19.37 
-  - 70.88
+  - 151.0 
+  - 73.0
   - 0.0
 # in meters, needed for obstacle dilation
 robot_size: 1.4
@@ -337,17 +337,17 @@ ptu_to_center:
   - 0.138 
   - -0.005
   - 1.86 # to the top plate it is 1.286
+# in meters, needed for obstacle dilation
 reach_goal:
   data:
-  - 29.37 
-  - 80.88
+  - 101.0
+  - 73.0
   - 0.0
-# in meters, needed for obstacle dilation
 robot_size: 1.4
 # Obstacles the rover can tolerate when there is no sinkage [m] # TBD
-rover_normal_clearance: 0.22
+rover_normal_clearance: 0.18
 # Slope the rover can travel in nominal case [rad]
-rover_normal_gradeability: 0.33
+rover_normal_gradeability: 0.3
 # How many normal cell a slope map cell will contain (was 8)
 slope_map_scale: 8 
 # Maximum cost added by traversable slope
