@@ -28,13 +28,13 @@ positionErrorMargin: 0.1
 cameraPositions:
   - data:
     - -35.0
-    - 30.0
+    - 25.0
   - data:
     - 0.0
-    - 30.0
+    - 25.0
   - data:
     - 35.0
-    - 30.0
+    - 25.0
   - data:
     - 0.0
-    - 30.0
+    - 25.0
