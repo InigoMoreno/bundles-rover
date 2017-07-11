@@ -274,8 +274,20 @@ cameraPositions:
     - 155.0
     - 20.0
 
---- name:apriltag
+--- name:imu_tag
 cameraPositions:
   - data:
     - -180.0
     - 80.0
+
+--- name:rear_tag
+cameraPositions:
+  - data:
+    - -180.0
+    - 60.0
+
+--- name:tilt_20
+cameraPositions:
+  - data:
+    - 0.0
+    - 20.0
