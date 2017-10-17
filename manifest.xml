@@ -1,0 +1,19 @@
+<package>
+  <description brief="Common bundle for all the different rovers in the ESA ESTEC PRL">
+  For each rover there has to be a branch named like the rover which contains system-dependent changes to e.g. scripts and config files
+  </description>
+  <author>Martin Azkarate, Moritz Schilling/martin.azkarate@esa.int</author>
+  <license></license>
+  <url>http://</url>
+  <logo>http://</logo>
+
+  <depend package="bundles/rock" />
+  <!--
+   To add any dependencies use the depend tag
+  <depend package="dummy-dependency-0" />
+	...
+  <depend package="dummy-dependency-n-1" />
+  <depend package="dummy-dependency-n" />
+  -->
+  <depend package="bundles/rock" />
+</package>
