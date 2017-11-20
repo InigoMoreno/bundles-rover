@@ -8,7 +8,7 @@ require 'optparse'
 include Orocos
 
 # Command line options for the script, default values
-options = {:bb2 => true, :bb3 => true, :v => false}
+options = {:bb2 => true, :bb3 => true, :v => false, :custom_shutter => true}
 
 # Options parser
 OptionParser.new do |opts|
@@ -16,6 +16,7 @@ OptionParser.new do |opts|
   opts.on('-bb2', '--bb2 state', 'Enable/disable BB2 camera') { |state| options[:bb2] = state }
   opts.on('-bb3', '--bb3 state', 'Enable/disable BB3 camera') { |state| options[:bb3] = state }
   opts.on('-v', '--vicon state', 'Enable vicon over gps') { |state| options[:v] = state }
+  opts.on('-csc', '--custom-shutter-controller state', 'Enable/disable custom shutter controller') { |state| options[:custom_shutter] = state }
 end.parse!
 
 # Initialize bundles to find the configurations for the packages
@@ -28,7 +29,7 @@ Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb
 #
 # task context 'hdpr_unit_visual_odometry' is necessary, because it is used in the transforms,
 # eventhough we do not make use of visual odometry in this script.
-Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_temperature', 'hdpr_shutter_controller', 'hdpr_unit_gyro', 'hdpr_stereo', 'hdpr_tmtchandling', 'hdpr_vicon_unit', 'hdpr_shutter_controller_bumblebee', 'hdpr_unit_visual_odometry' do
+Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hdpr_bb2', 'hdpr_bb3', 'hdpr_imu', 'hdpr_gps', 'hdpr_temperature', 'hdpr_shutter_controller', 'hdpr_unit_gyro', 'hdpr_stereo', 'hdpr_tmtchandling', 'hdpr_vicon_unit', 'hdpr_shutter_controller_bumblebee' do
     joystick = Orocos.name_service.get 'joystick'
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -169,17 +170,19 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     Orocos.conf.apply(dem_generation_pancam, ['panCam'], :override => true)
     dem_generation_pancam.configure
 
-    shutter_controller = Orocos.name_service.get 'shutter_controller'
-    Orocos.conf.apply(shutter_controller, ['default'], :override => true)
-    shutter_controller.configure
+    if options[:custom_shutter] == true
+        shutter_controller = Orocos.name_service.get 'shutter_controller'
+        Orocos.conf.apply(shutter_controller, ['default'], :override => true)
+        shutter_controller.configure
 
-    shutter_controller_bb2 = Orocos.name_service.get 'shutter_controller_bb2'
-    Orocos.conf.apply(shutter_controller_bb2, ['bb2tenerife'], :override => true)
-    shutter_controller_bb2.configure
+        shutter_controller_bb2 = Orocos.name_service.get 'shutter_controller_bb2'
+        Orocos.conf.apply(shutter_controller_bb2, ['bb2tenerife'], :override => true)
+        shutter_controller_bb2.configure
 
-    shutter_controller_bb3 = Orocos.name_service.get 'shutter_controller_bb3'
-    Orocos.conf.apply(shutter_controller_bb3, ['bb3tenerife'], :override => true)
-    shutter_controller_bb3.configure
+        shutter_controller_bb3 = Orocos.name_service.get 'shutter_controller_bb3'
+        Orocos.conf.apply(shutter_controller_bb3, ['bb3tenerife'], :override => true)
+        shutter_controller_bb3.configure
+    end
     
     #pancam_panorama = Orocos.name_service.get 'pancam_panorama'
     #Orocos.conf.apply(pancam_panorama, ['default'], :override => true)
@@ -245,8 +248,10 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         trigger_bb2.frame_right_out.connect_to              stereo_bb2.right_frame
         trigger_bb2.frame_left_out.connect_to               dem_generation_bb2.left_frame_rect
         stereo_bb2.distance_frame.connect_to                dem_generation_bb2.distance_frame
-        camera_firewire_bb2.frame.connect_to                shutter_controller_bb2.frame
-        camera_firewire_bb2.shutter_value.connect_to        shutter_controller_bb2.shutter_value
+        if options[:custom_shutter] == true
+            camera_firewire_bb2.frame.connect_to                shutter_controller_bb2.frame
+            camera_firewire_bb2.shutter_value.connect_to        shutter_controller_bb2.shutter_value
+        end
         #stereo_bb2.left_frame_sync.connect_to               dem_generation_bb2.left_frame_rect
         #stereo_bb2.right_frame_sync.connect_to              dem_generation_bb2.right_frame_rect
     end
@@ -258,8 +263,10 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         trigger_bb3.frame_right_out.connect_to              stereo_bb3.right_frame
         trigger_bb3.frame_left_out.connect_to               dem_generation_bb3.left_frame_rect
         stereo_bb3.distance_frame.connect_to                dem_generation_bb3.distance_frame
-        camera_firewire_bb3.frame.connect_to                shutter_controller_bb3.frame
-        camera_firewire_bb3.shutter_value.connect_to        shutter_controller_bb3.shutter_value
+        if options[:custom_shutter] == true
+            camera_firewire_bb3.frame.connect_to                shutter_controller_bb3.frame
+            camera_firewire_bb3.shutter_value.connect_to        shutter_controller_bb3.shutter_value
+        end
         #stereo_bb3.left_frame_sync.connect_to               dem_generation_bb3.left_frame_rect
         #stereo_bb3.right_frame_sync.connect_to              dem_generation_bb3.right_frame_rect
    end
@@ -405,14 +412,18 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         logger_bb2 = Orocos.name_service.get 'hdpr_bb2_Logger'
         logger_bb2.file = "bb2.log"
         logger_bb2.log(camera_firewire_bb2.frame)
-        logger_bb2.log(shutter_controller_bb2.shutter_value)
+        if options[:custom_shutter] == true
+            logger_bb2.log(shutter_controller_bb2.shutter_value)
+        end
     end
     
     if options[:bb3] == true
         logger_bb3 = Orocos.name_service.get 'hdpr_bb3_Logger'
         logger_bb3.file = "bb3.log"
         logger_bb3.log(camera_firewire_bb3.frame)
-        logger_bb3.log(shutter_controller_bb3.shutter_value)
+        if options[:custom_shutter] == true
+            logger_bb3.log(shutter_controller_bb3.shutter_value)
+        end
     end
 
     logger_tof = Orocos.name_service.get 'hdpr_tof_Logger'
@@ -508,17 +519,19 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     temperature.start
     if options[:v] == false
     	gps.start
+        gps_heading.start
     else
 	vicon.start
     end
-    gps_heading.start
     if options[:bb2] == true
         camera_bb2.start
         camera_firewire_bb2.start
         trigger_bb2.start
         stereo_bb2.start
         dem_generation_bb2.start
-        shutter_controller_bb2.start
+        if options[:custom_shutter] == true
+            shutter_controller_bb2.start
+        end
     end
     if options[:bb3] == true
         camera_bb3.start
@@ -526,17 +539,21 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         trigger_bb3.start
         stereo_bb3.start
         dem_generation_bb3.start
-        shutter_controller_bb3.start
+        if options[:custom_shutter] == true
+            shutter_controller_bb3.start
+        end
     end
     telemetry_telecommand.start
 
-    # Race condition with internal gps_heading states. This check is here to only trigger the 
-    # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
-    puts "Move rover forward to initialise the gps_heading component"
-    while gps_heading.ready == false
-       sleep 1
+    if options[:v] == false
+        # Race condition with internal gps_heading states. This check is here to only trigger the 
+        # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
+        puts "Move rover forward to initialise the gps_heading component"
+        while gps_heading.ready == false
+           sleep 1
+        end
+        puts "GPS heading calibration done"
     end
-    puts "GPS heading calibration done"
 
     # Trigger the trojectory generation, waypoint_navigation must be running at this point
     waypoint_navigation.start
