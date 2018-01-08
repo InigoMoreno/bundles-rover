@@ -57,8 +57,8 @@ static_transform Eigen::Quaternion.Identity(),
 #static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI/2.0, 0.00, Math::PI/2.0), 2,1,0),
 # MS: Renamed left_camera frame to reflect that the BB3 used as the front cam is different from the mast frame
 # TODO: Measure again when final position has come up
-static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.0, -0.506-Math::PI/2.0), 2,1,0),
-    Eigen::Vector3.new( 0.6, 0.0, 0.1), "tof" => "body"
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.0, -0.454-Math::PI/2.0), 2,1,0),
+    Eigen::Vector3.new( 0.6, 0.0, 0.15), "tof" => "body"
 
 # Transformation front BB2 to body center
 #static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.0, -0.593-Math::PI/2.0), 2,1,0), #old
@@ -78,7 +78,8 @@ static_transform Eigen::Quaternion.Identity(),
 
 # MS: Transformation Body to Velodyne (Velodyne frame expressed in Body frame)
 # TODO: Measure the height again, since its not tilted anymore
-static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(Math::PI, -0.314,0.0), 2,1,0),
+#static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(Math::PI, -0.314,0.0), 2,1,0),
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(Math::PI, 0.0, 0.0), 2,1,0),
     Eigen::Vector3.new(0.46, 0.018, 0.55), "lidar" => "body"
 
 static_transform Eigen::Quaternion.Identity(),
