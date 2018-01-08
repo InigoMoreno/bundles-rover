@@ -204,7 +204,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
 
     # Setup Waypoint_navigation 
     waypoint_navigation = Orocos.name_service.get 'waypoint_navigation'
-    Orocos.conf.apply(waypoint_navigation, ['default','hdpr'], :override => true)
+    Orocos.conf.apply(waypoint_navigation, ['default','hdpr_lab'], :override => true)
     waypoint_navigation.configure
 
     # Setup command arbiter

@@ -282,7 +282,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     command_arbiter.motion_command.connect_to           gps_heading.motion_command
     telemetry_telecommand.locomotion_command.connect_to           gps_heading.motion_command
 
-    telemetry_telecommand.update_pose.connect_to viso2_with_imu.reset_pose
+    #telemetry_telecommand.update_pose.connect_to viso2_with_imu.reset_pose
 
     if options[:v] == false
                 camera_bb2.left_frame.connect_to                    visual_odometry.left_frame
