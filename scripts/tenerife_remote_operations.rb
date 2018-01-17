@@ -8,7 +8,7 @@ require 'optparse'
 include Orocos
 
 # Command line options for the script, default values
-options = {:bb2 => true, :bb3 => true, :v => false, :custom_shutter => true}
+options = {:bb2 => true, :bb3 => true, :v => false, :csc => true}
 
 # Options parser
 OptionParser.new do |opts|
@@ -16,7 +16,7 @@ OptionParser.new do |opts|
   opts.on('-bb2', '--bb2 state', 'Enable/disable BB2 camera') { |state| options[:bb2] = state }
   opts.on('-bb3', '--bb3 state', 'Enable/disable BB3 camera') { |state| options[:bb3] = state }
   opts.on('-v', '--vicon state', 'Enable vicon over gps') { |state| options[:v] = state }
-  opts.on('-csc', '--custom-shutter-controller state', 'Enable/disable custom shutter controller') { |state| options[:custom_shutter] = state }
+  opts.on('-csc', '--customShutterController state', 'Enable/disable custom shutter controller') { |state| options[:csc] = state }
 end.parse!
 
 # Initialize bundles to find the configurations for the packages
@@ -94,14 +94,14 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     imu_stim300.configure
     
     if options[:v] == false
-   	gps = TaskContext.get 'gps'
-    	#Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS'], :override => true)
-    	Orocos.conf.apply(gps, ['HDPR', 'Spain', 'Tenerife_Teleop'], :override => true)
-    	gps.configure
+        gps = TaskContext.get 'gps'
+        #Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS'], :override => true)
+        Orocos.conf.apply(gps, ['HDPR', 'Spain', 'Tenerife_Teleop'], :override => true)
+        gps.configure
     else
-   	vicon = TaskContext.get 'vicon'
-    	Orocos.conf.apply(vicon, ['default','hdpr'], :override => true)
-    	vicon.configure
+        vicon = TaskContext.get 'vicon'
+        Orocos.conf.apply(vicon, ['default','hdpr'], :override => true)
+        vicon.configure
     end	
 
     gps_heading = TaskContext.get 'gps_heading'
@@ -109,7 +109,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     gps_heading.configure
 
     if options[:bb2] == true
-        puts "Startng BB2"
+        puts "Starting BB2"
     
         camera_firewire_bb2 = TaskContext.get 'camera_firewire_bb2'
         Orocos.conf.apply(camera_firewire_bb2, ['bumblebee2'], :override => true)
@@ -131,7 +131,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     end
 
     if options[:bb3] == true
-        puts "Startng BB3"
+        puts "Starting BB3"
         
         camera_firewire_bb3 = TaskContext.get 'camera_firewire_bb3'
         Orocos.conf.apply(camera_firewire_bb3, ['bumblebee3'], :override => true)
@@ -170,7 +170,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     Orocos.conf.apply(dem_generation_pancam, ['panCam'], :override => true)
     dem_generation_pancam.configure
 
-    if options[:custom_shutter] == true
+    #if options[:csc] == true
         shutter_controller = Orocos.name_service.get 'shutter_controller'
         Orocos.conf.apply(shutter_controller, ['default'], :override => true)
         shutter_controller.configure
@@ -182,7 +182,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         shutter_controller_bb3 = Orocos.name_service.get 'shutter_controller_bb3'
         Orocos.conf.apply(shutter_controller_bb3, ['bb3tenerife'], :override => true)
         shutter_controller_bb3.configure
-    end
+    #end
     
     #pancam_panorama = Orocos.name_service.get 'pancam_panorama'
     #Orocos.conf.apply(pancam_panorama, ['default'], :override => true)
@@ -229,6 +229,10 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     # Configure the connections between the components
     joystick.raw_command.connect_to                     motion_translator.raw_command
     joystick.raw_command.connect_to                     command_arbiter.raw_command
+
+    # TODO test
+    motion_translator.ptu_pan_angle.connect_to          ptu_directedperception.pan_set
+    motion_translator.ptu_tilt_angle.connect_to         ptu_directedperception.tilt_set
     
     motion_translator.motion_command.connect_to         command_arbiter.joystick_motion_command
     waypoint_navigation.motion_command.connect_to       command_arbiter.follower_motion_command
@@ -248,10 +252,10 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         trigger_bb2.frame_right_out.connect_to              stereo_bb2.right_frame
         trigger_bb2.frame_left_out.connect_to               dem_generation_bb2.left_frame_rect
         stereo_bb2.distance_frame.connect_to                dem_generation_bb2.distance_frame
-        if options[:custom_shutter] == true
+        #if options[:csc] == true
             camera_firewire_bb2.frame.connect_to                shutter_controller_bb2.frame
             camera_firewire_bb2.shutter_value.connect_to        shutter_controller_bb2.shutter_value
-        end
+        #end
         #stereo_bb2.left_frame_sync.connect_to               dem_generation_bb2.left_frame_rect
         #stereo_bb2.right_frame_sync.connect_to              dem_generation_bb2.right_frame_rect
     end
@@ -263,10 +267,10 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         trigger_bb3.frame_right_out.connect_to              stereo_bb3.right_frame
         trigger_bb3.frame_left_out.connect_to               dem_generation_bb3.left_frame_rect
         stereo_bb3.distance_frame.connect_to                dem_generation_bb3.distance_frame
-        if options[:custom_shutter] == true
+        #if options[:csc] == true
             camera_firewire_bb3.frame.connect_to                shutter_controller_bb3.frame
             camera_firewire_bb3.shutter_value.connect_to        shutter_controller_bb3.shutter_value
-        end
+        #end
         #stereo_bb3.left_frame_sync.connect_to               dem_generation_bb3.left_frame_rect
         #stereo_bb3.right_frame_sync.connect_to              dem_generation_bb3.right_frame_rect
    end
@@ -406,13 +410,16 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     #logger_pancam.log(pancam_360.pan_angle_out_degrees)
     #logger_pancam.log(pancam_360.tilt_angle_out_degrees)
     #logger_pancam.log(pancam_360.set_id)
+    logger_pancam.log(pancam_left.frame)
+    logger_pancam.log(pancam_right.frame)
     logger_pancam.log(shutter_controller.shutter_value)
+    stereo_pancam.log_all_ports
     
     if options[:bb2] == true
         logger_bb2 = Orocos.name_service.get 'hdpr_bb2_Logger'
         logger_bb2.file = "bb2.log"
         logger_bb2.log(camera_firewire_bb2.frame)
-        if options[:custom_shutter] == true
+        if options[:csc] == true
             logger_bb2.log(shutter_controller_bb2.shutter_value)
         end
     end
@@ -421,7 +428,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         logger_bb3 = Orocos.name_service.get 'hdpr_bb3_Logger'
         logger_bb3.file = "bb3.log"
         logger_bb3.log(camera_firewire_bb3.frame)
-        if options[:custom_shutter] == true
+        if options[:csc] == true
             logger_bb3.log(shutter_controller_bb3.shutter_value)
         end
     end
@@ -475,7 +482,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     
     # Start loggers
 #    logger_control.start
-#    logger_pancam.start
+    logger_pancam.start
     if options[:bb2] == true
 #        logger_bb2.start
     end
@@ -529,9 +536,9 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         trigger_bb2.start
         stereo_bb2.start
         dem_generation_bb2.start
-        if options[:custom_shutter] == true
+        #if options[:csc] == true
             shutter_controller_bb2.start
-        end
+        #end
     end
     if options[:bb3] == true
         camera_bb3.start
@@ -539,9 +546,9 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
         trigger_bb3.start
         stereo_bb3.start
         dem_generation_bb3.start
-        if options[:custom_shutter] == true
+        #if options[:csc] == true
             shutter_controller_bb3.start
-        end
+        #end
     end
     telemetry_telecommand.start
 
