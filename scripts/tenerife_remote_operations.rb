@@ -401,15 +401,6 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     
     logger_pancam = Orocos.name_service.get 'hdpr_pancam_Logger'
     logger_pancam.file = "pancam.log"
-    #logger_pancam.log(pancam_panorama.left_frame_out)
-    #logger_pancam.log(pancam_panorama.right_frame_out)
-    #logger_pancam.log(pancam_panorama.pan_angle_out_degrees)
-    #logger_pancam.log(pancam_panorama.tilt_angle_out_degrees)
-    #logger_pancam.log(pancam_360.left_frame_out)
-    #logger_pancam.log(pancam_360.right_frame_out)
-    #logger_pancam.log(pancam_360.pan_angle_out_degrees)
-    #logger_pancam.log(pancam_360.tilt_angle_out_degrees)
-    #logger_pancam.log(pancam_360.set_id)
     logger_pancam.log(pancam_left.frame)
     logger_pancam.log(pancam_right.frame)
     logger_pancam.log(shutter_controller.shutter_value)
@@ -469,26 +460,14 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     logger_temperature.file = "temperature.log"
     logger_temperature.log(temperature.temperature_samples)
 
-    #logger_gyro = Orocos.name_service.get 'hdpr_unit_gyro_Logger'
-    #logger_gyro.file = "gyro.log"
-    #logger_gyro.log(gyro.rotation)
-    #logger_gyro.log(gyro.orientation_samples)
-    #logger_gyro.log(gyro.bias_samples)
-    #logger_gyro.log(gyro.bias_values)
-
-    # No loggers needed for triggers, stereo, dem_generation or telemetry_telecommand
-
-    #Orocos.log_all_ports
-    
     # Start loggers
-#    logger_control.start
-    logger_pancam.start
     if options[:bb2] == true
-#        logger_bb2.start
+        logger_bb2.start
     end
     if options[:bb3] == true
-#        logger_bb3.start
+        logger_bb3.start
     end
+    logger_pancam.start
 #    logger_tof.start
 #    logger_lidar.start
 #    logger_gps.start
@@ -528,7 +507,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     	gps.start
         gps_heading.start
     else
-	vicon.start
+  	vicon.start
     end
     if options[:bb2] == true
         camera_bb2.start
