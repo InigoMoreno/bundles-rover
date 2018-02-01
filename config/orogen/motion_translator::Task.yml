@@ -6,7 +6,7 @@ ptuMaxPanAngle: 3.05
 # Maximum speed at which to move the PTU axis
 ptuMaxSpeed: 0.2
 # Maximum PTU tilt angle, in PTU units
-ptuMaxTiltAngle: 1.48
+ptuMaxTiltAngle: 4.48
 # Minimum PTU pan angle, in PTU units
 ptuMinPanAngle: -3.05
 # Minimum PTU tilt angle, in PTU units
