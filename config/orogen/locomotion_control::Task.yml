@@ -1,4 +1,4 @@
---- name:default
+--- name:exoter
 # no documentation available for this property
 number_motors: 16
 # no documentation available for this property
@@ -75,3 +75,81 @@ rover_parameters:
 target_window: 0.05
 position_limit: 1.75
 velocity_limit: 1.35
+
+--- name:hdpr
+# no documentation available for this property
+number_motors: 10
+# no documentation available for this property
+number_nodes: 12
+
+# Required CAN Nodes in that order. Searching by names.
+canNodesNames: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_BL, WHEEL_STEER_BR, WHEEL_DRIVE_GROUP, WHEEL_STEER_GROUP]
+
+# no documentation available for this property
+rover_parameters: 
+  IsDrivingWheel: 
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  WheelNumber: 6
+  LegLengthV: 
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  IsSteeringWheel: 
+  - 1
+  - 1
+  - 0
+  - 0
+  - 1
+  - 1
+  WalkCoordCart: 
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  IsWalkingWheel: 
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  WheelRadius: 
+  - 0.125
+  - 0.125
+  - 0.125
+  - 0.125
+  - 0.125
+  - 0.125
+  WheelCoordCart: 
+  - 0.75
+  - 0.41
+  - 0.75
+  - -0.41
+  - 0
+  - 0.41
+  - 0
+  - -0.41
+  - -0.75
+  - 0.41
+  - -0.75
+  - -0.41
+# no documentation available for this property
+target_window: 0.05
+position_limit: 1.57
+velocity_limit: 8

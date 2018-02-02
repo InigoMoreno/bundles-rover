@@ -1,4 +1,7 @@
 build/
-*.sw?
 .yardoc
+logs
 logs/
+*.sw?
+*.swp
+*.save

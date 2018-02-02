@@ -13,7 +13,7 @@
 ############################
 # Static transformations
 ############################
-load_transformer_conf "#{ENV['AUTOPROJ_CURRENT_ROOT']}/bundles/exoter/config/exoter_transformations.rb"
+load_transformer_conf "#{ENV['AUTOPROJ_CURRENT_ROOT']}/bundles/hdpr/config/hdpr_transformations.rb"
 
 ############################
 # Dynamic transformations
@@ -30,13 +30,16 @@ dynamic_transform "localization_frontend.world_to_navigation_out", "navigation" 
 #    Eigen::Vector3.new( 2.0, 0.0, 0.0 ), "navigation" => "world"
 
 # Transformation from Navigation to Body but transformer expected in the inverse sense
-dynamic_transform "exoter_odometry.pose_samples_out", "body" => "navigation"
-
-# Transformation from Lab frame (Vicon) to Body but transformer expected in the inverse sense
-dynamic_transform "pose_merge.pose", "body" => "lab"
+#dynamic_transform "threed_odometry.pose_samples_out", "body" => "navigation"
 
 # Transformation from mast to Pan and Tilt Unit but transformed expected in the inverse sense
-dynamic_transform "ptu_control.mast_to_ptu_out", "ptu" => "mast"
+dynamic_transform "ptu_directedperception.orientation_samples", "ptu_head" => "ptu_base"
+
+# Transformation from rover body to navigation but transformed expected in the inverse sense
+#dynamic_transform "gps_heading.pose_samples_out", "body" => "gnss_utm" # original gps one
+dynamic_transform "vicon.pose_samples", "body" => "world_osg" # original gps one
+#dynamic_transform "viso2_with_imu.pose_samples_out", "body" => "viso_world"
+
 #static_transform Eigen::Quaternion.Identity(),
 #    Eigen::Vector3.new( 2.0, 0.0, 0.0 ), "ptu" => "mast"
 

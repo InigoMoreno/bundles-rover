@@ -1,0 +1,40 @@
+--- name:default
+# albeit producing relatively dark images,
+# this configuration has shown to yield good disparities in daylight settings
+config:
+  shutterCompPeriod: 3
+  initShutterTime: 20
+  maxShutterTime: 3904
+  minShutterTime: 3
+  maxIntensity: 255
+  factMaxIntensity: 0.70
+  factMinIntensity: 0.20
+  factMinMean: 0.3
+  factMaxMean: 0.4
+  weightOldShutterTime: 0.99
+
+--- name:bb2tenerife
+config:
+  shutterCompPeriod: 3
+  initShutterTime: 20
+  maxShutterTime: 864
+  minShutterTime: 0
+  maxIntensity: 255
+  factMaxIntensity: 0.70
+  factMinIntensity: 0.20
+  factMinMean: 0.3
+  factMaxMean: 0.4
+  weightOldShutterTime: 0.99
+
+--- name:bb3tenerife
+config:
+  shutterCompPeriod: 10
+  initShutterTime: 20
+  maxShutterTime: 1122
+  minShutterTime: 0
+  maxIntensity: 255
+  factMaxIntensity: 0.70
+  factMinIntensity: 0.20
+  factMinMean: 0.3
+  factMaxMean: 0.4
+  weightOldShutterTime: 0.995

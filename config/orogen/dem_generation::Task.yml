@@ -1,5 +1,4 @@
 --- name:exoter_bb2
-# no documentation available for this property
 cameraCalibration:
     fx: 840.919396
     fy: 843.876013
@@ -13,35 +12,10 @@ cameraCalibration:
     height: 768
     ex: 0.0
     ey: 0.0
-# A configuration property (here, a std::string). Its value can be retrieved
-# in the C++ code with # _config_value.get() and _config_value.set(new_value).
 camera_name: 'FLOC'
-# no documentation available for this property
-save_directory: '/home/exoter/Desktop/Images/'
-
---- name:hdpr_bb2
-# no documentation available for this property
-cameraCalibration:
-    fx: 837.253850
-    fy: 838.490409
-    cx: 500.836269
-    cy: 396.129781
-    d0: -0.350699
-    d1: 0.143871
-    d2: 0.000772
-    d3: 0.000436
-    width: 1024
-    height: 768
-    ex: 0.0
-    ey: 0.0
-# A configuration property (here, a std::string). Its value can be retrieved
-# in the C++ code with # _config_value.get() and _config_value.set(new_value).
-camera_name: 'RLOC'
-# no documentation available for this property
 save_directory: '/home/exoter/Desktop/Images/'
 
 --- name:bb3
-# no documentation available for this property
 cameraCalibration:
     fx: 1624.646083
     fy: 1629.037008
@@ -55,8 +29,184 @@ cameraCalibration:
     height: 960
     ex: 0.0
     ey: 0.0
-# A configuration property (here, a std::string). Its value can be retrieved
-# in the C++ code with # _config_value.get() and _config_value.set(new_value).
 camera_name: 'PANCAM'
-# no documentation available for this property
 save_directory: '/home/exoter/Desktop/Images/'
+
+--- name:hdpr_bb2
+cameraCalibration:
+  fx: 833.029249273
+  fy: 834.36200043
+  cx: 503.38475908
+  cy: 394.969563968
+  d0: -0.351348570994
+  d1: 0.149480797792
+  d2: 0.000305233424184
+  d3: -0.000750163647335
+  width: 1024
+  height: 768
+camera_name: 'HAZCAM' # RLOC for exoter
+save_directory: '/media/logs/Products/'
+# K points for statistical pc filter
+k_points: 20
+# Leaf size of pc voxel filter
+leaf_size: 0.05
+enable_compression: true
+compression_level: 20.0
+# Maximum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_max:
+  data:
+  - 4.0
+  - 4.0
+  - 4.0
+  - 0.0
+# Minimum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_min:
+  data:
+  - -4.0
+  - -4.0
+  - 0.5
+  - 0.0
+
+--- name:hdpr_bb3
+cameraCalibration:
+  fx: 1636.20761888
+  fy: 1637.33777994
+  cx: 651.850565473
+  cy: 471.147308853
+  d0: -0.594977746871
+  d1: 0.325393349407
+  d2: 0.00144401244969
+  d3: 0.000959205363921
+  width: 1280
+  height: 960
+camera_name: 'FRONT' # PANCAM for exoter
+save_directory: '/media/logs/Products/'
+# K points for statistical pc filter
+k_points: 20
+# Leaf size of pc voxel filter
+leaf_size: 0.05
+
+# Maximum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_max:
+  data:
+  - 7.0
+  - 7.0
+  - 7.0
+  - 0.0
+# Minimum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_min:
+  data:
+  - -7.0
+  - -7.0
+  - 0.5
+  - 0.0
+enable_compression: true
+compression_level: 20.0
+
+--- name:mesa
+cameraCalibration:
+  fx: 0.0
+  fy: 0.0
+  cx: 0.0
+  cy: 0.0
+  d0: 0.0 
+  d1: 0.0 
+  d2: 0.0 
+  d3: 0.0
+  width: 176
+  height: 144
+camera_name: 'TOF'
+save_directory: '/media/logs/Products/'
+# K points for statistical pc filter
+k_points: 20
+# Leaf size of pc voxel filter
+leaf_size: 0.05
+
+# Maximum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_max:
+  data:
+  - 6.0
+  - 6.0
+  - 6.0
+  - 0.0
+# Minimum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_min:
+  data:
+  - -6.0
+  - -6.0
+  - 0.8
+  - 0.0
+enable_compression: true
+compression_level: 90.0
+
+--- name:velodyne
+cameraCalibration:
+  fx: 0.0
+  fy: 0.0
+  cx: 0.0
+  cy: 0.0
+  d0: 0.0 
+  d1: 0.0 
+  d2: 0.0 
+  d3: 0.0
+  width: 1808
+  height: 16
+camera_name: 'LIDAR'
+save_directory: '/media/logs/Products/'
+# K points for statistical pc filter
+k_points: 20
+# Leaf size of pc voxel filter
+leaf_size: 0.05
+
+# Maximum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_max:
+  data:
+  - 100.0
+  - 100.0
+  - 100.0
+  - 0.0
+# Minimum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_min:
+  data:
+  - -100.0
+  - -100.0
+  - -100.0
+  - 0.0
+enable_compression: true
+compression_level: 20.0
+
+--- name:panCam
+cameraCalibration:
+  fx: 1419.81633673
+  fy: 1422.08972277
+  cx: 652.276264771
+  cy: 474.063082006
+  d0: -0.260860971312
+  d1: 0.203367792811
+  d2: -0.000105868303039
+  d3: 0.000256922530508
+  width: 1280
+  height: 960
+camera_name: 'MAST'
+save_directory: '/media/logs/Products/'
+# K points for statistical pc filter
+k_points: 20
+# Leaf size of pc voxel filter
+leaf_size: 0.05
+
+# Maximum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_max:
+  data:
+  - 10.0
+  - 10.0
+  - 10.0
+  - 0.0
+# Minimum vertex where a local point cloud is supposed to be valid within the rover frame
+pointcloud_cut_min:
+  data:
+  - -10.0
+  - -10.0
+  - 0.5
+  - 0.0
+enable_compression: true
+compression_level: 20.0

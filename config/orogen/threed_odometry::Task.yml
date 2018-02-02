@@ -1,4 +1,53 @@
 --- name:default
+# All joints in the order needed by KDL to solve the forward kinematics. ONLY movable joints, meaning joints which are NOT "fixed" in URDF.
+all_joint_names: []
+# the global name that should be used for the internal body frame
+body_frame: body
+# Segment names for the segment of the last contact angle in the URDF file. Normally, all segments with the contact joint attached.
+contact_angle_segments: []
+# Joints in the model which are part of the contact angle. Normally, the joints attached to the contact angle segments
+contact_joint_names: []
+# Segment names for the segment of the last contact point in the URDF file. This is the last element per each kinematic chain.
+contact_point_segments: []
+# Text to define the From Frame for the transformer (delta pose)
+delta_odometry_source_frame: ''
+# Text to define the To Frame for the transformer (delta pose)
+delta_odometry_target_frame: ''
+# Configuration values to run the Infinite Impulse Response (IIR). Look in Types for further details.
+iir_filter:
+  iirOn: false
+  feedForwardCoeff:
+    data: []
+  feedBackCoeff:
+    data: []
+# the global name that should be used for the internal imu frame
+imu_frame: imu
+# Time in s between joints_samples readings
+joints_samples_period: 0.08
+# Model type to use: ANALYTICAL or NUMERICAL approach.You must write :NUMERICAL in case you are using the Kinematics model from threed_odometry library.
+kinematic_model_type: :NUMERICAL
+# Text to define the From Frame for the transformer (accumulated pose or Dead-Reckoning)
+odometry_source_frame: ''
+# Text to define the To Frame for the transformer (accumulated pose or Dead-Reckoning)
+odometry_target_frame: ''
+# Set to true if desired orientation noise from orientation_samples input port.Otherwise it uses the motion model Leasts-Squares error to fill the uncertainty for the orientation.
+orientation_samples_noise_on: false
+# Time in s between orientation_samples readings
+orientation_samples_period: 0.08
+# Set to true in case you want to have the output ports bellow.
+output_debug: false
+# Joints in the model which are part of the slip model. Normally, the joints attached to the contact point segments.
+slip_joint_names: []
+# list of static transformations
+static_transformations: []
+# Maximum time in seconds the transformer will wait until it starts dropping samples
+transformer_max_latency: 1.0
+# Minimum system time in seconds between two updates of the status ports
+transformer_status_period: 1.0
+# path to the rover urdf file
+urdf_file: ''
+
+--- name:exoter
 # path to the rover urdf file
 urdf_file: '../../../../bundles/exoter/data/odometry/exoter_odometry_model_complete.urdf'
 
@@ -50,6 +99,62 @@ orientation_samples_period: 0.082
 transformer_status_period: 1.0
 # Maximum time in seconds the transformer will wait until it starts dropping samples
 transformer_max_latency: 0.1
+
+# Set to true if desired orientation noise from orientation_samples input port.Otherwise it uses the motion model Leasts-Squares error to fill the uncertainty.
+orientation_samples_noise_on: true #false
+# Set to true if output debug information is desirable.
+output_debug: true
+
+--- name:HDPR
+# path to the rover urdf file
+urdf_file: '/home/hdpr/dev/bundles/hdpr/data/odometry/hdpr_odometry_model_complete.urdf'
+
+contact_point_segments: [fl_segment_slipz, fr_segment_slipz, ml_segment_slipz, mr_segment_slipz, rl_segment_slipz, rr_segment_slipz]
+
+contact_angle_segments: [fl_ground, fr_ground, ml_ground, mr_ground, rl_ground, rr_ground]
+
+
+# Model type to use: ANALYTICAL or NUMERICAL approach.You must write :NUMERICAL in case you are using the Kinematics model from threed_odometry library.
+kinematic_model_type: :NUMERICAL
+
+# from frame for the transformer
+odometry_source_frame: "body" #transformer names. No transformation convention
+# to frame for the transformer
+odometry_target_frame: "navigation" #transformer names. No transformation convention
+
+# from frame for the transformer
+delta_odometry_source_frame: "body" #transformer names. No transformation convention
+# to frame for the transformer
+delta_odometry_target_frame: "body_k-1" #transformer names. No transformation convention
+
+all_joint_names: [ fl_steer, fl_drive, 
+                   ml_drive,
+                   rl_steer, rl_drive,
+                   rr_steer, rr_drive,
+                   fr_steer, fr_drive,
+                   mr_drive,
+                   #right_passive, left_passive, right_rocker_bogie, left_rocker_bogie,
+                   fl_slipx, fr_slipx, ml_slipx, mr_slipx, rl_slipx, rr_slipx,
+                   fl_slipy, fr_slipy, ml_slipy, mr_slipy, rl_slipy, rr_slipy,
+                   fl_slipz, fr_slipz, ml_slipz, mr_slipz, rl_slipz, rr_slipz,
+                   fl_contact, fr_contact, ml_contact, mr_contact, rl_contact, rr_contact,
+                   fl_translation, fr_translation, ml_translation, mr_translation, rl_translation, rr_translation
+                 ]
+
+slip_joint_names: [fl_slipx, fr_slipx, ml_slipx, mr_slipx, rl_slipx, rr_slipx,
+              fl_slipy, fr_slipy, ml_slipy, mr_slipy, rl_slipy, rr_slipy,
+              fl_slipz, fr_slipz, ml_slipz, mr_slipz, rl_slipz, rr_slipz]
+
+contact_joint_names: [fl_contact, fr_contact, ml_contact, mr_contact, rl_contact, rr_contact]
+
+# Time in s between joints_samples readings
+joints_samples_period: 0.08
+# Time in s between orientation_samples readings
+orientation_samples_period: 0.08
+# Minimum system time in seconds between two updates of the status ports
+#stream_aligner_status_period: 0.08
+# Maximum time in seconds the transformer will wait until it starts dropping samples
+#aggregator_max_latency: 1.0
 
 # Set to true if desired orientation noise from orientation_samples input port.Otherwise it uses the motion model Leasts-Squares error to fill the uncertainty.
 orientation_samples_noise_on: true #false
