@@ -9,7 +9,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_temperature' do
+Orocos::Process.run 'unit_temperature' do
     # Configure
     temperature = TaskContext.get 'temperature'
     Orocos.conf.apply(temperature, ['default'], :override => true)
