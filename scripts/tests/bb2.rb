@@ -9,7 +9,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_bb2' do
+Orocos::Process.run 'unit_bb2' do
 
     # Configure
     camera_firewire_bb2 = TaskContext.get 'camera_firewire_bb2'
@@ -17,7 +17,7 @@ Orocos::Process.run 'hdpr_unit_bb2' do
     camera_firewire_bb2.configure
 
     camera_bb2 = TaskContext.get 'camera_bb2'
-    Orocos.conf.apply(camera_bb2, ['default'], :override => true)
+    Orocos.conf.apply(camera_bb2, ['hdpr_bb2'], :override => true)
     camera_bb2.configure
     
     stereo_bb2 = TaskContext.get 'stereo_bb2'

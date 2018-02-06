@@ -9,11 +9,11 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_control' do
+Orocos::Process.run 'unit_control' do
 
     # Configure
     joystick = Orocos.name_service.get 'joystick'
-    joystick.device = "/dev/input/js0"
+    Orocos.conf.apply(joystick, ['default'], :override => true)
     begin
         joystick.configure
     rescue
@@ -21,10 +21,11 @@ Orocos::Process.run 'hdpr_unit_control' do
     end
     
     motion_translator = Orocos.name_service.get 'motion_translator'
+    Orocos.conf.apply(motion_translator, ['hdpr'], :override => true)
     motion_translator.configure
     
     locomotion_control = Orocos.name_service.get 'locomotion_control'
-    Orocos.conf.apply(locomotion_control, ['default'], :override => true)
+    Orocos.conf.apply(locomotion_control, ['hdpr'], :override => true)
     locomotion_control.configure
     
     command_joint_dispatcher = Orocos.name_service.get 'command_joint_dispatcher'
@@ -32,7 +33,7 @@ Orocos::Process.run 'hdpr_unit_control' do
     command_joint_dispatcher.configure
     
     platform_driver = Orocos.name_service.get 'platform_driver'
-    Orocos.conf.apply(platform_driver, ['default'], :override => true)
+    Orocos.conf.apply(platform_driver, ['hdpr'], :override => true)
     platform_driver.configure
     
     read_joint_dispatcher = Orocos.name_service.get 'read_joint_dispatcher'

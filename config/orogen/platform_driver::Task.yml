@@ -1,4 +1,4 @@
---- name:default
+--- name:hdpr
 # device address in the system. pcan32 for USB. pcan0 for PCIe
 can_dev_address: /dev/pcanusb32
 # 1 for Peak-Systems interface. Only device type supported so far
