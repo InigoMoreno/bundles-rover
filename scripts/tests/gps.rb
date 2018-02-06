@@ -11,7 +11,7 @@ Bundles.initialize
 $gps_last_position = 0
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_gps' do
+Orocos::Process.run 'unit_gps' do
 
     # Configure
     gps = TaskContext.get 'gps'

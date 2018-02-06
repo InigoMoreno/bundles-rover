@@ -9,7 +9,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_gyro' do
+Orocos::Process.run 'unit_gyro' do
     # Configure
     gyro = TaskContext.get 'dsp1760'
     Orocos.conf.apply(gyro, ['default'], :override => true)
@@ -20,7 +20,7 @@ Orocos::Process.run 'hdpr_unit_gyro' do
     Orocos.log_all_configuration
 
     # Log samples
-    logger_gyro = Orocos.name_service.get 'hdpr_unit_gyro_Logger'
+    logger_gyro = Orocos.name_service.get 'unit_gyro_Logger'
     logger_gyro.file = "gyro.log"
     logger_gyro.log(gyro.rotation)
     logger_gyro.log(gyro.orientation_samples)
