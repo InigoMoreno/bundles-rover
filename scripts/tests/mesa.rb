@@ -11,11 +11,11 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_mesa' do
+Orocos::Process.run 'unit_mesa' do
 
     # Configure
     tofcamera_mesasr = TaskContext.get 'tofcamera_mesasr'
-    Orocos.conf.apply(tofcamera_mesasr, ['default'], :override => true)
+    Orocos.conf.apply(tofcamera_mesasr, ['hdpr'], :override => true)
     tofcamera_mesasr.configure
 
     # Log
