@@ -1,4 +1,4 @@
---- name:default
+--- name:hdpr
 # Acquisition mode, use bitwise OR operator to turn on multiple modes at the same time;
 # possible values: AM_COR_FIX_PTRN, AM_MEDIAN, AM_TOGGLE_FRQ, AM_CONV_GRAY, AM_SW_ANF, AM_RESERVED0,
 # AM_RESERVED1, AM_CONF_MAP, AM_HW_TRIGGER, AM_SW_TRIGGER, AM_DENOISE_ANF, AM_MEDIANCROSS
@@ -31,9 +31,9 @@ color_interval: 1
 # Maximal integration time for auto exposure
 max_int_time: 0
 # Type of interface of the camera sensor. So far Swiss Ranger Cameras are available with USB or Ethernet interfaces for data connection. Possible values: USB, ETHERNET
-#interface: ETHERNET # FIXME: This is not matching the master version anymore
+interface: ETHERNET
 # IP address used by the camera sensor. Property only valid for Ethernet type of interface.
-#ip_address: 192.168.1.34 # FIXME: This is not matching the master version anymore
+ip_address: 192.168.1.34
 
 --- name:exoter
 # Acquisition mode, use bitwise OR operator to turn on multiple modes at the same time;
