@@ -1,0 +1,15 @@
+--- name:default
+# The target size of a full scan in rotation around its axis. Default is 360 degree in rad.
+full_scan_size: 6.28318
+# The timeout on read. Defaults to one second.
+io_read_timeout:
+  microseconds: 1000000
+# The timeout on write. Defaults to one second.
+io_write_timeout:
+  microseconds: 1000000
+# Only output the latest sample in every call
+only_write_newest_sample: false
+# The HDL-32E and VLP-16 are currently supported
+sensor_type: :VLP16
+# activate/deactivate the output of remission values
+use_remissions: false
