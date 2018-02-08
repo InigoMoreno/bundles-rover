@@ -34,8 +34,8 @@ config:
     mask: # -1 means full extension to the respective side
         minX: -1
         maxX: -1
-        minY: 450
-        maxY: -1
+        minY: 650
+        maxY: 750
 
 --- name:pancam
 config:
