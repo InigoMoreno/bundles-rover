@@ -10,7 +10,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_pancam' do
+Orocos::Process.run 'unit_pancam' do
 
     # Configure
     pancam_left = Orocos.name_service.get 'pancam_left'

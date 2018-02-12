@@ -13,7 +13,7 @@ Orocos::Process.run 'unit_bb2' do
 
     # Configure
     camera_firewire_bb2 = TaskContext.get 'camera_firewire_bb2'
-    Orocos.conf.apply(camera_firewire_bb2, ['bumblebee2'], :override => true)
+    Orocos.conf.apply(camera_firewire_bb2, ['hdpr_bb2'], :override => true)
     camera_firewire_bb2.configure
 
     camera_bb2 = TaskContext.get 'camera_bb2'
