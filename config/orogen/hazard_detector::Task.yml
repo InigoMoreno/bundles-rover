@@ -1,6 +1,6 @@
 --- name:default
 config:
-    calibrationPath: "/home/levin/rock/hazardCalibration.txt"
+    calibrationPath: "/home/marta/rock/hazardCalibration.txt"
     tolerance: 0.4 # [m]
     hazardPixelLimit: 20
     newCalibration: false
@@ -8,8 +8,8 @@ config:
     mask: # -1 means full extension to the respective side
         minX: -1
         maxX: -1
-        minY: -1
-        maxY: -1
+        minY: 650
+        maxY: 750
 
 --- name:bb3
 config:
@@ -26,7 +26,7 @@ config:
 
 --- name:bb2
 config:
-    calibrationPath: "/home/levin/rock/hazardCalibrationBB2.txt"
+    calibrationPath: "/home/marta/rock/hazardCalibrationBB2.txt"
     tolerance: 0.2 # [m]
     hazardPixelLimit: 20
     newCalibration: false
