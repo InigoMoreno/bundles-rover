@@ -1,0 +1,3 @@
+EXEC A1, MAST_PTU_MoveTo(1,10,10);
+EXEC A2, GNC_SwitchOff(1,2);
+END_SOL;
