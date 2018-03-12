@@ -98,13 +98,13 @@ Orocos::Process.run 'unit_control', 'unit_bb2', 'unit_imu', 'gps', 'unit_gyro', 
     Orocos.conf.apply(command_arbiter, ['default'], :override => true)
     command_arbiter.configure
 
-    #gyro = TaskContext.get 'dsp1760'
-    #Orocos.conf.apply(gyro, ['default'], :override => true)
-    #gyro.configure
+    gyro = TaskContext.get 'dsp1760'
+    Orocos.conf.apply(gyro, ['default'], :override => true)
+    gyro.configure
 
     # Hazard Detector
     hazard_detector = Orocos.name_service.get 'hazard_detector'
-    Orocos.conf.apply(hazard_detector, ['bb2'], :override => true)
+    Orocos.conf.apply(hazard_detector, ['default'], :override => true)
     hazard_detector.configure
 
     # Configure the connections between the components
@@ -163,7 +163,7 @@ Orocos::Process.run 'unit_control', 'unit_bb2', 'unit_imu', 'gps', 'unit_gyro', 
     motion_translator.start
     joystick.start
     #imu_stim300.start
-    #gyro.start
+    gyro.start
     #temperature.start
     if options[:v] == false
         gps.start

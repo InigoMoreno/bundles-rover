@@ -13,7 +13,7 @@
 ############################
 # Static transformations
 ############################
-load_transformer_conf "#{ENV['AUTOPROJ_CURRENT_ROOT']}/bundles/hdpr/config/hdpr_transformations.rb"
+load_transformer_conf "#{ENV['AUTOPROJ_CURRENT_ROOT']}/bundles/rover/config/hdpr_transformations.rb"
 
 ############################
 # Dynamic transformations
