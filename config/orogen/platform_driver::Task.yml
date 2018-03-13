@@ -156,7 +156,7 @@ passive_readings_config:
 
 --- name:exoter
 # device address in the system. pcan32 for USB. pcan0 for PCIe
-can_dev_address: /dev/pcan0
+can_dev_address: /dev/pcanpci0
 # 1 for Peak-Systems interface. Only device type supported so far
 can_dev_type: 1
 # activate/deactivate watchdog on can network

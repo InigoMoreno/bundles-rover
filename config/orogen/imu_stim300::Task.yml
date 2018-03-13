@@ -358,7 +358,7 @@ inclinometer_noise:
 
 --- name:exoter
 # IMU port in ExoTer
-port: '/dev/ttyUSB0'
+port: '/dev/exoter-imu'
 revision: :REV_D
 timeout: 0.01 #in seconds
 use_filter: true

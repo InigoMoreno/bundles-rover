@@ -9,7 +9,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'unit_control' do
+Orocos::Process.run 'control' do
 
     # Configure
     joystick = Orocos.name_service.get 'joystick'

@@ -12,10 +12,10 @@ cameraCalibration:
     height: 768
     ex: 0.0
     ey: 0.0
-camera_name: 'FLOC'
-save_directory: '/home/exoter/Desktop/Images/'
+camera_name: 'FRONT'
+save_directory: '/media/logs/Products/'
 
---- name:bb3
+--- name:exoter_bb3
 cameraCalibration:
     fx: 1624.646083
     fy: 1629.037008
@@ -29,8 +29,8 @@ cameraCalibration:
     height: 960
     ex: 0.0
     ey: 0.0
-camera_name: 'PANCAM'
-save_directory: '/home/exoter/Desktop/Images/'
+camera_name: 'MAST'
+save_directory: '/media/logs/Products/'
 
 --- name:hdpr_bb2
 cameraCalibration:

@@ -8,15 +8,15 @@ require 'optparse'
 include Orocos
 
 # Command line options for the script, default values
-options = {:bb2 => true, :bb3 => true, :v => false, :csc => true}
+options = {:nav => true, :pan => true, :v => true, :loc => true}
 
 # Options parser
 OptionParser.new do |opts|
   opts.banner = "Usage: start.rb [options]"
-  opts.on('-bb2', '--bb2 state', 'Enable/disable BB2 camera') { |state| options[:bb2] = state }
-  opts.on('-bb3', '--bb3 state', 'Enable/disable BB3 camera') { |state| options[:bb3] = state }
-  opts.on('-v', '--vicon state', 'Enable vicon over gps') { |state| options[:v] = state }
-  opts.on('-csc', '--customShutterController state', 'Enable/disable custom shutter controller') { |state| options[:csc] = state }
+  opts.on('-nav', '--nav state', 'Enable/disable NavCam camera') { |state| options[:nav] = state }
+  opts.on('-pan', '--pan state', 'Enable/disable PanCam camera') { |state| options[:pan] = state }
+  opts.on('-v', '--vicon state', 'Enable/disable Vicon') { |state| options[:v] = state }
+  opts.on('-loc', '--loc state', 'Enable/disable LocCam camera') { |state| options[:loc] = state }
 end.parse!
 
 # Initialize bundles to find the configurations for the packages
@@ -26,10 +26,7 @@ Bundles.initialize
 Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb'))
 
 # Execute the task
-#
-# task context 'hdpr_unit_visual_odometry' is necessary, because it is used in the transforms,
-# eventhough we do not make use of visual odometry in this script.
-Orocos::Process.run 'control', 'pancam', 'lidar', 'tof', 'bb2', 'bb3', 'imu', 'gps', 'temperature', 'shutter_controller', 'unit_gyro', 'stereo', 'tmtchandling', 'unit_vicon' do
+Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchandling', 'unit_vicon', 'navigation'  do
     joystick = Orocos.name_service.get 'joystick'
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -40,172 +37,121 @@ Orocos::Process.run 'control', 'pancam', 'lidar', 'tof', 'bb2', 'bb3', 'imu', 'g
         joystick.configure
     rescue
         # Abort the process as there is no joystick to get input from
-        abort("Cannot configure the joystick, is the dongle connected to HDPR?")
+        abort("Cannot configure the joystick, is the dongle connected to ExoTeR?")
     end
     
     # Configure the control packages
     motion_translator = Orocos.name_service.get 'motion_translator'
-    Orocos.conf.apply(motion_translator, ['hdpr'], :override => true)
+    Orocos.conf.apply(motion_translator, ['exoter'], :override => true)
     motion_translator.configure
     
     locomotion_control = Orocos.name_service.get 'locomotion_control'
-    Orocos.conf.apply(locomotion_control, ['hdpr'], :override => true)
+    Orocos.conf.apply(locomotion_control, ['exoter'], :override => true)
     locomotion_control.configure
     
     command_joint_dispatcher = Orocos.name_service.get 'command_joint_dispatcher'
-    Orocos.conf.apply(command_joint_dispatcher, ['commanding'], :override => true)
+    Orocos.conf.apply(command_joint_dispatcher, ['exoter_commanding'], :override => true)
     command_joint_dispatcher.configure
     
     platform_driver = Orocos.name_service.get 'platform_driver'
-    Orocos.conf.apply(platform_driver, ['hdpr'], :override => true)
+    Orocos.conf.apply(platform_driver, ['exoter'], :override => true)
     platform_driver.configure
     
     read_joint_dispatcher = Orocos.name_service.get 'read_joint_dispatcher'
-    Orocos.conf.apply(read_joint_dispatcher, ['reading'], :override => true)
+    Orocos.conf.apply(read_joint_dispatcher, ['exoter_reading'], :override => true)
     read_joint_dispatcher.configure
     
-    ptu_directedperception = Orocos.name_service.get 'ptu_directedperception'
-    Orocos.conf.apply(ptu_directedperception, ['default'], :override => true)
-    ptu_directedperception.configure
-    
-    # Configure the sensor packages
-    velodyne_lidar = TaskContext.get 'velodyne_lidar'
-    Orocos.conf.apply(velodyne_lidar, ['default'], :override => true)
-    velodyne_lidar.configure
-   
-    #trigger_lidar = TaskContext.get 'trigger_lidar'
-
-    dem_generation_lidar = TaskContext.get 'dem_generation_lidar'
-    Orocos.conf.apply(dem_generation_lidar, ['velodyne'], :override => true)
-    dem_generation_lidar.configure
-
-    tofcamera_mesasr = TaskContext.get 'tofcamera_mesasr'
-    Orocos.conf.apply(tofcamera_mesasr, ['default'], :override => true)
-    tofcamera_mesasr.configure
-    
-    trigger_tof = TaskContext.get 'trigger_tof'
-
-    dem_generation_tof = TaskContext.get 'dem_generation_tof'
-    Orocos.conf.apply(dem_generation_tof, ['mesa'], :override => true)
-    dem_generation_tof.configure
-   
+    ptu_control = Orocos.name_service.get 'ptu_control'
+    Orocos.conf.apply(ptu_control, ['default'], :override => true)
+    ptu_control.configure
+  
     imu_stim300 = TaskContext.get 'imu_stim300'
-    #Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'ESTEC', 'stim300_5g'], :override => true)
-    Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'Tenerife', 'stim300_5g'], :override => true)
+    Orocos.conf.apply(imu_stim300, ['default', 'exoter', 'ESTEC', 'stim300_5g'], :override => true)
     imu_stim300.configure
     
-    if options[:v] == false
-        gps = TaskContext.get 'gps'
-        #Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS'], :override => true)
-        Orocos.conf.apply(gps, ['HDPR', 'Spain', 'Tenerife_Teleop'], :override => true)
-        gps.configure
-    else
-        vicon = TaskContext.get 'vicon'
-        Orocos.conf.apply(vicon, ['default','hdpr'], :override => true)
+    if options[:v] == true
+	vicon = TaskContext.get 'vicon'
+        Orocos.conf.apply(vicon, ['default','exoter'], :override => true)
         vicon.configure
+    else
+	# use visodom or gps if outdoors
     end	
 
-    gps_heading = TaskContext.get 'gps_heading'
-    Orocos.conf.apply(gps_heading, ['default'], :override => true)
-    gps_heading.configure
-
-    if options[:bb2] == true
-        puts "Starting BB2"
+    if options[:nav] == true
+        puts "Starting NavCam"
     
-        camera_firewire_bb2 = TaskContext.get 'camera_firewire_bb2'
-        Orocos.conf.apply(camera_firewire_bb2, ['hdpr_bb2'], :override => true)
-        camera_firewire_bb2.configure
+        camera_firewire_navcam = TaskContext.get 'camera_firewire_navcam'
+        Orocos.conf.apply(camera_firewire_navcam, ['exoter_bb2'], :override => true)
+        camera_firewire_navcam.configure
     
-        camera_bb2 = TaskContext.get 'camera_bb2'
-        Orocos.conf.apply(camera_bb2, ['hdpr_bb2'], :override => true)
-        camera_bb2.configure
+        camera_navcam = TaskContext.get 'camera_navcam'
+        Orocos.conf.apply(camera_navcam, ['exoter_bb2'], :override => true)
+        camera_navcam.configure
 
-        trigger_bb2 = TaskContext.get 'trigger_bb2'
+        trigger_navcam = TaskContext.get 'trigger_navcam'
        
-        stereo_bb2 = TaskContext.get 'stereo_bb2'
-        Orocos.conf.apply(stereo_bb2, ['hdpr_bb2'], :override => true)
-        stereo_bb2.configure
+        stereo_navcam = TaskContext.get 'stereo_navcam'
+        Orocos.conf.apply(stereo_navcam, ['exoter_bb2'], :override => true)
+        stereo_navcam.configure
     
-        dem_generation_bb2 = TaskContext.get 'dem_generation_bb2'
-        Orocos.conf.apply(dem_generation_bb2, ['hdpr_bb2'], :override => true)
-        dem_generation_bb2.configure
+        dem_generation_navcam = TaskContext.get 'dem_generation_navcam'
+        Orocos.conf.apply(dem_generation_navcam, ['exoter_bb2'], :override => true)
+        dem_generation_navcam.configure
     end
 
-    if options[:bb3] == true
-        puts "Starting BB3"
-        
-        camera_firewire_bb3 = TaskContext.get 'camera_firewire_bb3'
-        Orocos.conf.apply(camera_firewire_bb3, ['bumblebee3'], :override => true)
-        camera_firewire_bb3.configure
-        
-        camera_bb3 = TaskContext.get 'camera_bb3'
-        Orocos.conf.apply(camera_bb3, ['default'], :override => true)
-        camera_bb3.configure
-
-        trigger_bb3 = TaskContext.get 'trigger_bb3'
-
-        stereo_bb3 = TaskContext.get 'stereo_bb3'
-        Orocos.conf.apply(stereo_bb3, ['hdpr_bb3_left_right'], :override => true)
-        stereo_bb3.configure
+    if options[:loc] == true
+        puts "Starting LocCam"
     
-        dem_generation_bb3 = TaskContext.get 'dem_generation_bb3'
-        Orocos.conf.apply(dem_generation_bb3, ['hdpr_bb3'], :override => true)
-        dem_generation_bb3.configure
+        camera_firewire_loccam = TaskContext.get 'camera_firewire_loccam'
+        Orocos.conf.apply(camera_firewire_loccam, ['exoter_bb2_b'], :override => true)
+        camera_firewire_loccam.configure
+    
+        camera_loccam = TaskContext.get 'camera_loccam'
+        Orocos.conf.apply(camera_loccam, ['hdpr_bb2'], :override => true)
+        camera_loccam.configure
+
+        trigger_loccam = TaskContext.get 'trigger_loccam'
+       
+        stereo_loccam = TaskContext.get 'stereo_loccam'
+        Orocos.conf.apply(stereo_loccam, ['hdpr_bb2'], :override => true)
+        stereo_loccam.configure
+    
+        dem_generation_loccam = TaskContext.get 'dem_generation_loccam'
+        Orocos.conf.apply(dem_generation_loccam, ['hdpr_bb2'], :override => true)
+        dem_generation_loccam.configure
     end
-    
-    pancam_left = Orocos.name_service.get 'pancam_left'
-    Orocos.conf.apply(pancam_left, ['grashopper2_left'], :override => true)
-    pancam_left.configure
-    
-    pancam_right = Orocos.name_service.get 'pancam_right'
-    Orocos.conf.apply(pancam_right, ['grashopper2_right'], :override => true)
-    pancam_right.configure
 
-    trigger_pancam = TaskContext.get 'trigger_pancam'
+    if options[:pan] == true
+        puts "Starting PanCam"
+        
+        camera_firewire_pancam = TaskContext.get 'camera_firewire_pancam'
+        Orocos.conf.apply(camera_firewire_pancam, ['exoter_bb3'], :override => true)
+        camera_firewire_pancam.configure
+        
+        camera_pancam = TaskContext.get 'camera_pancam'
+        Orocos.conf.apply(camera_pancam, ['default'], :override => true)
+        camera_pancam.configure
+
+        trigger_pancam = TaskContext.get 'trigger_pancam'
+
+        stereo_pancam = TaskContext.get 'stereo_pancam'
+        Orocos.conf.apply(stereo_pancam, ['bb3_left_right'], :override => true)
+        stereo_pancam.configure
     
-    stereo_pancam = TaskContext.get 'stereo_pancam'
-    Orocos.conf.apply(stereo_pancam, ['panCam'], :override => true)
-    stereo_pancam.configure
-    
-    dem_generation_pancam = TaskContext.get 'dem_generation_pancam'
-    Orocos.conf.apply(dem_generation_pancam, ['panCam'], :override => true)
-    dem_generation_pancam.configure
+        dem_generation_pancam = TaskContext.get 'dem_generation_pancam'
+        Orocos.conf.apply(dem_generation_pancam, ['exoter_bb3'], :override => true)
+        dem_generation_pancam.configure
 
-    #if options[:csc] == true
-        shutter_controller = Orocos.name_service.get 'shutter_controller_pancam'
-        Orocos.conf.apply(shutter_controller, ['default'], :override => true)
-        shutter_controller.configure
-
-        shutter_controller_bb2 = Orocos.name_service.get 'shutter_controller_bb2'
-        Orocos.conf.apply(shutter_controller_bb2, ['bb2tenerife'], :override => true)
-        shutter_controller_bb2.configure
-
-        shutter_controller_bb3 = Orocos.name_service.get 'shutter_controller_bb3'
-        Orocos.conf.apply(shutter_controller_bb3, ['bb3tenerife'], :override => true)
-        shutter_controller_bb3.configure
-    #end
-    
-    #pancam_panorama = Orocos.name_service.get 'pancam_panorama'
-    #Orocos.conf.apply(pancam_panorama, ['default'], :override => true)
-    #pancam_panorama.configure
-    
-    pancam_360 = Orocos.name_service.get 'pancam_360'
-    Orocos.conf.apply(pancam_360, ['default', 'separation_40_x'], :override => true)
-    pancam_360.configure
-    
-    trigger_pancam_360 = TaskContext.get 'trigger_pancam_360'
-
-    stereo_pancam_360 = TaskContext.get 'stereo_pancam_360'
-    Orocos.conf.apply(stereo_pancam_360, ['panCam'], :override => true)
-    stereo_pancam_360.configure
-
-    dem_generation_pancam_360 = TaskContext.get 'dem_generation_pancam_360'
-    Orocos.conf.apply(dem_generation_pancam_360, ['panCam'], :override => true)
-    dem_generation_pancam_360.configure
-
+        pancam_360 = Orocos.name_service.get 'pancam_360'
+        Orocos.conf.apply(pancam_360, ['default', 'separation_40_x'], :override => true)
+        pancam_360.configure
+        
+        trigger_pancam_360 = TaskContext.get 'trigger_pancam_360'
+    end
+  
     # Setup Waypoint_navigation 
     waypoint_navigation = Orocos.name_service.get 'waypoint_navigation'
-    Orocos.conf.apply(waypoint_navigation, ['default','hdpr_lab'], :override => true)
+    Orocos.conf.apply(waypoint_navigation, ['default','exoter'], :override => true)
     waypoint_navigation.configure
 
     # Setup command arbiter
@@ -213,14 +159,6 @@ Orocos::Process.run 'control', 'pancam', 'lidar', 'tof', 'bb2', 'bb3', 'imu', 'g
     Orocos.conf.apply(command_arbiter, ['default'], :override => true)
     command_arbiter.configure  
 	    
-    temperature = TaskContext.get 'temperature'
-    Orocos.conf.apply(temperature, ['default'], :override => true)
-    temperature.configure
-
-    gyro = TaskContext.get 'dsp1760'
-    Orocos.conf.apply(gyro, ['default'], :override => true)
-    gyro.configure
- 
     # setup telemetry_telecommand
     telemetry_telecommand = Orocos.name_service.get 'telemetry_telecommand'
     Orocos.conf.apply(telemetry_telecommand, ['default'], :override => true)
@@ -231,321 +169,147 @@ Orocos::Process.run 'control', 'pancam', 'lidar', 'tof', 'bb2', 'bb3', 'imu', 'g
     joystick.raw_command.connect_to                     motion_translator.raw_command
     joystick.raw_command.connect_to                     command_arbiter.raw_command
 
-    # TODO test
-    motion_translator.ptu_pan_angle.connect_to          ptu_directedperception.pan_set
-    motion_translator.ptu_tilt_angle.connect_to         ptu_directedperception.tilt_set
-    
+    #motion_translator.ptu_command.connect_to            ptu_control.ptu_joints_commands
     motion_translator.motion_command.connect_to         command_arbiter.joystick_motion_command
     waypoint_navigation.motion_command.connect_to       command_arbiter.follower_motion_command
     command_arbiter.motion_command.connect_to           locomotion_control.motion_command
     
     locomotion_control.joints_commands.connect_to       command_joint_dispatcher.joints_commands
+    ptu_control.ptu_commands_out.connect_to             command_joint_dispatcher.ptu_commands
     command_joint_dispatcher.motors_commands.connect_to platform_driver.joints_commands
     platform_driver.joints_readings.connect_to          read_joint_dispatcher.joints_readings
-    #read_joint_dispatcher.joints_samples.connect_to     locomotion_control.joints_readings
     read_joint_dispatcher.motors_samples.connect_to     locomotion_control.joints_readings
+    read_joint_dispatcher.ptu_samples.connect_to        ptu_control.ptu_samples
     
-    if options[:bb2] == true
-        camera_firewire_bb2.frame.connect_to                camera_bb2.frame_in
-        camera_bb2.left_frame.connect_to                    trigger_bb2.frame_left_in
-        camera_bb2.right_frame.connect_to                   trigger_bb2.frame_right_in
-        trigger_bb2.frame_left_out.connect_to               stereo_bb2.left_frame
-        trigger_bb2.frame_right_out.connect_to              stereo_bb2.right_frame
-        trigger_bb2.frame_left_out.connect_to               dem_generation_bb2.left_frame_rect
-        stereo_bb2.distance_frame.connect_to                dem_generation_bb2.distance_frame
-        #if options[:csc] == true
-            camera_firewire_bb2.frame.connect_to                shutter_controller_bb2.frame
-            camera_firewire_bb2.shutter_value.connect_to        shutter_controller_bb2.shutter_value
-        #end
-        #stereo_bb2.left_frame_sync.connect_to               dem_generation_bb2.left_frame_rect
-        #stereo_bb2.right_frame_sync.connect_to              dem_generation_bb2.right_frame_rect
-    end
-    if options[:bb3] == true
-        camera_firewire_bb3.frame.connect_to                camera_bb3.frame_in
-        camera_bb3.left_frame.connect_to                    trigger_bb3.frame_left_in
-        camera_bb3.right_frame.connect_to                   trigger_bb3.frame_right_in
-        trigger_bb3.frame_left_out.connect_to               stereo_bb3.left_frame
-        trigger_bb3.frame_right_out.connect_to              stereo_bb3.right_frame
-        trigger_bb3.frame_left_out.connect_to               dem_generation_bb3.left_frame_rect
-        stereo_bb3.distance_frame.connect_to                dem_generation_bb3.distance_frame
-        #if options[:csc] == true
-            camera_firewire_bb3.frame.connect_to                shutter_controller_bb3.frame
-            camera_firewire_bb3.shutter_value.connect_to        shutter_controller_bb3.shutter_value
-        #end
-        #stereo_bb3.left_frame_sync.connect_to               dem_generation_bb3.left_frame_rect
-        #stereo_bb3.right_frame_sync.connect_to              dem_generation_bb3.right_frame_rect
-   end
-    
-    # Waypoint navigation inputs:
-    imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples    
-    gyro.orientation_samples.connect_to                 gps_heading.gyro_pose_samples
-    command_arbiter.motion_command.connect_to           gps_heading.motion_command
-    telemetry_telecommand.locomotion_command.connect_to           gps_heading.motion_command
+    if options[:nav] == true
+        camera_firewire_navcam.frame.connect_to         camera_navcam.frame_in
+        camera_navcam.left_frame.connect_to             trigger_navcam.frame_left_in
+        camera_navcam.right_frame.connect_to            trigger_navcam.frame_right_in
+        trigger_navcam.frame_left_out.connect_to        stereo_navcam.left_frame
+        trigger_navcam.frame_right_out.connect_to       stereo_navcam.right_frame
+        trigger_navcam.frame_left_out.connect_to        dem_generation_navcam.left_frame_rect
+        stereo_navcam.distance_frame.connect_to         dem_generation_navcam.distance_frame
 
-    telemetry_telecommand.update_pose.connect_to gps_heading.ground_truth_pose_samples
+        telemetry_telecommand.front_trigger.connect_to      trigger_navcam.telecommand_in
+        trigger_navcam.telecommands_out.connect_to          dem_generation_navcam.telecommands_in
+        dem_generation_navcam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
+        # Configure the sensor trigger after the ports are connected
+        trigger_navcam.configure
+    end
+
+    if options[:loc] == true
+        camera_firewire_loccam.frame.connect_to         camera_loccam.frame_in
+        camera_loccam.left_frame.connect_to             trigger_loccam.frame_left_in
+        camera_loccam.right_frame.connect_to            trigger_loccam.frame_right_in
+        trigger_loccam.frame_left_out.connect_to        stereo_loccam.left_frame
+        trigger_loccam.frame_right_out.connect_to       stereo_loccam.right_frame
+        trigger_loccam.frame_left_out.connect_to        dem_generation_loccam.left_frame_rect
+        stereo_loccam.distance_frame.connect_to         dem_generation_loccam.distance_frame
+        telemetry_telecommand.haz_front_trigger.connect_to  trigger_loccam.telecommand_in
+
+        trigger_loccam.telecommands_out.connect_to          dem_generation_loccam.telecommands_in
+        dem_generation_loccam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
+        # Configure the sensor trigger after the ports are connected
+        trigger_loccam.configure
+    end
+
+    if options[:pan] == true
+        camera_firewire_pancam.frame.connect_to         camera_pancam.frame_in
+        camera_pancam.left_frame.connect_to             trigger_pancam.frame_left_in
+        camera_pancam.right_frame.connect_to            trigger_pancam.frame_right_in
+        trigger_pancam.frame_left_out.connect_to        stereo_pancam.left_frame
+        trigger_pancam.frame_right_out.connect_to       stereo_pancam.right_frame
+        trigger_pancam.frame_left_out.connect_to        dem_generation_pancam.left_frame_rect
+        stereo_pancam.distance_frame.connect_to         dem_generation_pancam.distance_frame
+
+        pancam_360.pan_angle_in.connect_to                  ptu_control.pan_samples_out
+        pancam_360.tilt_angle_in.connect_to                 ptu_control.tilt_samples_out
+        pancam_360.pan_angle_out.connect_to                 ptu_control.pan_command_in
+        pancam_360.tilt_angle_out.connect_to                ptu_control.tilt_command_in
+        camera_pancam.left_frame.connect_to                 pancam_360.left_frame_in
+        camera_pancam.right_frame.connect_to                pancam_360.right_frame_in
+
+        pancam_360.left_frame_out.connect_to                trigger_pancam_360.frame_left_in
+        pancam_360.right_frame_out.connect_to               trigger_pancam_360.frame_right_in
+        trigger_pancam_360.frame_left_out.connect_to        stereo_pancam.left_frame
+        trigger_pancam_360.frame_right_out.connect_to       stereo_pancam.right_frame
+        trigger_pancam_360.frame_left_out.connect_to        dem_generation_pancam.left_frame_rect
+        dem_generation_pancam.sync_out.connect_to	        pancam_360.sync_in
+
+        telemetry_telecommand.mast_trigger.connect_to       trigger_pancam.telecommand_in
+        telemetry_telecommand.pancam_360_trigger.connect_to trigger_pancam_360.telecommand_in
+        telemetry_telecommand.panorama_tilt.connect_to      pancam_360.trigger_tilt
+
+        trigger_pancam.telecommands_out.connect_to          dem_generation_pancam.telecommands_in
+        trigger_pancam_360.telecommands_out.connect_to      dem_generation_pancam.telecommands_in
+        dem_generation_pancam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
+        # Configure the sensor trigger after the ports are connected
+        trigger_pancam.configure
+        trigger_pancam_360.configure
+    end
 
     if options[:v] == false
-    	gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
-    	gps.raw_data.connect_to                             gps_heading.gps_raw_data
-    	gps_heading.pose_samples_out.connect_to             waypoint_navigation.pose
-    	gps_heading.pose_samples_out.connect_to             telemetry_telecommand.current_pose
-	puts "using gps"
+        # use visodom or gps outdoors
     else
     	vicon.pose_samples.connect_to             	waypoint_navigation.pose
     	vicon.pose_samples.connect_to             	telemetry_telecommand.current_pose
-	puts "using vicon"
+    	puts "using vicon"
     end
 
-    # PanCam connections to panorama and 360 components (must function exclusively)
-    #pancam_panorama.pan_angle_in.connect_to             ptu_directedperception.pan_angle
-    #pancam_panorama.tilt_angle_in.connect_to            ptu_directedperception.tilt_angle
-    #pancam_panorama.pan_angle_out.connect_to            ptu_directedperception.pan_set
-    #pancam_panorama.tilt_angle_out.connect_to           ptu_directedperception.tilt_set
-    #pancam_left.frame.connect_to                        pancam_panorama.left_frame_in
-    #pancam_right.frame.connect_to                       pancam_panorama.right_frame_in
-    pancam_360.pan_angle_in.connect_to                  ptu_directedperception.pan_angle
-    pancam_360.tilt_angle_in.connect_to                 ptu_directedperception.tilt_angle
-    pancam_360.pan_angle_out.connect_to                 ptu_directedperception.pan_set
-    pancam_360.tilt_angle_out.connect_to                ptu_directedperception.tilt_set
-    pancam_left.frame.connect_to                        pancam_360.left_frame_in
-    pancam_right.frame.connect_to                       pancam_360.right_frame_in
-    pancam_360.left_frame_out.connect_to                trigger_pancam_360.frame_left_in
-    pancam_360.right_frame_out.connect_to               trigger_pancam_360.frame_right_in
-    trigger_pancam_360.frame_left_out.connect_to        stereo_pancam_360.left_frame
-    trigger_pancam_360.frame_right_out.connect_to       stereo_pancam_360.right_frame
-    trigger_pancam_360.frame_left_out.connect_to        dem_generation_pancam_360.left_frame_rect            
-    stereo_pancam_360.distance_frame.connect_to         dem_generation_pancam_360.distance_frame
-    #stereo_pancam_360.left_frame_sync.connect_to        dem_generation_pancam_360.left_frame_rect
-    #stereo_pancam_360.right_frame_sync.connect_to       dem_generation_pancam_360.right_frame_rect
-    dem_generation_pancam_360.sync_out.connect_to	    pancam_360.sync_in
-
-    # PanCam connections to shutter controller
-    pancam_left.frame.connect_to                        shutter_controller.frame
-    pancam_left.shutter_value.connect_to                shutter_controller.shutter_value
-    pancam_right.shutter_value.connect_to               shutter_controller.shutter_value
-    pancam_left.frame.connect_to                        trigger_pancam.frame_left_in
-    pancam_right.frame.connect_to                       trigger_pancam.frame_right_in
-    trigger_pancam.frame_left_out.connect_to            stereo_pancam.left_frame
-    trigger_pancam.frame_right_out.connect_to           stereo_pancam.right_frame
-    trigger_pancam.frame_left_out.connect_to            dem_generation_pancam.left_frame_rect            
-    stereo_pancam.distance_frame.connect_to             dem_generation_pancam.distance_frame
-    #stereo_pancam.left_frame_sync.connect_to            dem_generation_pancam.left_frame_rect
-    #stereo_pancam.right_frame_sync.connect_to           dem_generation_pancam.right_frame_rect
-
-    # ToF connections
-    tofcamera_mesasr.ir_frame.connect_to                trigger_tof.frame_left_in
-    #tofcamera_mesasr.distance_frame.connect_to          trigger_tof.distance_frame_in
-    tofcamera_mesasr.pointcloud.connect_to              trigger_tof.pointcloud_in
-    trigger_tof.frame_left_out.connect_to               dem_generation_tof.left_frame_rect
-    trigger_tof.distance_frame_out.connect_to           dem_generation_tof.range_interp_frame
-    trigger_tof.pointcloud_out.connect_to               dem_generation_tof.pointcloud
-
-    # Lidar connections
-    #velodyne_lidar.ir_interp_frame.connect_to           trigger_lidar.frame_left_in
-    #velodyne_lidar.range_interp_frame.connect_to        trigger_lidar.distance_frame_in
-    #velodyne_lidar.laser_scans.connect_to               trigger_lidar.laser_scan_in
-    #trigger_lidar.frame_left_out.connect_to             dem_generation_lidar.left_frame_rect
-    #trigger_lidar.distance_frame_out.connect_to         dem_generation_lidar.range_interp_frame
-    #trigger_lidar.laser_scan_out.connect_to             dem_generation_lidar.laser_scans
-   
     # Telemetry Telecommand connections
     telemetry_telecommand.locomotion_command.connect_to locomotion_control.motion_command
-    telemetry_telecommand.mast_pan.connect_to           ptu_directedperception.pan_set
-    telemetry_telecommand.mast_tilt.connect_to          ptu_directedperception.tilt_set
+    telemetry_telecommand.mast_pan.connect_to           ptu_control.pan_command_in
+    telemetry_telecommand.mast_tilt.connect_to          ptu_control.tilt_command_in
     telemetry_telecommand.trajectory.connect_to         waypoint_navigation.trajectory
     telemetry_telecommand.trajectory_speed.connect_to   waypoint_navigation.speed_input
-    #waypoint_navigation.motion_command.connect_to locomotion_control.motion_command # uncomment if command_arbitrer is removed
     waypoint_navigation.trajectory_status.connect_to    telemetry_telecommand.trajectory_status
-    telemetry_telecommand.current_pan.connect_to        ptu_directedperception.pan_angle
-    telemetry_telecommand.current_tilt.connect_to       ptu_directedperception.tilt_angle
-#    telemetry_telecommand.current_imu.connect_to        imu_stim300.orientation_samples_out
+    telemetry_telecommand.current_pan.connect_to        ptu_control.pan_samples_out
+    telemetry_telecommand.current_tilt.connect_to       ptu_control.tilt_samples_out
+    #telemetry_telecommand.current_imu.connect_to        imu_stim300.orientation_samples_out
     read_joint_dispatcher.joints_samples.connect_to     telemetry_telecommand.joint_samples
-    temperature.temperature_samples.connect_to          telemetry_telecommand.motor_temperatures
-
-    telemetry_telecommand.mast_trigger.connect_to       trigger_pancam.telecommand_in
-    #telemetry_telecommand.front_trigger.connect_to      trigger_bb3.telecommand_in
-    telemetry_telecommand.haz_front_trigger.connect_to  trigger_bb2.telecommand_in
-    telemetry_telecommand.tof_trigger.connect_to        trigger_tof.telecommand_in
-    #telemetry_telecommand.lidar_trigger.connect_to      trigger_lidar.telecommand_in
-    telemetry_telecommand.pancam_360_trigger.connect_to trigger_pancam_360.telecommand_in
-    telemetry_telecommand.panorama_tilt.connect_to      pancam_360.trigger_tilt
-
-    #trigger_lidar.telecommands_out.connect_to           dem_generation_lidar.telecommands_in
-    trigger_tof.telecommands_out.connect_to             dem_generation_tof.telecommands_in
-    trigger_bb2.telecommands_out.connect_to             dem_generation_bb2.telecommands_in
-    #trigger_bb3.telecommands_out.connect_to             dem_generation_bb3.telecommands_in
-    trigger_pancam.telecommands_out.connect_to          dem_generation_pancam.telecommands_in
-    trigger_pancam_360.telecommands_out.connect_to      dem_generation_pancam_360.telecommands_in
-    dem_generation_pancam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
-    dem_generation_pancam_360.telemetry_out.connect_to  telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
-    #dem_generation_bb3.telemetry_out.connect_to         telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
-    dem_generation_bb2.telemetry_out.connect_to         telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
-    dem_generation_tof.telemetry_out.connect_to         telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
-    dem_generation_lidar.telemetry_out.connect_to       telemetry_telecommand.telemetry_product, :type => :buffer, :size => 20
-
-    # Configure the sensor trigger after the ports are connected
-    #trigger_lidar.configure
-    trigger_tof.configure
-    trigger_bb2.configure
-    #trigger_bb3.configure
-    trigger_pancam.configure
-    trigger_pancam_360.configure
-
-    # Log all the properties of the components
-    Orocos.log_all_configuration
-    
-    # Define loggers
-    logger_control = Orocos.name_service.get 'control_Logger'
-    logger_control.file = "control.log"
-    logger_control.log(platform_driver.joints_readings)
-    logger_control.log(command_arbiter.motion_command)
-    
-    logger_pancam = Orocos.name_service.get 'pancam_Logger'
-    logger_pancam.file = "pancam.log"
-    logger_pancam.log(pancam_left.frame)
-    logger_pancam.log(pancam_right.frame)
-    logger_pancam.log(shutter_controller.shutter_value)
-    stereo_pancam.log_all_ports
-    
-    if options[:bb2] == true
-        logger_bb2 = Orocos.name_service.get 'bb2_Logger'
-        logger_bb2.file = "bb2.log"
-        logger_bb2.log(camera_firewire_bb2.frame)
-        if options[:csc] == true
-            logger_bb2.log(shutter_controller_bb2.shutter_value)
-        end
-    end
-    
-    if options[:bb3] == true
-        logger_bb3 = Orocos.name_service.get 'bb3_Logger'
-        logger_bb3.file = "bb3.log"
-        logger_bb3.log(camera_firewire_bb3.frame)
-        if options[:csc] == true
-            logger_bb3.log(shutter_controller_bb3.shutter_value)
-        end
-    end
-
-    logger_tof = Orocos.name_service.get 'tof_Logger'
-    logger_tof.file = "tof.log"
-    logger_tof.log(tofcamera_mesasr.distance_frame)
-    logger_tof.log(tofcamera_mesasr.ir_frame)
-    logger_tof.log(tofcamera_mesasr.pointcloud)
-    logger_tof.log(tofcamera_mesasr.tofscan)
-    
-    #logger_lidar = Orocos.name_service.get 'lidar_Logger'
-    #logger_lidar.file = "lidar.log"
-    #logger_lidar.log(velodyne_lidar.ir_frame)
-    #logger_lidar.log(velodyne_lidar.laser_scans)
-    #logger_lidar.log(velodyne_lidar.range_frame)
-    #logger_lidar.log(velodyne_lidar.velodyne_time)
-    #logger_lidar.log(velodyne_lidar.accumulated_velodyne_time)
-    #logger_lidar.log(velodyne_lidar.estimated_clock_offset)
-
-    if options[:v] == false        
-    	logger_gps = Orocos.name_service.get 'gps_Logger'
-    	logger_gps.file = "gps.log"
-    	logger_gps.log(gps.pose_samples)
-    	logger_gps.log(gps.raw_data)
-    	logger_gps.log(gps.time)
-    	logger_gps.log(gps_heading.pose_samples_out)
-    end
-
-    logger_imu = Orocos.name_service.get 'imu_Logger'
-    logger_imu.file = "imu.log"
-    logger_imu.log(imu_stim300.inertial_sensors_out)
-    logger_imu.log(imu_stim300.temp_sensors_out)
-    logger_imu.log(imu_stim300.orientation_samples_out)
-    logger_imu.log(imu_stim300.compensated_sensors_out)
-
-    logger_temperature = Orocos.name_service.get 'temperature_Logger'
-    logger_temperature.file = "temperature.log"
-    logger_temperature.log(temperature.temperature_samples)
-
-    # Start loggers
-    if options[:bb2] == true
-        logger_bb2.start
-    end
-    if options[:bb3] == true
-        logger_bb3.start
-    end
-    logger_pancam.start
-#    logger_tof.start
-#    logger_lidar.start
-#    logger_gps.start
-#    logger_imu.start
-#    logger_temperature.start
-#    logger_gyro.start
 
     # Start the components
     platform_driver.start
     read_joint_dispatcher.start
     command_joint_dispatcher.start
     locomotion_control.start
-    ptu_directedperception.start
+    ptu_control.start
     command_arbiter.start
-    pancam_left.start
-    pancam_right.start
-    shutter_controller.start
-    trigger_pancam.start
-    stereo_pancam.start
-    dem_generation_pancam.start
-    pancam_360.start
-    trigger_pancam_360.start
-    stereo_pancam_360.start
-    dem_generation_pancam_360.start
     motion_translator.start
     joystick.start
-    velodyne_lidar.start
-    #trigger_lidar.start
-    dem_generation_lidar.start
-    tofcamera_mesasr.start
-    trigger_tof.start
-    dem_generation_tof.start
     imu_stim300.start
-    gyro.start
-    temperature.start
     if options[:v] == false
-    	gps.start
-        gps_heading.start
+        # start visodom
     else
-  	vicon.start
+      	vicon.start
     end
-    if options[:bb2] == true
-        camera_bb2.start
-        camera_firewire_bb2.start
-        trigger_bb2.start
-        stereo_bb2.start
-        dem_generation_bb2.start
-        #if options[:csc] == true
-            shutter_controller_bb2.start
-        #end
+
+    if options[:pan] == true
+        camera_firewire_pancam.start
+        camera_pancam.start
+        trigger_pancam.start
+        stereo_pancam.start
+        dem_generation_pancam.start
+        pancam_360.start
+        trigger_pancam_360.start
     end
-    if options[:bb3] == true
-        camera_bb3.start
-        camera_firewire_bb3.start
-        trigger_bb3.start
-        stereo_bb3.start
-        dem_generation_bb3.start
-        #if options[:csc] == true
-            shutter_controller_bb3.start
-        #end
+    if options[:loc] == true
+        camera_loccam.start
+        camera_firewire_loccam.start
+        trigger_loccam.start
+        stereo_loccam.start
+        dem_generation_loccam.start
+    end
+    if options[:nav] == true
+        camera_navcam.start
+        camera_firewire_navcam.start
+        trigger_navcam.start
+        stereo_navcam.start
+        dem_generation_navcam.start
     end
     telemetry_telecommand.start
-
-    if options[:v] == false
-        # Race condition with internal gps_heading states. This check is here to only trigger the 
-        # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
-        puts "Move rover forward to initialise the gps_heading component"
-        while gps_heading.ready == false
-           sleep 1
-        end
-        puts "GPS heading calibration done"
-    end
-
-    # Trigger the trojectory generation, waypoint_navigation must be running at this point
     waypoint_navigation.start
-            
+
     Readline::readline("Press Enter to exit\n") do
     end
-end 
-
+end
