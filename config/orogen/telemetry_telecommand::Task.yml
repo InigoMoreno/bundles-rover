@@ -3,7 +3,8 @@
 # in the C++ code with # _config_value.get() and _config_value.set(new_value).
 activeMQ_brokerURI: 'failover:(tcp://192.168.200.245:61616)'
 productsFolder: '\/media\/logs\/Products\/'
-#rover: :HDPR
+rover: :ExoTeR
+isMastDeployed: false
 initial_pose:
   time:
     microseconds: 0

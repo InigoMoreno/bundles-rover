@@ -1,4 +1,12 @@
-EXEC A1, MAST_PTU_MoveTo(0,10,10);
-EXEC A2, GNC_SwitchOff(1,2);
-EXEC A3, MAST_ACQ(0,0,0);
+#====================================================================================================
+# PLTE #4 - Fourth Sol on Mars. Main activities:
+# 		- Release of 6 SA Hold-Down Mechanisms 
+# 		- Rover Solar Array Deployment
+# 		- Rover UHF Commissioning
+# 		- Release of Middle Wheel Hold-Down Mechanism
+#====================================================================================================
+
+EXEC    A5,	GNC_TURNSPOT_GOTO(1,30.0,10.0,10);
+EXEC    A6,	GNC_TURNSPOT_GOTO(1,-30.0,10.0,10);
+EXEC    A7,	GNC_ACKERMANN_GOTO(1,0.2,0.0,0.05,10);
 END_SOL;

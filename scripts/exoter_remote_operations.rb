@@ -23,7 +23,7 @@ end.parse!
 Bundles.initialize
 
 ## Transformation for the transformer
-Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb'))
+Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts_exoter.rb'))
 
 # Execute the task
 Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchandling', 'unit_vicon', 'navigation'  do
@@ -258,6 +258,9 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
 
     # Telemetry Telecommand connections
     telemetry_telecommand.locomotion_command.connect_to locomotion_control.motion_command
+    telemetry_telecommand.bema_command.connect_to       locomotion_control.bema_command
+    telemetry_telecommand.walking_command_front.connect_to locomotion_control.walking_command_front
+    telemetry_telecommand.walking_command_rear.connect_to locomotion_control.walking_command_rear
     telemetry_telecommand.mast_pan.connect_to           ptu_control.pan_command_in
     telemetry_telecommand.mast_tilt.connect_to          ptu_control.tilt_command_in
     telemetry_telecommand.trajectory.connect_to         waypoint_navigation.trajectory
@@ -266,7 +269,8 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     telemetry_telecommand.current_pan.connect_to        ptu_control.pan_samples_out
     telemetry_telecommand.current_tilt.connect_to       ptu_control.tilt_samples_out
     #telemetry_telecommand.current_imu.connect_to        imu_stim300.orientation_samples_out
-    read_joint_dispatcher.joints_samples.connect_to     telemetry_telecommand.joint_samples
+    read_joint_dispatcher.joints_readings_out.connect_to     telemetry_telecommand.joint_samples
+    locomotion_control.bema_joints.connect_to          telemetry_telecommand.current_bema
 
     # Start the components
     platform_driver.start

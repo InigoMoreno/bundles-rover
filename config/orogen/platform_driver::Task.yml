@@ -218,7 +218,7 @@ param_gear_motor_tilt:
 
 # motor parameters of the pan drive
 param_gear_motor_pan: 
-  dPtpVelDefaultIncrS: 10000
+  dPtpVelDefaultIncrS: 30000
   dVelMaxEncIncrS: 68000
   dPosLimitLowIncr: -535000
   dBeltRatio: 1

@@ -49,13 +49,45 @@ static_transform Eigen::Quaternion.Identity(),
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -Math::PI/2.0), 2,1,0),
     Eigen::Vector3.new( 0.0, 0.120, 0.035 ), "left_camera_bb3" => "ptu"
 
+# Transformation PTU to Left camera PanCam (Left camera frame expressed in PTU frame) but transformer expects the other sense
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -Math::PI/2.0), 2,1,0),
+    Eigen::Vector3.new( 0.01, 0.120, 0.035 ), "left_camera_pancam" => "ptu"
+
+# Transformation Left camera to Right camera (Right camera frame expressed in Left camera frame) but transformer expects the other sense
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.24, 0.0, 0.0 ), "right_camera_pancam" => "left_camera_pancam"
+
+# Transformation PTU to Left camera bb2 (Left camera frame expressed in PTU frame) but transformer expects the other sense
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -Math::PI/2.0), 2,1,0),
+    Eigen::Vector3.new( 0.0, 0.0602, 0.092 ), "left_camera_navcam" => "ptu"
+
+# Transformation Left camera to Right camera (Right camera frame expressed in Left camera frame) but transformer expects the other sense
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.12, 0.0, 0.0 ), "right_camera_navcam" => "left_camera_navcam"
+
 # Transformation PTU to Left camera bb2 (Left camera frame expressed in PTU frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -Math::PI/2.0), 2,1,0),
     Eigen::Vector3.new( 0.0, 0.0602, 0.035 ), "left_camera_bb2" => "ptu"
 
 # Transformation Body to Left camera bb2 front (Front Left camera frame expressed in Body frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -2.0*Math::PI/3.0), 2,1,0),
+    Eigen::Vector3.new( 0.195, 0.06, 0.235 ), "left_camera_loccam" => "body"
+
+# Transformation Left camera to Right camera (Right camera frame expressed in Left camera frame) but transformer expects the other sense
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.12, 0.0, 0.0 ), "right_camera_loccam" => "left_camera_loccam"
+
+# Transformation Body to Left camera bb2 front (Front Left camera frame expressed in Body frame) but transformer expects the other sense
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -2.0*Math::PI/3.0), 2,1,0),
     Eigen::Vector3.new( 0.195, 0.06, 0.235 ), "left_camera_bb2_front" => "body"
+
+# Transformation Body to Left camera bb2 back (Back Left camera frame expressed in Body frame) but transformer expects the other sense
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI/2.0, 0.00, -2.0*Math::PI/3.0), 2,1,0),
+    Eigen::Vector3.new( -0.245, -0.06, 0.235 ), "left_camera_navcam_back" => "body"
+
+# Transformation Left camera to Right camera (Right camera frame expressed in Left camera frame) but transformer expects the other sense
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.12, 0.0, 0.0 ), "right_camera_navcam_back" => "left_camera_navcam_back"
 
 # Transformation Body to Left camera bb2 back (Back Left camera frame expressed in Body frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI/2.0, 0.00, -2.0*Math::PI/3.0), 2,1,0),
@@ -70,3 +102,11 @@ static_transform Eigen::Quaternion.Identity(),
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI, 0.00, 0.00), 2,1,0),
     Eigen::Vector3.new( 0.0602, -0.0625, 0.026), "tof_camera" => "left_camera_bb2"
 
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "world_osg" => "lab" # to be used in the actual lab
+
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "lidar" => "lab" # Dummy definition so that TMTC transform setup does not complaint that Lidar to Lab transform is missing
+
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "tof" => "lab" # Dummy definition so that TMTC transform setup does not complaint that ToF to Lab transform is missing
