@@ -1,0 +1,57 @@
+#====================================================================================================
+# PLTE #4 - Fourth Sol on Mars. Main activities:
+# 		- Release of 6 SA Hold-Down Mechanisms 
+# 		- Rover Solar Array Deployment
+# 		- Rover UHF Commissioning
+# 		- Release of Middle Wheel Hold-Down Mechanism
+#====================================================================================================
+
+# Waits the transition Night to Day (driven by the RV PCDE, when PSAmax > 20W) and configure RV for day activities. 
+EXEC    A1,	RV_WakeUp;
+
+# Wait (09:00)
+EXEC    A2,	MMS_WaitAbsTime(33390);
+
+# IMU Switch On for Chekout + Charge Trapping
+EXEC    A3,	GNC_MonitoringOnly;
+
+# Wait suitable time to opimize energy balance + minimize warmup times + battery SoC at the end of the Sol (12:30)
+EXEC    A4,	MMS_WaitAbsTime(46375);
+
+# Release of 6 SA Hold-Down Mechanisms 
+# Rover Solar Array Deployment
+EXEC    A5,	ADEs_Activate(3,3,10800,-50,10800);
+EXEC    A6,	GNC_SwitchOff;
+EXEC    A7,	Deploy_LEFT_SA;
+EXEC    A8,	Deploy_RIGHT_SA;
+
+# Release of Middle Wheel Hold-Down Mechanism
+EXEC    A9,	Deployment_All(1,0,90);
+
+EXEC    A10,	ADEs_DeActivate(3000);
+
+# Wait (17:00) and switch off IMU
+EXEC    A11,	MMS_WaitAbsTime(63070);
+EXEC    A12,	GNC_SwitchOff;
+
+#Wait the transition Day to Night (driven by the RV PCDE, when PSAmax < 20W) and configure the Rover for night
+EXEC    A13,	RV_Prepare4Night;
+
+# Wait until planned communication window (20:00)
+EXEC    A14,	MMS_WaitAbsTime(74200);
+
+# Prepare RV for communication
+EXEC    A15,	RV_Prepare4Comms;
+
+# Communication performed when hail detected by the Transceiver 
+
+# Wait until communication is performed (20:30)
+EXEC    A16,	MMS_WaitAbsTime(76055);
+
+# Unconfigure the RV after communication
+EXEC    A17,	RV_PostComms;
+
+# Wait until midnight
+EXEC    A18,	MMS_WaitAbsTime(89040);
+
+END_SOL;

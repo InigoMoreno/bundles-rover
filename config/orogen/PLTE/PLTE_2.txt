@@ -1,0 +1,61 @@
+#====================================================================================================
+# PLTE #2 - Second Sol on Mars. Main activities:
+#         - Release of mast hold-down 
+# 	  - Mast Deployment & LocCam and NavCam panorama images acquisition
+#====================================================================================================
+
+# Waits the transition Night to Day (driven by the RV PCDE, when PSAmax > 20W) and configure RV for day activities. 
+EXEC    A1,	RV_WakeUp;
+
+# Wait (09:00)
+#EXEC    A2,	MMS_WaitAbsTime(33390);
+
+# IMU Switch On for Chekout + Charge Trapping
+#EXEC     A3,	GNC_MonitoringOnly;
+
+# Wait suitable time to opimize energy balance + minimize warmup times + battery SoC at the end of the Sol (12:30)
+#EXEC    A4,	MMS_WaitAbsTime(46375);
+
+# Release of mast hold-down
+# Mast Deployment & LocCam and NavCam panorama images acquisition
+#EXEC    A5,	ADEs_Activate(3,3,10800,-50,10800);
+EXEC    A6,	GNC_SwitchOff;
+EXEC    A7,	Deploy_Mast;
+#EXEC    A8,	GNC_MonitoringOnly;
+
+#EXEC   A9,	MAST_PAN_Initialise(7200,0);
+#EXEC	A10,	MAST_TILT_Initialise(7200,0);
+#WAIT_ACTIVITY_END	A7;
+
+EXEC	A21,	MAST_PTU_MoveTo(1,-230,15,30);
+EXEC    A22,	FRONT_ACQ(0,0,0);
+EXEC	A11,	MAST_PTU_MoveTo(1,-180,15,20);
+EXEC    A12,	FRONT_ACQ(0,0,0);
+EXEC	A13,	MAST_PTU_MoveTo(1,-120,15,20);
+EXEC    A14,	FRONT_ACQ(0,0,0);
+EXEC	A15,	MAST_PTU_MoveTo(1,-60,15,20);
+EXEC    A16,	FRONT_ACQ(0,0,0);
+EXEC	A17,	MAST_PTU_MoveTo(1,0,15,20);
+EXEC    A18,	FRONT_ACQ(0,0,0);
+EXEC	A19,	MAST_PTU_MoveTo(1,50,15,20);
+EXEC    A20,	FRONT_ACQ(0,0,0);
+EXEC	A23,	MAST_PTU_MoveTo(1,0,45,20);
+EXEC    A231,	FRONT_ACQ(0,0,0);
+
+#EXEC	A24,	MAST_PAN_SwitchOff;
+#EXEC	A25,	MAST_TILT_SwitchOff;
+#EXEC    A26,	ADEs_DeActivate(3000);
+
+EXEC    A27,	HAZCAM_ACQ(0,0,0);
+
+# Wait (17:00) and switch off IMU
+#EXEC    A28,	MMS_WaitAbsTime(63070);
+EXEC    A29,	GNC_SwitchOff;
+
+#Wait the transition Day to Night (driven by the RV PCDE, when PSAmax < 20W) and configure the Rover for night
+EXEC    A30,	RV_Prepare4Night;
+
+# Wait until midnight
+#EXEC    A31,	MMS_WaitAbsTime(89040);
+
+END_SOL;
