@@ -188,6 +188,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         trigger_navcam.frame_left_out.connect_to        stereo_navcam.left_frame
         trigger_navcam.frame_right_out.connect_to       stereo_navcam.right_frame
         trigger_navcam.frame_left_out.connect_to        dem_generation_navcam.left_frame_rect
+        trigger_navcam.frame_right_out.connect_to       dem_generation_navcam.right_frame_rect
         stereo_navcam.distance_frame.connect_to         dem_generation_navcam.distance_frame
 
         telemetry_telecommand.front_trigger.connect_to      trigger_navcam.telecommand_in
@@ -204,6 +205,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         trigger_loccam.frame_left_out.connect_to        stereo_loccam.left_frame
         trigger_loccam.frame_right_out.connect_to       stereo_loccam.right_frame
         trigger_loccam.frame_left_out.connect_to        dem_generation_loccam.left_frame_rect
+        trigger_loccam.frame_right_out.connect_to       dem_generation_loccam.right_frame_rect
         stereo_loccam.distance_frame.connect_to         dem_generation_loccam.distance_frame
         telemetry_telecommand.haz_front_trigger.connect_to  trigger_loccam.telecommand_in
 
@@ -220,6 +222,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         trigger_pancam.frame_left_out.connect_to        stereo_pancam.left_frame
         trigger_pancam.frame_right_out.connect_to       stereo_pancam.right_frame
         trigger_pancam.frame_left_out.connect_to        dem_generation_pancam.left_frame_rect
+        trigger_pancam.frame_right_out.connect_to       dem_generation_pancam.right_frame_rect
         stereo_pancam.distance_frame.connect_to         dem_generation_pancam.distance_frame
 
         pancam_360.pan_angle_in.connect_to                  ptu_control.pan_samples_out
