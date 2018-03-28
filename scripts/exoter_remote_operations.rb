@@ -26,7 +26,7 @@ Bundles.initialize
 Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts_exoter.rb'))
 
 # Execute the task
-Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchandling', 'unit_vicon', 'navigation'  do
+Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchandling', 'unit_vicon', 'navigation', 'unit_visual_odometry' do
     joystick = Orocos.name_service.get 'joystick'
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -48,7 +48,15 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     locomotion_control = Orocos.name_service.get 'locomotion_control'
     Orocos.conf.apply(locomotion_control, ['exoter'], :override => true)
     locomotion_control.configure
-    
+
+    wheel_walking_control = Orocos.name_service.get 'wheel_walking_control'
+    Orocos.conf.apply(wheel_walking_control, ['default'], :override => true)
+    wheel_walking_control.configure
+
+    locomotion_switcher = Orocos.name_service.get 'locomotion_switcher'
+    Orocos.conf.apply(locomotion_switcher, ['default'], :override => true)
+    locomotion_switcher.configure
+
     command_joint_dispatcher = Orocos.name_service.get 'command_joint_dispatcher'
     Orocos.conf.apply(command_joint_dispatcher, ['exoter_commanding'], :override => true)
     command_joint_dispatcher.configure
@@ -70,11 +78,22 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     imu_stim300.configure
     
     if options[:v] == true
-	vicon = TaskContext.get 'vicon'
+    	vicon = TaskContext.get 'vicon'
         Orocos.conf.apply(vicon, ['default','exoter'], :override => true)
         vicon.configure
-    else
-	# use visodom or gps if outdoors
+    #else
+        visual_odometry = TaskContext.get 'viso2'
+        Orocos.conf.apply(visual_odometry, ['default','bumblebee'], :override => true)
+        Bundles.transformer.setup(visual_odometry)
+        visual_odometry.configure
+
+        viso2_with_imu = TaskContext.get 'viso2_with_imu'
+        Orocos.conf.apply(viso2_with_imu, ['default'], :override => true)
+        viso2_with_imu.configure
+
+        viso2_evaluation = TaskContext.get 'viso2_evaluation'
+        Orocos.conf.apply(viso2_evaluation, ['default'], :override => true)
+        viso2_evaluation.configure
     end	
 
     if options[:nav] == true
@@ -169,18 +188,27 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     joystick.raw_command.connect_to                     motion_translator.raw_command
     joystick.raw_command.connect_to                     command_arbiter.raw_command
 
-    #motion_translator.ptu_command.connect_to            ptu_control.ptu_joints_commands
+    motion_translator.ptu_command.connect_to            ptu_control.ptu_joints_commands
     motion_translator.motion_command.connect_to         command_arbiter.joystick_motion_command
     waypoint_navigation.motion_command.connect_to       command_arbiter.follower_motion_command
-    command_arbiter.motion_command.connect_to           locomotion_control.motion_command
-    
-    locomotion_control.joints_commands.connect_to       command_joint_dispatcher.joints_commands
+    command_arbiter.motion_command.connect_to           locomotion_switcher.motion_command
+    command_arbiter.locomotion_mode.connect_to          locomotion_switcher.locomotion_mode_override
+    locomotion_switcher.kill_switch.connect_to          wheel_walking_control.kill_switch
+    locomotion_switcher.reset_dep_joints.connect_to     wheel_walking_control.reset_dep_joints
+    locomotion_switcher.lc_motion_command.connect_to    locomotion_control.motion_command
+    read_joint_dispatcher.joints_samples.connect_to     locomotion_switcher.joints_readings
+    read_joint_dispatcher.motors_samples.connect_to     locomotion_switcher.motors_readings
+    locomotion_control.joints_commands.connect_to       locomotion_switcher.lc_joints_commands
+    wheel_walking_control.joint_commands.connect_to     locomotion_switcher.ww_joints_commands
+    locomotion_switcher.joints_commands.connect_to      command_joint_dispatcher.joints_commands
+     
     ptu_control.ptu_commands_out.connect_to             command_joint_dispatcher.ptu_commands
     command_joint_dispatcher.motors_commands.connect_to platform_driver.joints_commands
     platform_driver.joints_readings.connect_to          read_joint_dispatcher.joints_readings
     read_joint_dispatcher.motors_samples.connect_to     locomotion_control.joints_readings
     read_joint_dispatcher.ptu_samples.connect_to        ptu_control.ptu_samples
-    
+    read_joint_dispatcher.joints_samples.connect_to     wheel_walking_control.joint_readings
+
     if options[:nav] == true
         camera_firewire_navcam.frame.connect_to         camera_navcam.frame_in
         camera_navcam.left_frame.connect_to             trigger_navcam.frame_left_in
@@ -251,16 +279,26 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         trigger_pancam_360.configure
     end
 
-    if options[:v] == false
-        # use visodom or gps outdoors
-    else
-    	vicon.pose_samples.connect_to             	waypoint_navigation.pose
+    if options[:v] == true
+        vicon.pose_samples.connect_to             	waypoint_navigation.pose
     	vicon.pose_samples.connect_to             	telemetry_telecommand.current_pose
     	puts "using vicon"
+    #else
+        camera_loccam.left_frame.connect_to                 visual_odometry.left_frame
+        camera_loccam.right_frame.connect_to                visual_odometry.right_frame
+        command_arbiter.motion_command.connect_to           visual_odometry.motion_command
+        
+        visual_odometry.delta_pose_samples_out.connect_to   viso2_with_imu.delta_pose_samples_in
+        imu_stim300.orientation_samples_out.connect_to      viso2_with_imu.pose_samples_imu
+        imu_stim300.orientation_samples_out.connect_to      viso2_with_imu.pose_samples_imu_extra
+        telemetry_telecommand.update_pose.connect_to        viso2_with_imu.reset_pose
+    	vicon.pose_samples.connect_to             	viso2_evaluation.groundtruth_pose
+    	viso2_with_imu.pose_samples_out.connect_to             	viso2_evaluation.odometry_pose
     end
 
     # Telemetry Telecommand connections
-    telemetry_telecommand.locomotion_command.connect_to locomotion_control.motion_command
+    telemetry_telecommand.locomotion_command.connect_to command_arbiter.follower_motion_command
+    telemetry_telecommand.locomotion_mode.connect_to    locomotion_switcher.locomotion_mode
     telemetry_telecommand.bema_command.connect_to       locomotion_control.bema_command
     telemetry_telecommand.walking_command_front.connect_to locomotion_control.walking_command_front
     telemetry_telecommand.walking_command_rear.connect_to locomotion_control.walking_command_rear
@@ -271,7 +309,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     waypoint_navigation.trajectory_status.connect_to    telemetry_telecommand.trajectory_status
     telemetry_telecommand.current_pan.connect_to        ptu_control.pan_samples_out
     telemetry_telecommand.current_tilt.connect_to       ptu_control.tilt_samples_out
-    #telemetry_telecommand.current_imu.connect_to        imu_stim300.orientation_samples_out
+    telemetry_telecommand.current_imu.connect_to        imu_stim300.orientation_samples_out
     read_joint_dispatcher.joints_readings_out.connect_to     telemetry_telecommand.joint_samples
     locomotion_control.bema_joints.connect_to          telemetry_telecommand.current_bema
 
@@ -280,15 +318,19 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     read_joint_dispatcher.start
     command_joint_dispatcher.start
     locomotion_control.start
+    wheel_walking_control.start
+    locomotion_switcher.start
     ptu_control.start
     command_arbiter.start
     motion_translator.start
     joystick.start
     imu_stim300.start
-    if options[:v] == false
-        # start visodom
-    else
+    if options[:v] == true 
       	vicon.start
+#    else
+        viso2_with_imu.start
+        viso2_evaluation.start
+        visual_odometry.start
     end
 
     if options[:pan] == true
@@ -314,8 +356,8 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         stereo_navcam.start
         dem_generation_navcam.start
     end
-    telemetry_telecommand.start
     waypoint_navigation.start
+    telemetry_telecommand.start
 
     Readline::readline("Press Enter to exit\n") do
     end

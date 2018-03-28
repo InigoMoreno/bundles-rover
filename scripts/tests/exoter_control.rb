@@ -67,7 +67,7 @@ Orocos::Process.run 'control' do
     motion_translator.locomotion_mode.connect_to          locomotion_switcher.locomotion_mode_override
 
     locomotion_switcher.kill_switch.connect_to            wheel_walking_control.kill_switch
-    locomotion_switcher.reset_dep_joints.connect_to         wheel_walking_control.reset_dep_joints
+    locomotion_switcher.reset_dep_joints.connect_to       wheel_walking_control.reset_dep_joints
     locomotion_switcher.lc_motion_command.connect_to      locomotion_control.motion_command
     read_joint_dispatcher.joints_samples.connect_to       locomotion_switcher.joints_readings
     read_joint_dispatcher.motors_samples.connect_to       locomotion_switcher.motors_readings

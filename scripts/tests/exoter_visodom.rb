@@ -51,13 +51,17 @@ Orocos::Process.run 'control', 'loccam', 'imu', 'unit_vicon', 'navigation', 'uni
     imu_stim300.configure
 
     visual_odometry = TaskContext.get 'viso2'
-    Orocos.conf.apply(visual_odometry, ['bumblebee'], :override => true)
+    Orocos.conf.apply(visual_odometry, ['default','bumblebee'], :override => true)
     Bundles.transformer.setup(visual_odometry)
     visual_odometry.configure
 
     viso2_with_imu = TaskContext.get 'viso2_with_imu'
     Orocos.conf.apply(visual_odometry, ['default'], :override => true)
     viso2_with_imu.configure
+
+    viso2_evaluation = TaskContext.get 'viso2_evaluation'
+    Orocos.conf.apply(viso2_evaluation, ['default'], :override => true)
+    viso2_evaluation.configure
 
     vicon = TaskContext.get 'vicon'
     Orocos.conf.apply(vicon, ['default','exoter'], :override => true)
@@ -71,12 +75,9 @@ Orocos::Process.run 'control', 'loccam', 'imu', 'unit_vicon', 'navigation', 'uni
     Orocos.conf.apply(camera_loccam, ['hdpr_bb2'], :override => true)
     camera_loccam.configure
 
-    stereo_loccam = TaskContext.get 'stereo_loccam'
-    Orocos.conf.apply(stereo_loccam, ['hdpr_bb2'], :override => true)
-    stereo_loccam.configure
-
     joystick.raw_command.connect_to                     motion_translator.raw_command
-
+    motion_translator.ptu_command.connect_to            ptu_control.ptu_joints_commands
+    motion_translator.motion_command.connect_to         locomotion_control.motion_command
     locomotion_control.joints_commands.connect_to       command_joint_dispatcher.joints_commands
     ptu_control.ptu_commands_out.connect_to             command_joint_dispatcher.ptu_commands
     command_joint_dispatcher.motors_commands.connect_to platform_driver.joints_commands
@@ -87,11 +88,15 @@ Orocos::Process.run 'control', 'loccam', 'imu', 'unit_vicon', 'navigation', 'uni
     camera_firewire_loccam.frame.connect_to             camera_loccam.frame_in
 
     camera_loccam.left_frame.connect_to                 visual_odometry.left_frame
-    camera_loccam.left_frame.connect_to                 visual_odometry.right_frame
-    camera_loccam.left_frame.connect_to                 visual_odometry.left_frame
+    camera_loccam.right_frame.connect_to                visual_odometry.right_frame
 
-    visual_odometry.pose_samples_out.connect_to         viso2_with_imu.pose_samples_imu
+    motion_translator.motion_command.connect_to         visual_odometry.motion_command
     visual_odometry.delta_pose_samples_out.connect_to   viso2_with_imu.delta_pose_samples_in
+    imu_stim300.orientation_samples_out.connect_to      viso2_with_imu.pose_samples_imu
+    imu_stim300.orientation_samples_out.connect_to      viso2_with_imu.pose_samples_imu_extra
+
+    vicon.pose_samples.connect_to                       viso2_evaluation.groundtruth_pose
+    viso2_with_imu.pose_samples_out.connect_to          viso2_evaluation.odometry_pose
 
     platform_driver.start
     read_joint_dispatcher.start
@@ -104,10 +109,11 @@ Orocos::Process.run 'control', 'loccam', 'imu', 'unit_vicon', 'navigation', 'uni
 
     camera_loccam.start
     camera_firewire_loccam.start
-    stereo_loccam.start
 
     visual_odometry.start
     viso2_with_imu.start
+    viso2_evaluation.start
+    vicon.start
 
     Readline::readline("Press Enter to exit\n") do
     end
