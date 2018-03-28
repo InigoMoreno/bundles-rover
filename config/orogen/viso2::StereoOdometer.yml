@@ -41,12 +41,10 @@ image_ouput_type: :INTER_KEYPOINTS #:INTRA_MATCHES #:INTER_KEYPOINTS
 
 --- name:bumblebee
 # the global name that should be used for the internal left_camera frame
-#left_camera_frame: left_camera_bb2
-visual_odometry_source_frame: "left_camera_bb2"
+#left_camera_viso2_frame: "left_camera_viso2"
 
 # the global name that should be used for the internal body frame
-#body_frame: body
-visual_odometry_target_frame: "body"
+#body_frame: "body"
 
 # maximum latency, in seconds, of the stream aligner. The aligner will start
 # dropping samples if the difference between the last output and last input is

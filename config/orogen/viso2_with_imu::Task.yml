@@ -9,69 +9,69 @@ initial_pose:
   targetFrame: 'viso_world' # transformer names. No transformation convention
   position:
     data:
-    - -4.58
-    - 6.668
-    - 1.528
+    - 0.0
+    - 0.0
+    - 0.0
   cov_position:
     data:
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
   orientation:
     im:
+    - 0.0  # sin(yaw/2)
     - 0.0
     - 0.0
-    - 0.0
-    re: 1.0
+    re: 1.0 # cos(yaw/2)
   cov_orientation:
     data:
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
   velocity:
     data:
-    - .nan
-    - .nan
-    - .nan
+    - 0.0
+    - 0.0
+    - 0.0
   cov_velocity:
     data:
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
   angular_velocity:
     data:
-    - .nan
-    - .nan
-    - .nan
+    - 0.0
+    - 0.0
+    - 0.0
   cov_angular_velocity:
     data:
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
-    - .nan
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
 
 
 
