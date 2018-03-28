@@ -74,7 +74,7 @@ static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0,
     Eigen::Vector3.new( 0.195, 0.06, 0.235 ), "left_camera_loccam" => "body"
 
 # transformation used for visual odometry
-static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -2.0*Math::PI/3.0), 2,1,0),
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -2.0*Math::PI*(123.0/360.0)), 2,1,0),
     Eigen::Vector3.new( 0.195, 0.06, 0.235 ), "left_camera_viso2" => "body"
 
 # Transformation Left camera to Right camera (Right camera frame expressed in Left camera frame) but transformer expects the other sense
@@ -108,6 +108,9 @@ static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI, 0.00
 
 static_transform Eigen::Quaternion.Identity(),
     Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "world_osg" => "lab" # to be used in the actual lab
+
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "navigation" => "world_osg" # to be used in the actual lab
 
 static_transform Eigen::Quaternion.Identity(),
     Eigen::Vector3.new( 0.0, 0.0, 0.0 ), "lidar" => "lab" # Dummy definition so that TMTC transform setup does not complaint that Lidar to Lab transform is missing
