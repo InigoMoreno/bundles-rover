@@ -8,12 +8,67 @@ filter_configuration:
   use_magnetometers: false
   initial_alignment_samples: 750 # 150000 # 20 minute(s) initial alignment. IMU rate is 125Hz. Set it to 7500 for 1 minute.
   correction_frequency: 1.0
-# FIXME: Not in master. Needed?
-#use_input_bias: true
-#biasgyro: [-0.000585941,0.000222133,0.000340725]
-#biasacc: [0.000445258,-0.000157337,0]
-#
-#init_heading: 122.0
+
+use_input_bias: true
+biasgyro: [-0.000448614,-4.24293e-05,-4.15614e-05]
+biasacc: [-5.07971e-07,-3.98021e-07,0]
+init_heading: 140.0
+
+--- name:calibration
+# General configuration values to run the task
+filter_configuration:
+  source_frame_name: 'imu' # transformer names. No transformation convention
+  target_frame_name: 'world_osg' # transformer names. No transformation convention
+  use_samples_as_theoretical_gravity: true
+  use_inclinometers: true
+  use_magnetometers: false
+  initial_alignment_samples: 150000 # 150000 # 20 minute(s) initial alignment. IMU rate is 125Hz. Set it to 7500 for 1 minute.
+  correction_frequency: 1.0
+use_input_bias: false
+init_heading: 140.0
+
+    
+###      ###     ###
+###     rover    ###
+###      ###     ###
+
+--- name:exoter
+# IMU port in ExoTer
+port: '/dev/exoter-imu'
+revision: :REV_D
+timeout: 0.01 #in seconds
+use_filter: true
+
+--- name:HDPR
+# IMU port in ExoTer
+port: '/dev/hdpr-imu'
+revision: :REV_D
+timeout: 0.008 #in seconds
+use_filter: true
+
+###      ###     ###
+###   location   ###
+###      ###     ###
+
+--- name:ESTEC
+# Localization properties related to the geographic place (i.e.: latitude, longitude, magnetic declination).
+location:
+  latitude: 0.911367 #52deg 13min 03sec NORTH
+  longitude: 0.07709999 # 4deg 25 min 03 sec EAST
+  altitude: 0.0
+  magnetic_declination: 0.006690428 #0 deg 23 min EAST
+  magnetic_declination_mode: :EAST
+  dip_angle: 0.00663
+
+--- name:SEROM
+# Localization properties related to the geographic place (i.e.: latitude, longitude, magnetic declination).
+location:
+  latitude: 0.7563039873
+  longitude: 0.022534499
+  altitude: 150.0
+  magnetic_declination:  0.006690428
+  magnetic_declination_mode: :EAST
+  dip_angle: 0.00663
 
 --- name:Bremen
 # Localization properties related to the geographic place (i.e.: latitude, longitude, magnetic declination).
@@ -35,16 +90,6 @@ location:
   magnetic_declination_mode: :WEST
   dip_angle: 1.187696556
 
---- name:ESTEC
-# Localization properties related to the geographic place (i.e.: latitude, longitude, magnetic declination).
-location:
-  latitude: 0.911367 #52deg 13min 03sec NORTH
-  longitude: 0.07709999 # 4deg 25 min 03 sec EAST
-  altitude: 0.0
-  magnetic_declination: 0.006690428 #0 deg 23 min EAST
-  magnetic_declination_mode: :EAST
-  dip_angle: 0.00663
-
 --- name:DLR-Oberpfaffenhofen
 # Localization properties related to the geographic place (i.e.: latitude, longitude, magnetic declination).
 location:
@@ -54,6 +99,10 @@ location:
   magnetic_declination: 0.0471238898  #2.70 deg EAST
   magnetic_declination_mode: :EAST
   dip_angle: 0.00663
+
+###      ###     ###
+### sensor model ###
+###      ###     ###
 
 --- name:stim300_10g_exoter
 # Adaptive estimation of external acceleration.
@@ -356,38 +405,4 @@ inclinometer_noise:
     - 0.002
     - 0.002
 
---- name:exoter
-# IMU port in ExoTer
-port: '/dev/exoter-imu'
-revision: :REV_D
-timeout: 0.01 #in seconds
-use_filter: true
 
---- name:calibration
-# General configuration values to run the task
-filter_configuration:
-  source_frame_name: 'imu' # transformer names. No transformation convention
-  target_frame_name: 'world_osg' # transformer names. No transformation convention
-  use_samples_as_theoretical_gravity: true
-  use_inclinometers: true
-  use_magnetometers: false
-  initial_alignment_samples: 150000 # 150000 # 20 minute(s) initial alignment. IMU rate is 125Hz. Set it to 7500 for 1 minute.
-  correction_frequency: 1.0
-use_input_bias: false
-
---- name:HDPR
-# IMU port in ExoTer
-port: '/dev/hdpr-imu'
-revision: :REV_D
-timeout: 0.008 #in seconds
-use_filter: true
-
---- name:SEROM
-# Localization properties related to the geographic place (i.e.: latitude, longitude, magnetic declination).
-location:
-  latitude: 0.7563039873
-  longitude: 0.022534499
-  altitude: 150.0
-  magnetic_declination:  0.006690428
-  magnetic_declination_mode: :EAST
-  dip_angle: 0.00663
