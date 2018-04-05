@@ -219,7 +219,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         trigger_navcam.frame_right_out.connect_to       dem_generation_navcam.right_frame_rect
         stereo_navcam.distance_frame.connect_to         dem_generation_navcam.distance_frame
 
-        telemetry_telecommand.front_trigger.connect_to      trigger_navcam.telecommand_in
+        telemetry_telecommand.navcam_trigger.connect_to      trigger_navcam.telecommand_in
         trigger_navcam.telecommands_out.connect_to          dem_generation_navcam.telecommands_in
         dem_generation_navcam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
         # Configure the sensor trigger after the ports are connected
@@ -235,7 +235,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         trigger_loccam.frame_left_out.connect_to        dem_generation_loccam.left_frame_rect
         trigger_loccam.frame_right_out.connect_to       dem_generation_loccam.right_frame_rect
         stereo_loccam.distance_frame.connect_to         dem_generation_loccam.distance_frame
-        telemetry_telecommand.haz_front_trigger.connect_to  trigger_loccam.telecommand_in
+        telemetry_telecommand.loccam_trigger.connect_to  trigger_loccam.telecommand_in
 
         trigger_loccam.telecommands_out.connect_to          dem_generation_loccam.telecommands_in
         dem_generation_loccam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
@@ -267,7 +267,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         trigger_pancam_360.frame_left_out.connect_to        dem_generation_pancam.left_frame_rect
         dem_generation_pancam.sync_out.connect_to	        pancam_360.sync_in
 
-        telemetry_telecommand.mast_trigger.connect_to       trigger_pancam.telecommand_in
+        telemetry_telecommand.pancam_trigger.connect_to     trigger_pancam.telecommand_in
         telemetry_telecommand.pancam_360_trigger.connect_to trigger_pancam_360.telecommand_in
         telemetry_telecommand.panorama_tilt.connect_to      pancam_360.trigger_tilt
 
@@ -290,7 +290,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         
         visual_odometry.delta_pose_samples_out.connect_to   viso2_with_imu.delta_pose_samples_in
         imu_stim300.orientation_samples_out.connect_to      viso2_with_imu.pose_samples_imu
-        imu_stim300.orientation_samples_out.connect_to      viso2_with_imu.pose_samples_imu_extra
+        #imu_stim300.orientation_samples_out.connect_to      viso2_with_imu.pose_samples_imu_extra
         telemetry_telecommand.update_pose.connect_to        viso2_with_imu.reset_pose
     	vicon.pose_samples.connect_to             	viso2_evaluation.groundtruth_pose
     	viso2_with_imu.pose_samples_out.connect_to             	viso2_evaluation.odometry_pose
