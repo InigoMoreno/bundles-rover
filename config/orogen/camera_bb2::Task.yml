@@ -43,6 +43,7 @@ calibration_parameters:
 
 # bit depth per channel
 output_format: :MODE_RGB
+#output_format: :MODE_GRAYSCALE
 undistort: false
 
 #    ___        _____    ___   ___ ___ ___ 

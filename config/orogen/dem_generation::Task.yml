@@ -12,7 +12,7 @@ cameraCalibration:
     height: 768
     ex: 0.0
     ey: 0.0
-camera_name: 'FRONT'
+camera_name: 'NAVCAM'
 save_directory: '/media/logs/Products/'
 # K points for statistical pc filter
 k_points: 20
@@ -49,7 +49,7 @@ cameraCalibration:
   d3: 0.000959205363921
   width: 1280
   height: 960
-camera_name: 'MAST'
+camera_name: 'PANCAM'
 save_directory: '/media/logs/Products/'
 # K points for statistical pc filter
 k_points: 20
@@ -85,7 +85,7 @@ cameraCalibration:
   d3: -0.000750163647335
   width: 1024
   height: 768
-camera_name: 'HAZCAM' # RLOC for exoter
+camera_name: 'LOCCAM' # RLOC for exoter
 save_directory: '/media/logs/Products/'
 # K points for statistical pc filter
 k_points: 20

@@ -88,6 +88,7 @@ stereoCameraCalibration:
     rx: 0.0030362424497703553
     ry: 0.008216107727968488
     rz: -0.0005449859535995445
+output_format_sync: :MODE_RGB
 
 #    _  _ ___  ___ ___   ___ ___ ___ 
 #   | || |   \| _ \ _ \ | _ ) _ )_  )
@@ -214,6 +215,7 @@ stereoCameraCalibration:
 #    rx: -0.002033295208862309
 #    ry: -0.003170676988095988
 #    rz: -0.003374311026266406
+output_format_sync: :MODE_GRAYSCALE
 
 --- name:egp_bb2
 # gaussian kernel for dense stereo pre-processing.

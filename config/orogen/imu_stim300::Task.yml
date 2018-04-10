@@ -9,10 +9,10 @@ filter_configuration:
   initial_alignment_samples: 750 # 150000 # 20 minute(s) initial alignment. IMU rate is 125Hz. Set it to 7500 for 1 minute.
   correction_frequency: 1.0
 
-use_input_bias: true
+use_input_bias: false
 biasgyro: [-0.000448614,-4.24293e-05,-4.15614e-05]
 biasacc: [-5.07971e-07,-3.98021e-07,0]
-init_heading: 140.0
+#init_heading: 140.0
 
 --- name:calibration
 # General configuration values to run the task
