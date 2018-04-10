@@ -93,7 +93,7 @@ Orocos::Process.run 'control', 'loccam', 'imu', 'unit_vicon', 'navigation', 'uni
     motion_translator.motion_command.connect_to         visual_odometry.motion_command
     visual_odometry.delta_pose_samples_out.connect_to   viso2_with_imu.delta_pose_samples_in
     imu_stim300.orientation_samples_out.connect_to      viso2_with_imu.pose_samples_imu
-    imu_stim300.orientation_samples_out.connect_to      viso2_with_imu.pose_samples_imu_extra
+#    imu_stim300.orientation_samples_out.connect_to      viso2_with_imu.pose_samples_imu_extra
 
     vicon.pose_samples.connect_to                       viso2_evaluation.groundtruth_pose
     viso2_with_imu.pose_samples_out.connect_to          viso2_evaluation.odometry_pose
