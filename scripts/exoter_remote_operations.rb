@@ -82,7 +82,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     slippage_estimator.configure
 
     fdir = TaskContext.get 'fdir'
-    #Orocos.conf.apply(fdir, ['exoter'], :override => true)
+    Orocos.conf.apply(fdir, ['exoter'], :override => true)
     fdir.configure
 
     if options[:v] == true
