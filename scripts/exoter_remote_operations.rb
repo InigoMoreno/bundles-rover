@@ -78,7 +78,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     imu_stim300.configure
 
     slippage_estimator = TaskContext.get 'slippage_estimator'
-    Orocos.conf.apply(slippage_estimator, ['default'], :override => true)
+    Orocos.conf.apply(slippage_estimator, ['exoter'], :override => true)
     slippage_estimator.configure
 
     fdir = TaskContext.get 'fdir'
@@ -323,7 +323,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     waypoint_navigation.trajectory_status.connect_to    telemetry_telecommand.trajectory_status
     telemetry_telecommand.current_pan.connect_to        ptu_control.pan_samples_out
     telemetry_telecommand.current_tilt.connect_to       ptu_control.tilt_samples_out
-    telemetry_telecommand.current_imu.connect_to        imu_stim300.orientation_samples_out
+    #telemetry_telecommand.current_imu.connect_to        imu_stim300.orientation_samples_out
     read_joint_dispatcher.joints_readings_out.connect_to     telemetry_telecommand.joint_samples
     locomotion_control.bema_joints.connect_to          telemetry_telecommand.current_bema
 
@@ -333,6 +333,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     slippage_estimator.slip_ratio.connect_to            fdir.slip_ratio
     waypoint_navigation.trajectory_status.connect_to    fdir.trajectory_status
     imu_stim300.orientation_samples_out.connect_to      fdir.attitude
+    platform_driver.error_in_motor.connect_to           fdir.error_in_motor
     #TODO connect platform driver output port of motor statuses
 
     fdir.fault_detected.connect_to                      command_arbiter.fault_detected
