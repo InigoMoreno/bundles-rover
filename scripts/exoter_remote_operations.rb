@@ -288,9 +288,9 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     end
 
     if options[:v] == true
-        vicon.pose_samples.connect_to             	        waypoint_navigation.pose
-    	vicon.pose_samples.connect_to             	        telemetry_telecommand.current_pose
-        vicon.pose_samples.connect_to                       slippage_estimator.pose
+        #vicon.pose_samples.connect_to             	        waypoint_navigation.pose
+    	#vicon.pose_samples.connect_to             	        telemetry_telecommand.current_pose
+        #vicon.pose_samples.connect_to                      slippage_estimator.pose
     	puts "using vicon"
     #else
         camera_loccam.left_frame.connect_to                 visual_odometry.left_frame
@@ -301,9 +301,13 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         imu_stim300.orientation_samples_out.connect_to      viso2_with_imu.pose_samples_imu
         #imu_stim300.orientation_samples_out.connect_to      viso2_with_imu.pose_samples_imu_extra
         telemetry_telecommand.update_pose.connect_to        viso2_with_imu.reset_pose
-    	vicon.pose_samples.connect_to             	viso2_evaluation.groundtruth_pose
-    	viso2_with_imu.pose_samples_out.connect_to             	viso2_evaluation.odometry_pose
-        #viso2_with_imu.pose_samples_out.connect_to          slippage_estimator.pose
+    	
+        vicon.pose_samples.connect_to             	        viso2_evaluation.groundtruth_pose
+    	viso2_with_imu.pose_samples_out.connect_to          viso2_evaluation.odometry_pose
+        
+        viso2_with_imu.pose_samples_out.connect_to          waypoint_navigation.pose
+    	viso2_with_imu.pose_samples_out.connect_to          telemetry_telecommand.current_pose
+        viso2_with_imu.pose_samples_out.connect_to          slippage_estimator.pose
     end
 
     # Telemetry Telecommand connections
@@ -332,6 +336,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     #TODO connect platform driver output port of motor statuses
 
     fdir.fault_detected.connect_to                      command_arbiter.fault_detected
+    fdir.fdir_state.connect_to                          telemetry_telecommand.fdir_state
 
     # Start the components
     platform_driver.start
