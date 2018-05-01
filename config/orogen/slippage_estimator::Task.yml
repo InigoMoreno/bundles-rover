@@ -3,7 +3,7 @@
 integration_window: 50
 pose_samples_period: 0.1
 
---- name:exoter
+--- name:exoter_viso2
 # no documentation available for this property
 integration_window: 40
 # no documentation available for this property
@@ -14,3 +14,15 @@ turn_spot_window: 20
 ww_body_velocity: 0.02
 # no documentation available for this property
 ww_window: 20
+
+--- name:exoter_vicon
+# no documentation available for this property
+integration_window: 200
+# no documentation available for this property
+pose_samples_period: 0.05
+# no documentation available for this property
+turn_spot_window: 100
+# no documentation available for this property
+ww_body_velocity: 0.02
+# no documentation available for this property
+ww_window: 50
