@@ -202,6 +202,7 @@ Orocos::Process.run 'hdpr_control', 'hdpr_pancam', 'hdpr_lidar', 'hdpr_tof', 'hd
     #simple_pose.pose.connect_to                         waypoint_navigation.pose
     gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
     imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples
+    #gyro.orientation_samples.connect_to                 gps_heading.gyro_pose_samples
     command_arbiter.motion_command.connect_to           gps_heading.motion_command
     gps.raw_data.connect_to                             gps_heading.gps_raw_data
     trajectoryGen.trajectory.connect_to                 waypoint_navigation.trajectory
