@@ -96,12 +96,12 @@ undistort: false
 whitebalance_auto_rate: 100
 # Sets a range of scene color changes in which the automatic whitebalance will not respond.
 whitebalance_auto_threshold: 5
-# Blue gain expressed as a percentage of the camera default setting.
-whitebalance_blue: 580
-# whitebalance mode (auto, manual, auto_once, none)
-whitebalance_mode: auto
 # Red gain expressed as a percentage of the camera default setting.
-whitebalance_red: 650
+whitebalance_red: 530
+# Blue gain expressed as a percentage of the camera default setting.
+whitebalance_blue: 720
+# whitebalance mode (auto, manual, auto_once, none)
+whitebalance_mode: manual
 # width of the camera frame
 width: 1024
 
@@ -206,12 +206,12 @@ undistort: false
 whitebalance_auto_rate: 100
 # Sets a range of scene color changes in which the automatic whitebalance will not respond.
 whitebalance_auto_threshold: 5
-# Blue gain expressed as a percentage of the camera default setting.
-whitebalance_blue: 580
-# whitebalance mode (auto, manual, auto_once, none)
-whitebalance_mode: auto
 # Red gain expressed as a percentage of the camera default setting.
-whitebalance_red: 650
+whitebalance_red: 530
+# Blue gain expressed as a percentage of the camera default setting.
+whitebalance_blue: 720
+# whitebalance mode (auto, manual, auto_once, none)
+whitebalance_mode: manual
 # width of the camera frame
 width: 1024
 
@@ -317,12 +317,12 @@ undistort: false
 whitebalance_auto_rate: 100
 # Sets a range of scene color changes in which the automatic whitebalance will not respond.
 whitebalance_auto_threshold: 5
+# Red gain expressed as a percentage of the camera default setting.
+whitebalance_red: 550
 # Blue gain expressed as a percentage of the camera default setting.
 whitebalance_blue: 880
 # whitebalance mode (auto, manual, auto_once, none)
 whitebalance_mode: manual
-# Red gain expressed as a percentage of the camera default setting.
-whitebalance_red: 550
 # width of the camera frame
 width: 1280
 shutter_mode: auto
