@@ -1,197 +1,99 @@
 #!/usr/bin/env ruby
 
-require 'vizkit'
+require 'orocos'
 require 'rock/bundle'
 require 'readline'
-
 include Orocos
 
-options = {}
-options[:reference] = "none"
-options[:logging] = "nominal"
-options[:scripted] = "no"
-scripting = 0
-
-OptionParser.new do |opt|
-    opt.banner = <<-EOD
-    usage: exoter_start_all.rb [options] 
-    EOD
-
-    opt.on '-r or --reference=none/vicon/gnss', String, 'set the type of reference system available' do |reference|
-        options[:reference] = reference
-    end
-
-    opt.on '-l or --logging=none/minimum/nominal/all', String, 'set the type of log files you want. Nominal as default' do |logging|
-        options[:logging] = logging
-    end
-
-    opt.on '-s', String, 'Specifies that the file is launched from within a script and enter termination should be ignored' do 
-        scripting = 1
-    end
-
-    opt.on '--help', 'this help message' do
-        puts opt
-       exit 0
-    end
-end.parse!(ARGV)
-
-## Initialize orocos ##
+# Initialize bundles to find the configurations for the packages
 Bundles.initialize
 
-## Transformation for the transformer
-Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts.rb'))
+# Execute the task
+Orocos::Process.run 'control' do
 
-Orocos::Process.run 'exoter_control', 'exoter_groundtruth', 'exoter_proprioceptive', 'exoter_localization' do
+    # Configure
+    joystick = Orocos.name_service.get 'joystick'
+    Orocos.conf.apply(joystick, ['default', 'logitech_gamepad'], :override => true)
+    begin
+        joystick.configure
+    rescue
+        abort("Cannot configure the joystick, is the dongle connected to HDPR?")
+    end
 
-    # setup platform_driver
-    puts "Setting up platform_driver"
-    platform_driver = Orocos.name_service.get 'platform_driver'
-    Orocos.conf.apply(platform_driver, ['default'], :override => true)
-    platform_driver.configure
-    puts "done"
+    motion_translator = Orocos.name_service.get 'motion_translator'
+    Orocos.conf.apply(motion_translator, ['exoter'], :override => true)
+    motion_translator.configure
 
-    # setup read dispatcher
-    puts "Setting up reading joint_dispatcher"
-    read_joint_dispatcher = Orocos.name_service.get 'read_joint_dispatcher'
-    Orocos.conf.apply(read_joint_dispatcher, ['reading'], :override => true)
-    read_joint_dispatcher.configure
-    puts "done"
-
-    # setup the commanding dispatcher
-    puts "Setting up commanding joint_dispatcher"
-    command_joint_dispatcher = Orocos.name_service.get 'command_joint_dispatcher'
-    Orocos.conf.apply(command_joint_dispatcher, ['commanding'], :override => true)
-    command_joint_dispatcher.configure
-    puts "done"
-
-    # setup exoter locomotion_control
-    puts "Setting up locomotion_control"
     locomotion_control = Orocos.name_service.get 'locomotion_control'
-    Orocos.conf.apply(locomotion_control, ['default'], :override => true)
+    Orocos.conf.apply(locomotion_control, ['exoter'], :override => true)
     locomotion_control.configure
-    puts "done"
 
-    # setup exoter ptu_control
-    puts "Setting up ptu_control"
+    wheel_walking_control = Orocos.name_service.get 'wheel_walking_control'
+    Orocos.conf.apply(wheel_walking_control, ['default'], :override => true)
+    wheel_walking_control.configure
+
+    locomotion_switcher = Orocos.name_service.get 'locomotion_switcher'
+    Orocos.conf.apply(locomotion_switcher, ['default'], :override => true)
+    locomotion_switcher.configure
+
+    command_joint_dispatcher = Orocos.name_service.get 'command_joint_dispatcher'
+    Orocos.conf.apply(command_joint_dispatcher, ['exoter_commanding'], :override => true)
+    command_joint_dispatcher.configure
+
+    platform_driver = Orocos.name_service.get 'platform_driver'
+    Orocos.conf.apply(platform_driver, ['exoter'], :override => true)
+    platform_driver.configure
+
+    read_joint_dispatcher = Orocos.name_service.get 'read_joint_dispatcher'
+    Orocos.conf.apply(read_joint_dispatcher, ['exoter_reading'], :override => true)
+    read_joint_dispatcher.configure
+
     ptu_control = Orocos.name_service.get 'ptu_control'
     Orocos.conf.apply(ptu_control, ['default'], :override => true)
     ptu_control.configure
-    puts "done"
 
-    if options[:reference].casecmp("vicon").zero?
-        puts "[INFO] Vicon Ground Truth system available"
-        # setup exoter ptu_control
-        puts "Setting up vicon"
-        vicon = Orocos.name_service.get 'vicon'
-        Orocos.conf.apply(vicon, ['default', 'exoter'], :override => true)
-        vicon.configure
-        puts "done"
-    else
-        puts "[INFO] No Ground Truth system available"
-    end
+    # Log
+    #Orocos.log_all_ports
+    #platform_driver.log_all_ports
+    #pancam_panorama.log_all_ports
 
-    # setup motion_translator
-    puts "Setting up motion_translator"
-    motion_translator = Orocos.name_service.get 'motion_translator'
-    Orocos.conf.apply(motion_translator, ['default'], :override => true)
-    motion_translator.configure
-    puts "done"
+    # Connect
+    joystick.raw_command.connect_to                       motion_translator.raw_command
 
-    # setup motion_translator
-    puts "Setting up joystick"
-    joystick = Orocos.name_service.get 'joystick'
-    Orocos.conf.apply(joystick, ['default'], :override => true)
-    joystick.configure
-    puts "done"
+    motion_translator.ptu_command.connect_to              ptu_control.ptu_joints_commands
+    ptu_control.ptu_commands_out.connect_to               command_joint_dispatcher.ptu_commands
 
-    # Localization
-    puts "Setting up localization_frontend"
-    localization_frontend = Orocos.name_service.get 'localization_frontend'
-    Orocos.conf.apply(localization_frontend, ['default', 'hamming1hzsampling12hz'], :override => true)
-    localization_frontend.urdf_file = Bundles.find_file('data/odometry', 'exoter_odometry_model_complete.urdf')
-    Bundles.transformer.setup(localization_frontend)
-    localization_frontend.configure
-    puts "done"
+    motion_translator.motion_command.connect_to           locomotion_switcher.motion_command
+    motion_translator.locomotion_mode.connect_to          locomotion_switcher.locomotion_mode_override
 
-    # ExoTeR Threed Odometry
-    puts "Setting up exoter threed_odometry"
-    exoter_odometry = Orocos.name_service.get 'exoter_odometry'
-    Orocos.conf.apply(exoter_odometry, ['default', 'bessel50'], :override => true)
-    exoter_odometry.urdf_file = Bundles.find_file('data/odometry', 'exoter_odometry_model_complete.urdf')
-    Bundles.transformer.setup(exoter_odometry)
-    exoter_odometry.configure
-    puts "done"
+    locomotion_switcher.kill_switch.connect_to            wheel_walking_control.kill_switch
+    locomotion_switcher.reset_dep_joints.connect_to       wheel_walking_control.reset_dep_joints
+    locomotion_switcher.lc_motion_command.connect_to      locomotion_control.motion_command
+    read_joint_dispatcher.joints_samples.connect_to       locomotion_switcher.joints_readings
+    read_joint_dispatcher.motors_samples.connect_to       locomotion_switcher.motors_readings
 
-    # setup imu_stim300 
-    puts "Setting up imu_stim300"
-    imu_stim300 = Orocos.name_service.get 'imu_stim300'
-    Orocos.conf.apply(imu_stim300, ['default', 'exoter','ESTEC','stim300_5g'], :override => true)
-    imu_stim300.configure
-    puts "done"
+    locomotion_control.joints_commands.connect_to         locomotion_switcher.lc_joints_commands
+    wheel_walking_control.joint_commands.connect_to       locomotion_switcher.ww_joints_commands
 
-    # Log all ports
-    Orocos.log_all_ports
+    locomotion_switcher.joints_commands.connect_to        command_joint_dispatcher.joints_commands
 
-    puts "Connecting ports"
-    # Connect ports: platform_driver to read_joint_dispatcher
-    platform_driver.joints_readings.connect_to read_joint_dispatcher.joints_readings
+    command_joint_dispatcher.motors_commands.connect_to   platform_driver.joints_commands
+    platform_driver.joints_readings.connect_to            read_joint_dispatcher.joints_readings
+    read_joint_dispatcher.motors_samples.connect_to       locomotion_control.joints_readings
+    read_joint_dispatcher.joints_samples.connect_to       wheel_walking_control.joint_readings
+    read_joint_dispatcher.ptu_samples.connect_to          ptu_control.ptu_samples
 
-    # Connect ports: read_joint_dispatcher to locomotion_control
-    read_joint_dispatcher.motors_samples.connect_to locomotion_control.joints_readings
-
-    # Connect ports: joystick to motion_translator
-    joystick.raw_command.connect_to motion_translator.raw_command
-
-    # Connect ports: motion_translator to locomotion_control
-    motion_translator.motion_command.connect_to locomotion_control.motion_command
-
-    # Connect ports: locomotion_control to command_joint_dispatcher
-    locomotion_control.joints_commands.connect_to command_joint_dispatcher.joints_commands
-
-    # Connect ports: command_joint_dispatcher to platform_driver
-    command_joint_dispatcher.motors_commands.connect_to platform_driver.joints_commands
-
-    # Connect ports: read_joint_dispatcher to ptu_control
-    read_joint_dispatcher.ptu_samples.connect_to ptu_control.ptu_samples
-
-    # Connect ports: ptu_control to command_joint_dispatcher
-    ptu_control.ptu_commands_out.connect_to command_joint_dispatcher.ptu_commands
-    #puts "done"
-    puts "Connecting localization ports"
-    read_joint_dispatcher.joints_samples.connect_to localization_frontend.joints_samples
-    #read_joint_dispatcher.ptu_samples.connect_to localization_frontend.ptu_samples
-    imu_stim300.orientation_samples_out.connect_to localization_frontend.orientation_samples
-    imu_stim300.compensated_sensors_out.connect_to localization_frontend.inertial_samples
-    localization_frontend.joints_samples_out.connect_to exoter_odometry.joints_samples
-    localization_frontend.orientation_samples_out.connect_to exoter_odometry.orientation_samples
-    localization_frontend.weighting_samples_out.connect_to exoter_odometry.weighting_samples, :type => :buffer, :size => 200
-    puts "done"
-
-    # Start the tasks
+    # Start
     platform_driver.start
     read_joint_dispatcher.start
     command_joint_dispatcher.start
     locomotion_control.start
+    wheel_walking_control.start
+    locomotion_switcher.start
     ptu_control.start
     motion_translator.start
     joystick.start
-    localization_frontend.start
-    exoter_odometry.start
-    imu_stim300.start
-    if options[:reference].casecmp("vicon").zero?
-        vicon.start
+
+    Readline::readline("Press Enter to exit\n") do
     end
-
-    if scripting == 1
-	while 1 do
-		sleep 10
-	end
-    
-    else
-    	Readline::readline("Press ENTER to exit\n") do
-    	end
-    end
-
-
 end
-
