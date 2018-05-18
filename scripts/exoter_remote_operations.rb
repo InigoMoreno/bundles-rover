@@ -78,7 +78,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     imu_stim300.configure
 
     slippage_estimator = TaskContext.get 'slippage_estimator'
-    Orocos.conf.apply(slippage_estimator, ['exoter'], :override => true)
+    Orocos.conf.apply(slippage_estimator, ['exoter_viso2'], :override => true)
     slippage_estimator.configure
 
     fdir = TaskContext.get 'fdir'
@@ -352,7 +352,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     joystick.start
     imu_stim300.start
     if options[:v] == true
-      	vicon.start
+      	#vicon.start
 #    else
         viso2_with_imu.start
         viso2_evaluation.start
@@ -365,7 +365,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         trigger_pancam.start
         stereo_pancam.start
         dem_generation_pancam.start
-        pancam_360.start
+        #pancam_360.start
         trigger_pancam_360.start
     end
     if options[:loc] == true
