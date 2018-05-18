@@ -1,4 +1,4 @@
---- name:reading
+--- name:hdpr_reading
 dispatches:
   - input: joints_readings
     input_selection_by_name: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_BL, WHEEL_STEER_BR]
@@ -16,7 +16,7 @@ outputs:
  - name: joints_samples
    jointNames: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_BL, WHEEL_STEER_BR, LEFT_ROCKER, RIGHT_ROCKER, LEFT_BOGIE, RIGHT_BOGIE]
 
---- name:commanding
+--- name:hdpr_commanding
 dispatches:
   - input: joints_commands
     input_selection_by_name: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_BL, WHEEL_STEER_BR, WHEEL_DRIVE_GROUP, WHEEL_STEER_GROUP]

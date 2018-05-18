@@ -9,7 +9,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_360', 'hdpr_unit_shutter_controller' do
+Orocos::Process.run 'unit_360', 'unit_shutter_controller' do
     ptu_directedperception = Orocos.name_service.get 'ptu_directedperception'
     Orocos.conf.apply(ptu_directedperception, ['default'], :override => true)
     ptu_directedperception.configure
@@ -24,7 +24,7 @@ Orocos::Process.run 'hdpr_unit_360', 'hdpr_unit_shutter_controller' do
     
     pancam_360 = Orocos.name_service.get 'pancam_360'
 #    Orocos.conf.apply(pancam_360, ['default', 'apriltag'], :override => true)
-    Orocos.conf.apply(pancam_360, ['default', 'separation_40_30'], :override => true)
+    Orocos.conf.apply(pancam_360, ['default', 'separation_40'], :override => true)
     pancam_360.configure
 
     shutter_controller = Orocos.name_service.get 'shutter_controller'
@@ -47,14 +47,14 @@ Orocos::Process.run 'hdpr_unit_360', 'hdpr_unit_shutter_controller' do
     
     #pancam_360.log_all_ports
     
-    logger_360 = Orocos.name_service.get 'hdpr_unit_360_Logger'
+    logger_360 = Orocos.name_service.get 'unit_360_Logger'
     logger_360.file = "pancam_360.log"
     logger_360.log(pancam_360.left_frame_out)
     logger_360.log(pancam_360.right_frame_out)
     logger_360.log(pancam_360.pan_angle_out_degrees)
     logger_360.log(pancam_360.tilt_angle_out_degrees)
     logger_360.log(pancam_360.set_id)
-    logger_360.start
+    #logger_360.start
     
     # Start the components
     pancam_left.start
@@ -62,7 +62,7 @@ Orocos::Process.run 'hdpr_unit_360', 'hdpr_unit_shutter_controller' do
 
     shutter_controller.start
     puts "Waiting for shutter controller to settle"
-    sleep 10
+    sleep 30
     shutter_controller.stop
 
     pancam_360.start

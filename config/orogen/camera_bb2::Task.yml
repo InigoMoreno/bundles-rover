@@ -90,7 +90,7 @@ calibration_parameters:
 output_format: :MODE_GRAYSCALE
 undistort: false
 
---- name:bb2_egp
+--- name:egp_bb2
 calibration_parameters:
   camLeft:
     fx: 524.766677768

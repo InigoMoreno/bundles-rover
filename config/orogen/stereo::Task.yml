@@ -306,6 +306,8 @@ stereoCameraCalibration:
     rx: -0.006216684300016592
     ry: 0.02853943082947520
     rz: 0.005659517902708327
+#output_format_sync: :MODE_GRAYSCALE
+output_format_sync: :MODE_RGB
 
 --- name:bb3_left_right
 # gaussian kernel for dense stereo pre-processing.

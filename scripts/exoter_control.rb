@@ -17,7 +17,7 @@ Orocos::Process.run 'control' do
     begin
         joystick.configure
     rescue
-        abort("Cannot configure the joystick, is the dongle connected to HDPR?")
+        abort("Cannot configure the joystick, is the dongle connected to ExoTeR?")
     end
 
     motion_translator = Orocos.name_service.get 'motion_translator'

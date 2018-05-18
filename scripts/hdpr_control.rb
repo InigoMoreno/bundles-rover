@@ -9,11 +9,11 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'unit_control' do
+Orocos::Process.run 'control' do
 
     # Configure
     joystick = Orocos.name_service.get 'joystick'
-    Orocos.conf.apply(joystick, ['default'], :override => true)
+    Orocos.conf.apply(joystick, ['default','logitech_gamepad'], :override => true)
     begin
         joystick.configure
     rescue
@@ -29,7 +29,7 @@ Orocos::Process.run 'unit_control' do
     locomotion_control.configure
     
     command_joint_dispatcher = Orocos.name_service.get 'command_joint_dispatcher'
-    Orocos.conf.apply(command_joint_dispatcher, ['commanding'], :override => true)
+    Orocos.conf.apply(command_joint_dispatcher, ['hdpr_commanding'], :override => true)
     command_joint_dispatcher.configure
     
     platform_driver = Orocos.name_service.get 'platform_driver'
@@ -37,24 +37,13 @@ Orocos::Process.run 'unit_control' do
     platform_driver.configure
     
     read_joint_dispatcher = Orocos.name_service.get 'read_joint_dispatcher'
-    Orocos.conf.apply(read_joint_dispatcher, ['reading'], :override => true)
+    Orocos.conf.apply(read_joint_dispatcher, ['hdpr_reading'], :override => true)
     read_joint_dispatcher.configure
     
     ptu_directedperception = Orocos.name_service.get 'ptu_directedperception'
     Orocos.conf.apply(ptu_directedperception, ['default'], :override => true)
     ptu_directedperception.configure
 
-    # Log
-    #Orocos.log_all_ports
-    #platform_driver.log_all_ports
-    #camera_bb2.log_all_ports
-    #camera_bb3.log_all_ports
-    #pancam_panorama.log_all_ports
-    #velodyne_lidar.log_all_ports
-    #tofcamera_mesasr.log_all_ports
-    #imu_stim300.log_all_ports
-    #gps.log_all_ports
-    
     # Connect
     joystick.raw_command.connect_to motion_translator.raw_command
     motion_translator.motion_command.connect_to locomotion_control.motion_command

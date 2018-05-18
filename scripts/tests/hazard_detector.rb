@@ -17,7 +17,7 @@ end.parse!
 
 Bundles.initialize
 
-Orocos::Process.run 'unit_control', 'unit_bb2', 'unit_imu', 'gps', 'unit_gyro', 'unit_vicon', 'unit_shutter_controller', 'unit_hazard_detector' do
+Orocos::Process.run 'navigation', 'control', 'unit_bb2', 'imu', 'gps', 'unit_gyro', 'unit_vicon', 'unit_shutter_controller', 'unit_hazard_detector', 'fdir' do
 
     joystick = Orocos.name_service.get 'joystick'
     Orocos.conf.apply(joystick, ['default'], :override => true)
@@ -37,7 +37,7 @@ Orocos::Process.run 'unit_control', 'unit_bb2', 'unit_imu', 'gps', 'unit_gyro', 
     locomotion_control.configure
 
     command_joint_dispatcher = Orocos.name_service.get 'command_joint_dispatcher'
-    Orocos.conf.apply(command_joint_dispatcher, ['commanding'], :override => true)
+    Orocos.conf.apply(command_joint_dispatcher, ['hdpr_commanding'], :override => true)
     command_joint_dispatcher.configure
 
     platform_driver = Orocos.name_service.get 'platform_driver'
@@ -45,52 +45,53 @@ Orocos::Process.run 'unit_control', 'unit_bb2', 'unit_imu', 'gps', 'unit_gyro', 
     platform_driver.configure
 
     read_joint_dispatcher = Orocos.name_service.get 'read_joint_dispatcher'
-    Orocos.conf.apply(read_joint_dispatcher, ['reading'], :override => true)
+    Orocos.conf.apply(read_joint_dispatcher, ['hdpr_reading'], :override => true)
     read_joint_dispatcher.configure
 
-    ptu_directedperception = Orocos.name_service.get 'ptu_directedperception'
-    Orocos.conf.apply(ptu_directedperception, ['default'], :override => true)
-    ptu_directedperception.configure
-
     imu_stim300 = TaskContext.get 'imu_stim300'
-    Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'Tenerife', 'stim300_5g'], :override => true)
+    Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'ESTEC', 'stim300_5g'], :override => true)
     imu_stim300.configure
+    
+    fdir = TaskContext.get 'fdir'
+    Orocos.conf.apply(fdir, ['exoter'], :override => true)
+    fdir.configure
 
     if options[:v] == false
         gps = TaskContext.get 'gps'
-        Orocos.conf.apply(gps, ['HDPR', 'Spain', 'Tenerife_Teleop'], :override => true)
+        Orocos.conf.apply(gps, ['HDPR', 'Netherlands', 'DECOS'], :override => true)
         gps.configure
+    
+        gps_heading = TaskContext.get 'gps_heading'
+        Orocos.conf.apply(gps_heading, ['default'], :override => true)
+        gps_heading.configure
     else
         vicon = TaskContext.get 'vicon'
         Orocos.conf.apply(vicon, ['default','hdpr'], :override => true)
         vicon.configure
     end
 
-    gps_heading = TaskContext.get 'gps_heading'
-    Orocos.conf.apply(gps_heading, ['default'], :override => true)
-    gps_heading.configure
-
     puts "Starting BB2"
 
     camera_firewire_bb2 = TaskContext.get 'camera_firewire_bb2'
-    Orocos.conf.apply(camera_firewire_bb2, ['hdpr_bb2'], :override => true)
+    Orocos.conf.apply(camera_firewire_bb2, ['exoter_bb2','egp_bb2_id'], :override => true)
     camera_firewire_bb2.configure
 
     camera_bb2 = TaskContext.get 'camera_bb2'
-    Orocos.conf.apply(camera_bb2, ['hdpr_bb2'], :override => true)
+    Orocos.conf.apply(camera_bb2, ['egp_bb2'], :override => true)
     camera_bb2.configure
 
     stereo_bb2 = TaskContext.get 'stereo_bb2'
-    Orocos.conf.apply(stereo_bb2, ['hdpr_bb2'], :override => true)
+    Orocos.conf.apply(stereo_bb2, ['egp_bb2'], :override => true)
     stereo_bb2.configure
 
-    shutter_controller_bb2 = Orocos.name_service.get 'shutter_controller'
-    Orocos.conf.apply(shutter_controller_bb2, ['bb2tenerife'], :override => true)
-    shutter_controller_bb2.configure
+    # TO BE DECIDED IF SHUTTER CONTROLLER IS NEEDED OUTDOORS
+    #shutter_controller_bb2 = Orocos.name_service.get 'shutter_controller'
+    #Orocos.conf.apply(shutter_controller_bb2, ['default'], :override => true)
+    #shutter_controller_bb2.configure
 
     # Setup Waypoint_navigation
     waypoint_navigation = Orocos.name_service.get 'waypoint_navigation'
-    Orocos.conf.apply(waypoint_navigation, ['default','hdpr_lab'], :override => true)
+    Orocos.conf.apply(waypoint_navigation, ['hdpr_lab'], :override => true)
     waypoint_navigation.configure
 
     # Setup command arbiter
@@ -111,9 +112,6 @@ Orocos::Process.run 'unit_control', 'unit_bb2', 'unit_imu', 'gps', 'unit_gyro', 
     joystick.raw_command.connect_to                     motion_translator.raw_command
     joystick.raw_command.connect_to                     command_arbiter.raw_command
 
-    motion_translator.ptu_pan_angle.connect_to          ptu_directedperception.pan_set
-    motion_translator.ptu_tilt_angle.connect_to         ptu_directedperception.tilt_set
-
     motion_translator.motion_command.connect_to         command_arbiter.joystick_motion_command
     waypoint_navigation.motion_command.connect_to       command_arbiter.follower_motion_command
     command_arbiter.motion_command.connect_to           locomotion_control.motion_command
@@ -121,12 +119,11 @@ Orocos::Process.run 'unit_control', 'unit_bb2', 'unit_imu', 'gps', 'unit_gyro', 
     locomotion_control.joints_commands.connect_to       command_joint_dispatcher.joints_commands
     command_joint_dispatcher.motors_commands.connect_to platform_driver.joints_commands
     platform_driver.joints_readings.connect_to          read_joint_dispatcher.joints_readings
-    #read_joint_dispatcher.joints_samples.connect_to     locomotion_control.joints_readings
     read_joint_dispatcher.motors_samples.connect_to     locomotion_control.joints_readings
 
     camera_firewire_bb2.frame.connect_to                camera_bb2.frame_in
-    camera_firewire_bb2.frame.connect_to                shutter_controller_bb2.frame
-    camera_firewire_bb2.shutter_value.connect_to        shutter_controller_bb2.shutter_value
+    #camera_firewire_bb2.frame.connect_to                shutter_controller_bb2.frame
+    #camera_firewire_bb2.shutter_value.connect_to        shutter_controller_bb2.shutter_value
 
     camera_bb2.left_frame.connect_to                    stereo_bb2.left_frame
     camera_bb2.right_frame.connect_to                   stereo_bb2.right_frame
@@ -136,21 +133,25 @@ Orocos::Process.run 'unit_control', 'unit_bb2', 'unit_imu', 'gps', 'unit_gyro', 
     stereo_bb2.distance_frame.connect_to                hazard_detector.distance_frame
 
     # Hazard Detector Outputs
-    hazard_detector.hazard_detected.connect_to  command_arbiter.hazard_detected
+    waypoint_navigation.trajectory_status.connect_to    fdir.trajectory_status
+    imu_stim300.orientation_samples_out.connect_to      fdir.attitude
+    platform_driver.error_in_motor.connect_to           fdir.error_in_motor
+    hazard_detector.hazard_detected.connect_to          fdir.hazard_detected
+    fdir.fault_detected.connect_to                      command_arbiter.fault_detected
+    #fdir.fdir_state            ->>> Monitor from rock-display
 
     # Waypoint navigation inputs:
-    imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples
-    #gyro.orientation_samples.connect_to                 gps_heading.gyro_pose_samples
-    command_arbiter.motion_command.connect_to           gps_heading.motion_command
-
     if options[:v] == false
         gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
         gps.raw_data.connect_to                             gps_heading.gps_raw_data
         gps_heading.pose_samples_out.connect_to             waypoint_navigation.pose
-    puts "using gps"
+        imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples
+        gyro.orientation_samples.connect_to                 gps_heading.gyro_pose_samples
+        command_arbiter.motion_command.connect_to           gps_heading.motion_command
+        puts "using gps"
     else
         vicon.pose_samples.connect_to               waypoint_navigation.pose
-    puts "using vicon"
+        puts "using vicon"
     end
 
     # Start the components
@@ -158,23 +159,22 @@ Orocos::Process.run 'unit_control', 'unit_bb2', 'unit_imu', 'gps', 'unit_gyro', 
     read_joint_dispatcher.start
     command_joint_dispatcher.start
     locomotion_control.start
-    ptu_directedperception.start
     command_arbiter.start
     motion_translator.start
     joystick.start
-    #imu_stim300.start
+    imu_stim300.start
     gyro.start
-    #temperature.start
+    fdir.start
     if options[:v] == false
         gps.start
         gps_heading.start
     else
-        #vicon.start
+        vicon.start
     end
     camera_bb2.start
     camera_firewire_bb2.start
     stereo_bb2.start
-    shutter_controller_bb2.start
+    #shutter_controller_bb2.start
     if options[:v] == false
         # Race condition with internal gps_heading states. This check is here to only trigger the
         # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
@@ -186,7 +186,6 @@ Orocos::Process.run 'unit_control', 'unit_bb2', 'unit_imu', 'gps', 'unit_gyro', 
     end
     hazard_detector.start
 
-    # Trigger the trojectory generation, waypoint_navigation must be running at this point
     waypoint_navigation.start
 
     Readline::readline("Press Enter to exit\n") do

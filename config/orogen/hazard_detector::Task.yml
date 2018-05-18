@@ -1,15 +1,15 @@
 --- name:default
 config:
     calibrationPath: "/home/marta/rock/hazardCalibration.txt"
-    tolerance: 0.4 # [m]
+    tolerance: 0.2 # [m]
     hazardPixelLimit: 20
     newCalibration: false
-    numCalibrationSamples: 20
+    numCalibrationSamples: 50
     mask: # -1 means full extension to the respective side
-        minX: -1
+        minX: 150
         maxX: -1
-        minY: 650
-        maxY: 750
+        minY: 425
+        maxY: 525
 
 --- name:bb3
 config:

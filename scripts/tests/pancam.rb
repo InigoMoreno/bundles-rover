@@ -25,7 +25,7 @@ Orocos::Process.run 'unit_pancam' do
     Orocos.conf.apply(stereo_pancam, ['panCam'], :override => true)
     stereo_pancam.configure
     
-    stereo_pancam.log_all_ports
+    #stereo_pancam.log_all_ports
     
     # Connect
     pancam_left.frame.connect_to stereo_pancam.left_frame

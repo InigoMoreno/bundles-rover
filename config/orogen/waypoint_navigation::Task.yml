@@ -1,11 +1,12 @@
---- name:default
+--- name:exoter
+# Configuration of Path Tracker parameters, namely distances, velocities and turn radius
 ptConfig:
   minTurnRadius: 0.6
-  translationalVelocity: 0.08
-  rotationalVelocity: 0.2094
+  translationalVelocity: 0.02
+  rotationalVelocity: 0.05
   corridor: 0.2
   maxDisalignment: 0.15
-  lookaheadDistance: 0.60
+  lookaheadDistance: 0.50
   backwards: false
 
 pdConfig:
@@ -19,17 +20,6 @@ tolHeading: 3
 tolPos:     0.075
 
 repeatCommand: true
-
---- name:exoter
-# Configuration of Path Tracker parameters, namely distances, velocities and turn radius
-ptConfig:
-  minTurnRadius: 0.6
-  translationalVelocity: 0.02
-  rotationalVelocity: 0.05
-  corridor: 0.2
-  maxDisalignment: 0.15
-  lookaheadDistance: 0.50
-  backwards: false
 
 --- name:hdpr
 # Configuration of Path Tracker parameters, namely distances, velocities and turn radius
@@ -54,6 +44,8 @@ tolHeading: 5
 # 50cm is precise enough for HDPR
 tolPos:     0.5
 
+repeatCommand: true
+
 --- name:hdpr_autonomy
 # Configuration of Path Tracker parameters, namely distances, velocities and turn radius
 ptConfig:
@@ -75,11 +67,13 @@ tolHeading: 5
 # 50cm is precise enough for HDPR
 tolPos:     0.5
 
+repeatCommand: true
+
 --- name:hdpr_lab
 # Configuration of Path Tracker parameters, namely distances, velocities and turn radius
 ptConfig:
   minTurnRadius: 0.95
-  translationalVelocity: 0.2
+  translationalVelocity: 0.1
   rotationalVelocity: 0.15
   corridor: 0.5
   maxDisalignment: 0.15
@@ -94,4 +88,6 @@ pdConfig:
 # Set the heading tolerance to 3 degrees
 tolHeading: 3
 # 50cm is precise enough for HDPR
-tolPos:     0.5
+tolPos:     0.25
+
+repeatCommand: true
