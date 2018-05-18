@@ -389,4 +389,6 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
 
     Readline::readline("Press Enter to exit\n") do
     end
+    ptu_control.stop
+    sleep(5)
 end
