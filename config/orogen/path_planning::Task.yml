@@ -1,4 +1,4 @@
---- name:default
+--- name:exoter
 #
 locomotion_modes: [DRIVING, WHEEL_WALKING]
 slope_values: [0,5,10,15,20]
@@ -11,3 +11,34 @@ slope_values: [0,5,10,15,20]
 cost_data: [1000,1000,1000,1000,1000, 1000,1000,1000,1000,1000,
             14.3,16.3,18.3,20.3,22.3, 20.0,20.0,20.0,20.0,20.0,
             25.0,25.0,25.0,25.0,25.0, 20.0,20.0,20.0,20.0,20.0]
+
+
+--- name:hdpr
+#
+locomotion_modes: [DRIVING]
+slope_values: [0,5,10,15,20]
+#
+#          Locomotion1        Locomotion2
+#Obstacles slope1-slope2-...  slope1-slope2-... value much higher than for terrains (f.e. 100 times)
+#Terrain1  slope1-slope2-...  slope1-slope2-... 
+#Terrain2  slope1-slope2-...  slope1-slope2-...
+#
+cost_data: [1000,1000,1000,1000,1000,
+            14.3,16.3,18.3,20.3,22.3,
+            25.0,25.0,25.0,25.0,25.0]
+
+
+--- name:decos
+
+elevationFile: '../../../rover/data/maps/decos/elevationMap.txt'
+localCostFile: '../../../rover/data/maps/decos/local_terrainMap.txt'
+globalCostFile: '../../../rover/data/maps/decos/global_terrainMap.txt'
+local_res: 0.0625
+
+
+--- name:prl
+
+elevationFile: '../../../rover/data/maps/prl/elevationMap.txt'
+localCostFile: '../../../rover/data/maps/prl/local_terrainMap.txt'
+globalCostFile: '../../../rover/data/maps/prl/global_terrainMap.txt'
+local_res: 0.05
