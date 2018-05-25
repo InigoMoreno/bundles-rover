@@ -75,6 +75,11 @@ Orocos::Process.run 'control', 'loccam', 'imu', 'unit_vicon', 'navigation', 'uni
     Orocos.conf.apply(camera_loccam, ['hdpr_bb2'], :override => true)
     camera_loccam.configure
 
+    camera_loccam.log_all_ports
+    visual_odometry.log_all_ports
+    viso2_evaluation.log_all_ports
+    viso2_with_imu.log_all_ports
+
     joystick.raw_command.connect_to                     motion_translator.raw_command
     motion_translator.ptu_command.connect_to            ptu_control.ptu_joints_commands
     motion_translator.motion_command.connect_to         locomotion_control.motion_command
