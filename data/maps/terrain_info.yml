@@ -1,0 +1,12 @@
+--- name:decos
+
+elevationFile: [../../../rover/data/maps/decos/elevationMap.txt]
+localCostFile: [../../../rover/data/maps/decos/local_terrainMap.txt]
+globalCostFile: [../../../rover/data/maps/decos/global_terrainMap.txt]
+local_res: 0.0625
+
+--- name:prl
+
+elevationFile: [../../../rover/data/maps/decos/elevationMap.txt]
+localCostFile: [../../../rover/data/maps/decos/local_terrainMap.txt]
+globalCostFile: [../../../rover/data/maps/decos/global_terrainMap.txt]
