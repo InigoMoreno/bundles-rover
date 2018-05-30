@@ -72,11 +72,8 @@ Orocos::Process.run 'unit_following', 'navigation', 'control', 'simulation', 'au
   # setup path_planning
     puts "Setting up path planner"
     path_planner = Orocos.name_service.get 'path_planner'
-    # path_planner.elevationFile = "../../../rover/data/maps/decos/elevationMap.txt"
-    # path_planner.localCostFile =      "../../../rover/data/maps/decos/local_terrainMap.txt"
-    # path_planner.globalCostFile ="../../../rover/data/maps/decos/global_terrainMap.txt"
-    # path_planner.local_res = 0.0625
-    Orocos.conf.apply(path_planner, ['hdpr','decos'], :override => true)
+    path_planner.keep_old_waypoints = true
+    Orocos.conf.apply(path_planner, ['hdpr','prl'], :override => true)
     path_planner.configure
     puts "done"
 
