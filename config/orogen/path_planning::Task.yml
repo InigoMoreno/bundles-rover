@@ -11,7 +11,7 @@ slope_values: [0,5,10,15,20]
 cost_data: [1000,1000,1000,1000,1000, 1000,1000,1000,1000,1000,
             14.3,16.3,18.3,20.3,22.3, 20.0,20.0,20.0,20.0,20.0,
             25.0,25.0,25.0,25.0,25.0, 20.0,20.0,20.0,20.0,20.0]
-
+local_res: 0.05
 
 --- name:hdpr
 #
@@ -26,14 +26,14 @@ slope_values: [0,5,10,15,20]
 cost_data: [1000,1000,1000,1000,1000,
             14.3,16.3,18.3,20.3,22.3,
             25.0,25.0,25.0,25.0,25.0]
-
+local_res: 0.1
 
 --- name:decos
 
 elevationFile: '../../../rover/data/maps/decos/elevationMap.txt'
 localCostFile: '../../../rover/data/maps/decos/local_terrainMap.txt'
 globalCostFile: '../../../rover/data/maps/decos/global_terrainMap.txt'
-local_res: 0.0625
+#local_res: 0.0625
 
 
 --- name:prl
@@ -41,4 +41,4 @@ local_res: 0.0625
 elevationFile: '../../../rover/data/maps/prl/elevationMap.txt'
 localCostFile: '../../../rover/data/maps/prl/local_terrainMap.txt'
 globalCostFile: '../../../rover/data/maps/prl/global_terrainMap.txt'
-local_res: 0.05
+#local_res: 0.05

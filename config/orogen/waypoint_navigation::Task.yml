@@ -73,7 +73,7 @@ repeatCommand: true
 # Configuration of Path Tracker parameters, namely distances, velocities and turn radius
 ptConfig:
   minTurnRadius: 0.95
-  translationalVelocity: 0.1
+  translationalVelocity: 0.05
   rotationalVelocity: 0.15
   corridor: 0.5
   maxDisalignment: 0.15
