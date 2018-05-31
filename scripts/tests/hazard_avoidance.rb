@@ -108,6 +108,11 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     Orocos.conf.apply(hazard_detector, ['default'], :override => true)
     hazard_detector.configure
 
+    # Traversability
+    traversability = Orocos.name_service.get 'traversability'
+    Orocos.conf.apply(traversability, ['hdpr'], :override => true)
+    traversability.configure
+
     # Path Planner
     path_planner = Orocos.name_service.get 'path_planner'
     path_planner.keep_old_waypoints = true
@@ -146,6 +151,8 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     hazard_detector.hazard_detected.connect_to          fdir.hazard_detected
     fdir.fault_detected.connect_to                      command_arbiter.fault_detected
     #fdir.fdir_state            ->>> Monitor from rock-display
+    hazard_detector.local_traversability.connect_to     traversability.local2global_orientation
+    traversability.traversability_map.connect_to        path_planner.traversability_map
 
     # Path Planner Outputs
     path_planner.trajectory.connect_to	                waypoint_navigation.trajectory
@@ -156,6 +163,7 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
         gps.raw_data.connect_to                             gps_heading.gps_raw_data
         gps_heading.pose_samples_out.connect_to             waypoint_navigation.pose
         gps_heading.pose_samples_out.connect_to             path_planner.pose
+        gps_heading.pose_samples_out.connect_to             travesability.pose
         imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples
         gyro.orientation_samples.connect_to                 gps_heading.gyro_pose_samples
         command_arbiter.motion_command.connect_to           gps_heading.motion_command
@@ -163,6 +171,7 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     else
         vicon.pose_samples.connect_to                       waypoint_navigation.pose
         vicon.pose_samples.connect_to                       path_planner.pose
+        vicon.pose_samples.connect_to                       traversability.pose
         puts "using vicon"
     end
 
