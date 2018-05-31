@@ -94,6 +94,11 @@ Orocos::Process.run 'navigation', 'control', 'unit_bb2', 'imu', 'gps', 'unit_gyr
     Orocos.conf.apply(waypoint_navigation, ['hdpr_lab'], :override => true)
     waypoint_navigation.configure
 
+    # Add the trajectory generation component
+    trajectoryGen = Orocos.name_service.get 'trajectoryGen'
+    Orocos.conf.apply(trajectoryGen, ['hdpr_lab'], :override => true)
+    trajectoryGen.configure
+
     # Setup command arbiter
     command_arbiter = Orocos.name_service.get 'command_arbiter'
     Orocos.conf.apply(command_arbiter, ['default'], :override => true)
@@ -154,6 +159,8 @@ Orocos::Process.run 'navigation', 'control', 'unit_bb2', 'imu', 'gps', 'unit_gyr
         puts "using vicon"
     end
 
+    trajectoryGen.trajectory.connect_to                 waypoint_navigation.trajectory
+
     # Start the components
     platform_driver.start
     read_joint_dispatcher.start
@@ -188,6 +195,11 @@ Orocos::Process.run 'navigation', 'control', 'unit_bb2', 'imu', 'gps', 'unit_gyr
 
     waypoint_navigation.start
 
+    Readline::readline("Press Enter to send trajectory to the waypoint navigation\n") do
+    end
+    trajectoryGen.start
+    trajectoryGen.trigger
     Readline::readline("Press Enter to exit\n") do
     end
+
 end
