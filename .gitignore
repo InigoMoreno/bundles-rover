@@ -6,6 +6,5 @@ logs/
 *.swp
 *.save
 *.log
-*.txt
 *.bkp
 *.gz
