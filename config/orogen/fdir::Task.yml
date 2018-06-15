@@ -5,3 +5,5 @@ max_pitch: 35.0
 max_roll: 20.0
 # no documentation available for this property
 max_slip: 0.8
+# for hazard avoidance, the detection of an obstacle is not an exception
+write_hazard_exception: false

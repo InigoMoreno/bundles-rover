@@ -15,7 +15,7 @@ config:
     dist_to_bottom_edge: 1
     dist_to_upper_edge: 1.3
     trav_map:
-        size: 5
+        size: 3.5
         resolution: 0.01
 
 --- name:bb3

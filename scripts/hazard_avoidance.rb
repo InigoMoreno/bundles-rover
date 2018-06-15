@@ -150,7 +150,7 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     platform_driver.error_in_motor.connect_to           fdir.error_in_motor
     hazard_detector.hazard_detected.connect_to          fdir.hazard_detected
     fdir.fault_detected.connect_to                      command_arbiter.fault_detected
-    #fdir.fdir_state            ->>> Monitor from rock-display
+    fdir.cancel_trajectory.connect_to                   waypoint_navigation.cancel_trajectory
     hazard_detector.local_traversability.connect_to     traversability.local2global_orientation
     traversability.traversability_map.connect_to        path_planner.traversability_map
 
