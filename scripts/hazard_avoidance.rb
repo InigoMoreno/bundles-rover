@@ -127,6 +127,7 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     motion_translator.motion_command.connect_to         command_arbiter.joystick_motion_command
     waypoint_navigation.motion_command.connect_to       command_arbiter.follower_motion_command
     command_arbiter.motion_command.connect_to           locomotion_control.motion_command
+    command_arbiter.motion_command.connect_to           hazard_detector.motion_command
 
     locomotion_control.joints_commands.connect_to       command_joint_dispatcher.joints_commands
     command_joint_dispatcher.motors_commands.connect_to platform_driver.joints_commands
@@ -150,7 +151,7 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     platform_driver.error_in_motor.connect_to           fdir.error_in_motor
     hazard_detector.hazard_detected.connect_to          fdir.hazard_detected
     fdir.fault_detected.connect_to                      command_arbiter.fault_detected
-    fdir.cancel_trajectory.connect_to                   waypoint_navigation.cancel_trajectory
+    #fdir.cancel_trajectory.connect_to                   waypoint_navigation.cancel_trajectory
     hazard_detector.local_traversability.connect_to     traversability.local2global_orientation
     traversability.traversability_map.connect_to        path_planner.traversability_map
 
@@ -163,7 +164,7 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
         gps.raw_data.connect_to                             gps_heading.gps_raw_data
         gps_heading.pose_samples_out.connect_to             waypoint_navigation.pose
         gps_heading.pose_samples_out.connect_to             path_planner.pose
-        gps_heading.pose_samples_out.connect_to             travesability.pose
+        gps_heading.pose_samples_out.connect_to             traversability.pose
         imu_stim300.orientation_samples_out.connect_to      gps_heading.imu_pose_samples
         gyro.orientation_samples.connect_to                 gps_heading.gyro_pose_samples
         command_arbiter.motion_command.connect_to           gps_heading.motion_command
