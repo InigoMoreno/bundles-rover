@@ -156,7 +156,7 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     traversability.traversability_map.connect_to        path_planner.traversability_map
 
     # Path Planner Outputs
-    path_planner.trajectory.connect_to	                waypoint_navigation.trajectory
+    path_planner.trajectory.connect_to                  waypoint_navigation.trajectory
 
     # Waypoint navigation and Path Planner inputs:
     if options[:v] == false
@@ -176,6 +176,23 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
         puts "using vicon"
     end
 
+    Orocos.log_all_configuration
+
+    logger_hazard_detector = Orocos.name_service.get 'unit_hazard_detector_Logger'
+    logger_hazard_detector.file = "hazard_detector.log"
+    logger_hazard_detector.log(hazard_detector.hazard_detected)
+    logger_hazard_detector.log(hazard_detector.hazard_visualization)
+    logger_hazard_detector.log(hazard_detector.local_traversability)
+
+    logger_path_planner = Orocos.name_service.get 'path_planner_Logger'
+    logger_path_planner.file = "path_planner.log"
+    logger_path_planner.log(path_planner.trajectory2D)
+    logger_path_planner.log(path_planner.actual_total_cost)
+    logger_path_planner.log(path_planner.global_Total_Cost_map)
+    logger_path_planner.log(path_planner.global_Cost_map)
+    logger_path_planner.log(path_planner.local_Risk_map)
+    logger_path_planner.log(path_planner.local_Propagation_map)
+
     # Start the components
     platform_driver.start
     read_joint_dispatcher.start
@@ -188,9 +205,21 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     gyro.start
     fdir.start
     if options[:v] == false
+        logger_gps_heading = Orocos.name_service.get 'gps_heading_Logger'
+        logger_gps_heading.file = "gps.log"
+        logger_gps_heading.log(gps.pose_samples)
+        logger_gps_heading.log(gps.raw_data)
+        logger_gps_heading.log(gps.time)
+        logger_gps_heading.log(gps_heading.pose_samples_out)
+
         gps.start
         gps_heading.start
     else
+        logger_vicon = Orocos.name_service.get 'vicon_Logger'
+        logger_vicon.file = "vicon.log"
+        logger_vicon.log(vicon.pose_samples)
+        logger_vicon.log(vicon.unlabeled_markers)
+
         vicon.start
     end
     camera_bb2.start
@@ -213,6 +242,15 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     path_planner.start
 
     Readline::readline("Press ENTER to send goal pose to planner\n")
+
+    # start loggers
+    if options[:v] == false
+        logger_gps_heading.start
+    else
+        logger_vicon.start
+    end
+    logger_hazard_detector.start
+    logger_path_planner.start
 
     #goal.start
     goal_writer = path_planner.goalWaypoint.writer
