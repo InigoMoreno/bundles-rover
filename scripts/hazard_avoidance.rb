@@ -73,7 +73,7 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     puts "Starting BB2"
 
     camera_firewire_bb2 = TaskContext.get 'camera_firewire_bb2'
-    Orocos.conf.apply(camera_firewire_bb2, ['exoter_bb2','egp_bb2_id'], :override => true)
+    Orocos.conf.apply(camera_firewire_bb2, ['hdpr_bb2','egp_bb2_id'], :override => true)
     camera_firewire_bb2.configure
 
     camera_bb2 = TaskContext.get 'camera_bb2'
@@ -85,9 +85,9 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     stereo_bb2.configure
 
     # TO BE DECIDED IF SHUTTER CONTROLLER IS NEEDED OUTDOORS
-    #shutter_controller_bb2 = Orocos.name_service.get 'shutter_controller'
-    #Orocos.conf.apply(shutter_controller_bb2, ['default'], :override => true)
-    #shutter_controller_bb2.configure
+    shutter_controller_bb2 = Orocos.name_service.get 'shutter_controller'
+    Orocos.conf.apply(shutter_controller_bb2, ['bb2tenerife'], :override => true)
+    shutter_controller_bb2.configure
 
     # Setup Waypoint_navigation
     waypoint_navigation = Orocos.name_service.get 'waypoint_navigation'
@@ -134,8 +134,8 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     read_joint_dispatcher.motors_samples.connect_to     locomotion_control.joints_readings
 
     camera_firewire_bb2.frame.connect_to                camera_bb2.frame_in
-    #camera_firewire_bb2.frame.connect_to                shutter_controller_bb2.frame
-    #camera_firewire_bb2.shutter_value.connect_to        shutter_controller_bb2.shutter_value
+    camera_firewire_bb2.frame.connect_to                shutter_controller_bb2.frame
+    camera_firewire_bb2.shutter_value.connect_to        shutter_controller_bb2.shutter_value
 
     camera_bb2.left_frame.connect_to                    stereo_bb2.left_frame
     camera_bb2.right_frame.connect_to                   stereo_bb2.right_frame
@@ -195,7 +195,9 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     camera_bb2.start
     camera_firewire_bb2.start
     stereo_bb2.start
-    #shutter_controller_bb2.start
+    shutter_controller_bb2.start
+    hazard_detector.start
+
     if options[:v] == false
         # Race condition with internal gps_heading states. This check is here to only trigger the
         # trajectoryGen when the pose has been properly initialised. Otherwise the trajectory is set wrong.
@@ -205,7 +207,6 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
         end
         puts "GPS heading calibration done"
     end
-    hazard_detector.start
     traversability.start
     waypoint_navigation.start
     path_planner.start
