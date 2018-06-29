@@ -4,7 +4,6 @@ require 'orocos'
 require 'rock/bundle'
 require 'readline'
 require 'optparse'
-#require 'vizkit'
 include Orocos
 
 options = {:bb2 => true, :v => true, :csc => true}
@@ -27,7 +26,6 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
         abort("Cannot configure the joystick, is the dongle connected to HDPR?")
     end
 
-    # Configure the control packages
     motion_translator = Orocos.name_service.get 'motion_translator'
     Orocos.conf.apply(motion_translator, ['hdpr'], :override => true)
     motion_translator.configure
@@ -84,17 +82,14 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     Orocos.conf.apply(stereo_bb2, ['egp_bb2'], :override => true)
     stereo_bb2.configure
 
-    # TO BE DECIDED IF SHUTTER CONTROLLER IS NEEDED OUTDOORS
     shutter_controller_bb2 = Orocos.name_service.get 'shutter_controller'
     Orocos.conf.apply(shutter_controller_bb2, ['bb2tenerife'], :override => true)
     shutter_controller_bb2.configure
 
-    # Setup Waypoint_navigation
     waypoint_navigation = Orocos.name_service.get 'waypoint_navigation'
     Orocos.conf.apply(waypoint_navigation, ['hdpr_lab'], :override => true)
     waypoint_navigation.configure
 
-    # Setup command arbiter
     command_arbiter = Orocos.name_service.get 'command_arbiter'
     Orocos.conf.apply(command_arbiter, ['default'], :override => true)
     command_arbiter.configure
@@ -103,24 +98,20 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     Orocos.conf.apply(gyro, ['default'], :override => true)
     gyro.configure
 
-    # Hazard Detector
     hazard_detector = Orocos.name_service.get 'hazard_detector'
     Orocos.conf.apply(hazard_detector, ['default'], :override => true)
     hazard_detector.configure
 
-    # Traversability
     traversability = Orocos.name_service.get 'traversability'
     Orocos.conf.apply(traversability, ['hdpr'], :override => true)
     traversability.configure
 
-    # Path Planner
     path_planner = Orocos.name_service.get 'path_planner'
     path_planner.keep_old_waypoints = true
     Orocos.conf.apply(path_planner, ['hdpr','prl'], :override => true)
     path_planner.configure
     puts "done"
 
-    # Configure the connections between the components
     joystick.raw_command.connect_to                     motion_translator.raw_command
     joystick.raw_command.connect_to                     command_arbiter.raw_command
 
@@ -141,11 +132,9 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     camera_bb2.left_frame.connect_to                    stereo_bb2.left_frame
     camera_bb2.right_frame.connect_to                   stereo_bb2.right_frame
 
-    # Hazard Detector Inputs
     stereo_bb2.left_frame_sync.connect_to               hazard_detector.camera_frame
     stereo_bb2.distance_frame.connect_to                hazard_detector.distance_frame
 
-    # Hazard Detector Outputs
     waypoint_navigation.trajectory_status.connect_to    fdir.trajectory_status
     imu_stim300.orientation_samples_out.connect_to      fdir.attitude
     platform_driver.error_in_motor.connect_to           fdir.error_in_motor
@@ -155,10 +144,8 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     hazard_detector.local_traversability.connect_to     traversability.local2global_orientation
     traversability.traversability_map.connect_to        path_planner.traversability_map
 
-    # Path Planner Outputs
     path_planner.trajectory.connect_to                  waypoint_navigation.trajectory
 
-    # Waypoint navigation and Path Planner inputs:
     if options[:v] == false
         gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
         gps.raw_data.connect_to                             gps_heading.gps_raw_data
@@ -193,7 +180,6 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     logger_path_planner.log(path_planner.local_Risk_map)
     logger_path_planner.log(path_planner.local_Propagation_map)
 
-    # Start the components
     platform_driver.start
     read_joint_dispatcher.start
     command_joint_dispatcher.start
