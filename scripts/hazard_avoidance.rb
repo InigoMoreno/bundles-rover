@@ -180,6 +180,20 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     logger_path_planner.log(path_planner.local_Risk_map)
     logger_path_planner.log(path_planner.local_Propagation_map)
 
+    if options[:v] == false
+        logger_gps_heading = Orocos.name_service.get 'gps_heading_Logger'
+        logger_gps_heading.file = "gps.log"
+        logger_gps_heading.log(gps.pose_samples)
+        logger_gps_heading.log(gps.raw_data)
+        logger_gps_heading.log(gps.time)
+        logger_gps_heading.log(gps_heading.pose_samples_out)
+    else
+        logger_vicon = Orocos.name_service.get 'vicon_Logger'
+        logger_vicon.file = "vicon.log"
+        logger_vicon.log(vicon.pose_samples)
+        logger_vicon.log(vicon.unlabeled_markers)
+    end
+
     platform_driver.start
     read_joint_dispatcher.start
     command_joint_dispatcher.start
@@ -191,21 +205,9 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     gyro.start
     fdir.start
     if options[:v] == false
-        logger_gps_heading = Orocos.name_service.get 'gps_heading_Logger'
-        logger_gps_heading.file = "gps.log"
-        logger_gps_heading.log(gps.pose_samples)
-        logger_gps_heading.log(gps.raw_data)
-        logger_gps_heading.log(gps.time)
-        logger_gps_heading.log(gps_heading.pose_samples_out)
-
         gps.start
         gps_heading.start
     else
-        logger_vicon = Orocos.name_service.get 'vicon_Logger'
-        logger_vicon.file = "vicon.log"
-        logger_vicon.log(vicon.pose_samples)
-        logger_vicon.log(vicon.unlabeled_markers)
-
         vicon.start
     end
     camera_bb2.start
