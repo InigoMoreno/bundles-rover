@@ -50,8 +50,8 @@ repeatCommand: true
 # Configuration of Path Tracker parameters, namely distances, velocities and turn radius
 ptConfig:
   minTurnRadius: 0.95
-  translationalVelocity: 0.15
-  rotationalVelocity: 0.15
+  translationalVelocity: 0.1
+  rotationalVelocity: 0.05
   corridor: 1.5
   maxDisalignment: 1.0
   lookaheadDistance: 4.0
@@ -72,9 +72,9 @@ repeatCommand: true
 --- name:hdpr_lab
 # Configuration of Path Tracker parameters, namely distances, velocities and turn radius
 ptConfig:
-  minTurnRadius: 0.95
-  translationalVelocity: 0.05
-  rotationalVelocity: 0.15
+  minTurnRadius: 1.25
+  translationalVelocity: 0.10
+  rotationalVelocity: 0.05
   corridor: 0.5
   maxDisalignment: 0.15
   lookaheadDistance: 1.2

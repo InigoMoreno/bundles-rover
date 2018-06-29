@@ -1,3 +1,9 @@
+--- name:default
+
+risk_distance: 0.8
+
+reconnect_distance: 0.5
+
 --- name:exoter
 #
 locomotion_modes: [DRIVING, WHEEL_WALKING]
@@ -23,9 +29,9 @@ slope_values: [0,5,10,15,20]
 #Terrain1  slope1-slope2-...  slope1-slope2-... 
 #Terrain2  slope1-slope2-...  slope1-slope2-...
 #
-cost_data: [1000,1000,1000,1000,1000,
-            14.3,16.3,18.3,20.3,22.3,
-            25.0,25.0,25.0,25.0,25.0]
+cost_data: [12.0,12.0,12.0,12.0,12.0,
+            1.0, 1.25, 2.0, 2.5, 3.0,
+            1.0, 1.25, 2.0, 2.5, 3.0]
 local_res: 0.1
 
 --- name:decos

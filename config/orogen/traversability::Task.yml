@@ -18,7 +18,7 @@ obstacle_vicinity_iterations: 3
 # Kernel size to dilate obstacle second time [cells]
 obstacle_vicinity_kernel_size: 3
 # in meters, needed for obstacle dilation
-robot_size: 0.7
+robot_size: 0.6
 # Obstacles the rover can tolerate when there is no sinkage [m]
 rover_obstacle_clearance: 0.2
 # Slope the rover can travel in nominal case [rad]
