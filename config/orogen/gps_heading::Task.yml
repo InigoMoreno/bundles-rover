@@ -10,7 +10,7 @@ offset:
   data:
     - -0.22
     - 0
-    - 1.25
+    - -1.15
 
 gnss_source_frame: "body" #transformer names. No transformation convention
 # to frame for the transformer

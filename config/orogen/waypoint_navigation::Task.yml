@@ -72,7 +72,7 @@ repeatCommand: true
 --- name:hdpr_lab
 # Configuration of Path Tracker parameters, namely distances, velocities and turn radius
 ptConfig:
-  minTurnRadius: 1.25
+  minTurnRadius: 1.10
   translationalVelocity: 0.10
   rotationalVelocity: 0.05
   corridor: 0.5
