@@ -3,18 +3,18 @@ config:
     calibrationPath: "/home/marta/rock/hazardCalibration.txt"
     tolerance_close: 0.3 # [m]
     tolerance_far: 0.7 # [m]
-    hazardPixelLimit: 50
+    hazardPixelLimit: 300
     newCalibration: false
     numCalibrationSamples: 100
     mask: # -1 means full extension to the respective side
-        minX: 180
+        minX: 220
         maxX: 990
         minY: 375
         maxY: 555
-    dist_to_left_edge: -0.77
-    dist_to_right_edge: 0.93
-    dist_to_bottom_edge: 1.14
-    dist_to_upper_edge: 1.73
+    dist_to_left_edge: -0.74
+    dist_to_right_edge: 0.94
+    dist_to_bottom_edge: 1.04
+    dist_to_upper_edge: 1.63
     trav_map:
         width: 4.0
         height: 4.0
