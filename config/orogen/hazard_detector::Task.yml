@@ -19,3 +19,5 @@ config:
         width: 4.0
         height: 4.0
         resolution: 0.1
+    num_frames_while_stopped: 10
+    hazard_threshold:  7
