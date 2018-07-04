@@ -6,7 +6,7 @@ require 'readline'
 require 'optparse'
 include Orocos
 
-options = {:bb2 => true, :v => true, :csc => true}
+options = {:bb2 => true, :v => false, :csc => true}
 
 OptionParser.new do |opts|
   opts.banner = "Usage: start.rb [options]"
@@ -108,7 +108,7 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
 
     path_planner = Orocos.name_service.get 'path_planner'
     path_planner.keep_old_waypoints = true
-    Orocos.conf.apply(path_planner, ['hdpr','prl'], :override => true)
+    Orocos.conf.apply(path_planner, ['hdpr','decos'], :override => true)
     path_planner.configure
     puts "done"
 
@@ -171,7 +171,7 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     logger_hazard_detector.log(hazard_detector.hazard_visualization)
     logger_hazard_detector.log(hazard_detector.local_traversability)
 
-    logger_path_planner = Orocos.name_service.get 'path_planner_Logger'
+    logger_path_planner = Orocos.name_service.get 'autonomy_Logger'
     logger_path_planner.file = "path_planner.log"
     logger_path_planner.log(path_planner.trajectory2D)
     logger_path_planner.log(path_planner.actual_total_cost)
@@ -181,7 +181,7 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     logger_path_planner.log(path_planner.local_Propagation_map)
 
     if options[:v] == false
-        logger_gps_heading = Orocos.name_service.get 'gps_heading_Logger'
+        logger_gps_heading = Orocos.name_service.get 'gps_Logger'
         logger_gps_heading.file = "gps.log"
         logger_gps_heading.log(gps.pose_samples)
         logger_gps_heading.log(gps.raw_data)
@@ -244,14 +244,19 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     goal_writer = path_planner.goalWaypoint.writer
     goal = Types::Base::Waypoint.new()
     if options[:v] == false
-        goal.position[0] = 85.00
-        goal.position[1] = 80.00
+        # Goal Position
+        goal.position[0] = 40.0
+        goal.position[1] = 115.0
+        # Start Position
+        #goal.position[0] = 100.0
+        #goal.position[1] = 50.0
     else
         goal.position[0] = 6.00
         goal.position[1] = 3.00
     end
     goal.position[2] = 0.00
-    goal.heading = -45.00*3.141592/180.0
+    goal.heading = 120.00*3.141592/180.0
+    #goal.heading = 0.0
     goal_writer.write(goal)
 
     Readline::readline("Press Enter to exit\n") do
