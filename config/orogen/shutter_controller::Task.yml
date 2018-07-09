@@ -2,39 +2,39 @@
 # albeit producing relatively dark images,
 # this configuration has shown to yield good disparities in daylight settings
 config:
-  shutterCompPeriod: 3
-  initShutterTime: 20
-  maxShutterTime: 3904
-  minShutterTime: 3
-  maxIntensity: 255
-  factMaxIntensity: 0.70
-  factMinIntensity: 0.20
-  factMinMean: 0.3
-  factMaxMean: 0.4
-  weightOldShutterTime: 0.99
+  shutter_computation_period: 3
+  init_shutter_time: 20
+  min_shutter_time: 3
+  max_shutter_time: 3904
+  max_intensity: 255
+  fact_min_intensity: 0.20
+  fact_max_intensity: 0.70
+  fact_min_mean: 0.3
+  fact_max_mean: 0.4
+  weight_old_shutter_time: 0.99
 
 --- name:bb2tenerife
 config:
-  shutterCompPeriod: 3
-  initShutterTime: 20
-  maxShutterTime: 864
-  minShutterTime: 0
-  maxIntensity: 255
-  factMaxIntensity: 0.70
-  factMinIntensity: 0.20
-  factMinMean: 0.3
-  factMaxMean: 0.4
-  weightOldShutterTime: 0.99
+  shutter_computation_period: 3
+  init_shutter_time: 20
+  min_shutter_time: 0
+  max_shutter_time: 864
+  max_intensity: 255
+  fact_min_intensity: 0.20
+  fact_max_intensity: 0.70
+  fact_min_mean: 0.3
+  fact_max_mean: 0.4
+  weight_old_shutter_time: 0.99
 
 --- name:bb3tenerife
 config:
-  shutterCompPeriod: 10
-  initShutterTime: 20
-  maxShutterTime: 1122
-  minShutterTime: 0
-  maxIntensity: 255
-  factMaxIntensity: 0.70
-  factMinIntensity: 0.20
-  factMinMean: 0.3
-  factMaxMean: 0.4
-  weightOldShutterTime: 0.995
+  shutter_computation_period: 10
+  init_shutter_time: 20
+  min_shutter_time: 0
+  max_shutter_time: 1122
+  max_intensity: 255
+  fact_min_intensity: 0.20
+  fact_max_intensity: 0.70
+  fact_min_mean: 0.3
+  fact_max_mean: 0.4
+  weight_old_shutter_time: 0.995
