@@ -26,6 +26,19 @@ config:
   fact_max_mean: 0.4
   weight_old_shutter_time: 0.99
 
+--- name:bb2fast
+config:
+  shutter_computation_period: 3
+  init_shutter_time: 20
+  min_shutter_time: 0
+  max_shutter_time: 864
+  max_intensity: 255
+  fact_min_intensity: 0.20
+  fact_max_intensity: 0.70
+  fact_min_mean: 0.3
+  fact_max_mean: 0.4
+  weight_old_shutter_time: 0.75
+
 --- name:bb3tenerife
 config:
   shutter_computation_period: 10
