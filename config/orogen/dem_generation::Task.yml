@@ -35,6 +35,7 @@ pointcloud_cut_min:
   - 0.0
 enable_compression: true
 compression_level: 20.0
+rectify_images: true
 
 
 --- name:exoter_bb3
@@ -72,6 +73,7 @@ pointcloud_cut_min:
   - 0.0
 enable_compression: true
 compression_level: 20.0
+rectify_images: true
 
 --- name:hdpr_bb2
 cameraCalibration:
@@ -119,6 +121,7 @@ pointcloud_cut_min:
   - 0.0
 enable_compression: true
 compression_level: 20.0
+rectify_images: true
 
 
 --- name:hdpr_bb3
@@ -156,6 +159,7 @@ pointcloud_cut_min:
   - 0.0
 enable_compression: true
 compression_level: 20.0
+rectify_images: true
 
 --- name:mesa
 cameraCalibration:
@@ -192,6 +196,7 @@ pointcloud_cut_min:
   - 0.0
 enable_compression: true
 compression_level: 90.0
+rectify_images: true
 
 --- name:velodyne
 cameraCalibration:
@@ -228,6 +233,7 @@ pointcloud_cut_min:
   - 0.0
 enable_compression: true
 compression_level: 20.0
+rectify_images: true
 
 --- name:panCam
 cameraCalibration:
@@ -264,3 +270,4 @@ pointcloud_cut_min:
   - 0.0
 enable_compression: true
 compression_level: 20.0
+rectify_images: true
