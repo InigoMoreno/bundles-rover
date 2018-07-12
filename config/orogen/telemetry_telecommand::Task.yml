@@ -75,3 +75,9 @@ initial_pose:
     - .nan
     - .nan
     - .nan
+
+--- name:ExoTeR
+rover: :ExoTeR
+
+--- name:HDPR
+rover: :HDPR

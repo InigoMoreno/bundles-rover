@@ -51,7 +51,7 @@ static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0,
 
 # Transformation Left camera to Right camera (Right camera frame expressed in Left camera frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.Identity(),
-    Eigen::Vector3.new( 0.5, 0.0, 0.0 ), "right_camera" => "left_camera"
+    Eigen::Vector3.new( 0.5, 0.0, 0.0 ), "right_camera_pancam" => "left_camera_pancam"
 
 # Transformation Left camera to ToF camera (ToF camera frame expressed in Left camera frame) but transformer expects the other sense
 #static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI/2.0, 0.00, Math::PI/2.0), 2,1,0),
@@ -60,11 +60,29 @@ static_transform Eigen::Quaternion.Identity(),
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.0, -0.454-Math::PI/2.0), 2,1,0),
     Eigen::Vector3.new( 0.6, 0.0, 0.15), "tof" => "body"
 
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new(0, 0, 0), "left_camera_navcam" => "left_camera_bb3"
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new(0, 0, 0), "right_camera_navcam" => "right_camera_bb3"
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new(0, 0, 0), "left_camera_loccam" => "left_camera_bb2"
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new(0, 0, 0), "right_camera_loccam" => "right_camera_bb2"
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new(0, 0, 0), "world" => "lab"
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new(0, 0, 0), "left_camera_navcam_back" => "left_camera_navcam"
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new(0, 0, 0), "right_camera_navcam_back" => "right_camera_navcam"
+
+
 # Transformation front BB2 to body center
 #static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.0, -0.593-Math::PI/2.0), 2,1,0), #old
 #    Eigen::Vector3.new(0.54309, 0.06, 0.01713), "left_camera_bb2" => "body"
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-1.5666, 0.02348, -2.145), 2,1,0),
     Eigen::Vector3.new(0.527, 0.0738, 0.0588), "left_camera_bb2" => "body"
+static_transform Eigen::Quaternion.Identity(),
+    Eigen::Vector3.new( 0.12, 0.0, 0.0 ), "right_camera_bb2" => "left_camera_bb2"
 
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -1.5655, 0.0212, -1.8671), 2,1,0),
     Eigen::Vector3.new(0.4265, 0.129, 0.491), "left_camera_bb3" => "body"
