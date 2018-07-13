@@ -6,7 +6,7 @@ require 'readline'
 require 'optparse'
 include Orocos
 
-options = {:bb2 => true, :v => false, :csc => true}
+options = {:bb2 => true, :v => true, :csc => true}
 
 OptionParser.new do |opts|
   opts.banner = "Usage: start.rb [options]"
@@ -16,7 +16,7 @@ end.parse!
 
 Bundles.initialize
 
-Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps', 'unit_gyro', 'unit_vicon', 'unit_shutter_controller', 'unit_hazard_detector', 'fdir' do
+Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps', 'gyro', 'unit_vicon', 'unit_shutter_controller', 'unit_hazard_detector', 'fdir' do
 
     joystick = Orocos.name_service.get 'joystick'
     Orocos.conf.apply(joystick, ['default'], :override => true)
