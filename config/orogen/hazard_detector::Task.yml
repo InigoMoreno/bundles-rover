@@ -1,27 +1,27 @@
 --- name:default
-config:
-    calibration_path: "/home/marta/rock/hazardCalibration.txt"
+calibration_path: "/home/marta/rock/hazardCalibration.txt"
+num_frames_while_stopped: 10
+hazard_threshold: 7
+new_calibration: false
+num_calibration_samples: 100
+lib_config:
     tolerance_close: 0.3 # [m]
     tolerance_far: 0.7 # [m]
     hazard_pixel_limit: 300
-    new_calibration: false
-    num_calibration_samples: 100
-    mask: # -1 means full extension to the respective side
-        min_x: 220
-        max_x: 990
-        min_y: 375
-        max_y: 555
-    dist_to_upper_left_x: -0.93
-    dist_to_upper_left_y: 1.70
-    dist_to_upper_right_x: 1.17
-    dist_to_upper_right_y: 1.53
-    dist_to_bottom_right_x: 0.71
-    dist_to_bottom_right_y: 1.03
-    dist_to_bottom_left_x: -0.56
-    dist_to_bottom_left_y: 1.05
+    roi: # region of interest
+        min_x: 220 # -1 means full extension to the respective side
+        max_x: 990 # -1 means full extension to the respective side
+        min_y: 375 # -1 means full extension to the respective side
+        max_y: 555 # -1 means full extension to the respective side
+        dist_to_upper_left_x: -0.93
+        dist_to_upper_left_y: 1.70
+        dist_to_upper_right_x: 1.17
+        dist_to_upper_right_y: 1.53
+        dist_to_bottom_right_x: 0.71
+        dist_to_bottom_right_y: 1.03
+        dist_to_bottom_left_x: -0.56
+        dist_to_bottom_left_y: 1.05
     trav_map:
         width: 4.0
         height: 5.0
         resolution: 0.1
-    num_frames_while_stopped: 10
-    hazard_threshold: 7
