@@ -5,9 +5,10 @@ hazard_threshold: 7
 new_calibration: false
 num_calibration_samples: 100
 lib_config:
-    tolerance_close: 0.3 # [m]
+    tolerance_close: 0.25 # [m]
     tolerance_far: 0.7 # [m]
     hazard_pixel_limit: 300
+    camera_height: 0.68 # [m]
     roi: # region of interest
         min_x: 220 # -1 means full extension to the respective side
         max_x: 990 # -1 means full extension to the respective side
