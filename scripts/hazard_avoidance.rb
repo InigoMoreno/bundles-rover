@@ -6,7 +6,7 @@ require 'readline'
 require 'optparse'
 include Orocos
 
-options = {:bb2 => true, :v => true, :csc => true}
+options = {:bb2 => true, :v => false, :csc => true}
 
 OptionParser.new do |opts|
   opts.banner = "Usage: start.rb [options]"
@@ -187,11 +187,15 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
         logger_gps_heading.log(gps.time)
         logger_gps_heading.log(gps_heading.pose_samples_out)
     else
-        logger_vicon = Orocos.name_service.get 'vicon_Logger'
-        logger_vicon.file = "vicon.log"
-        logger_vicon.log(vicon.pose_samples)
-        logger_vicon.log(vicon.unlabeled_markers)
+        #logger_vicon = Orocos.name_service.get 'vicon_Logger'
+        #logger_vicon.file = "vicon.log"
+        #logger_vicon.log(vicon.pose_samples)
+        #logger_vicon.log(vicon.unlabeled_markers)
     end
+
+    logger_imu = Orocos.name_service.get 'imu_Logger'
+    logger_imu.file = "imu.log"
+    logger_imu.log(imu_stim300.orientation_samples_out)
 
     platform_driver.start
     read_joint_dispatcher.start
@@ -228,33 +232,42 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     waypoint_navigation.start
     path_planner.start
 
-    Readline::readline("Press ENTER to send goal pose to planner\n")
+    Readline::readline("Press ENTER to send goal pose to planner\n") do
+    end
 
     # start loggers
     if options[:v] == false
         logger_gps_heading.start
     else
-        logger_vicon.start
+        #logger_vicon.start
     end
     logger_hazard_detector.start
     logger_path_planner.start
+    logger_imu.start
 
     #goal.start
     goal_writer = path_planner.goalWaypoint.writer
     goal = Types::Base::Waypoint.new()
     if options[:v] == false
+        # Goal Position Test w/ Ricardo
+        #goal.position[0] = 40.0
+        #goal.position[1] = 115.0
         # Goal Position
-        goal.position[0] = 40.0
-        goal.position[1] = 115.0
+        #goal.position[0] = 50.0
+        #goal.position[1] = 110.0
+        # Goal going to van
+        goal.position[0] = 65.0
+        goal.position[1] = 55.0
         # Start Position
-        #goal.position[0] = 100.0
-        #goal.position[1] = 50.0
+        #goal.position[0] = 110.0
+        #goal.position[1] = 55.0
     else
-        goal.position[0] = 6.00
-        goal.position[1] = 3.00
+        goal.position[0] = 7.00
+        goal.position[1] = 2.00
     end
     goal.position[2] = 0.00
-    goal.heading = 120.00*3.141592/180.0
+    #goal.heading = 135.00*3.141592/180.0
+    goal.heading = -90.00*3.141592/180.0
     #goal.heading = 0.0
     goal_writer.write(goal)
 

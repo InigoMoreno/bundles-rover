@@ -247,7 +247,7 @@ cameraCalibration:
   d3: 0.000256922530508
   width: 1280
   height: 960
-camera_name: 'MAST'
+camera_name: 'PANCAM'
 save_directory: '/media/logs/Products/'
 # K points for statistical pc filter
 k_points: 20
@@ -259,7 +259,7 @@ pointcloud_cut_max:
   data:
   - 10.0
   - 10.0
-  - 10.0
+  - 15.0
   - 0.0
 # Minimum vertex where a local point cloud is supposed to be valid within the rover frame
 pointcloud_cut_min:

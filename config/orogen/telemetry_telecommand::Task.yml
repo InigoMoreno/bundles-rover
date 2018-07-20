@@ -1,7 +1,8 @@
 --- name:default
 # A configuration property (here, a std::string). Its value can be retrieved
 # in the C++ code with # _config_value.get() and _config_value.set(new_value).
-activeMQ_brokerURI: 'failover:(tcp://192.168.200.245:9009)'
+#activeMQ_brokerURI: 'failover:(tcp://192.168.200.245:9009)'
+activeMQ_brokerURI: 'failover:(tcp://192.168.1.101:9009)'
 productsFolder: '\/media\/logs\/Products\/'
 rover: :ExoTeR
 isMastDeployed: false

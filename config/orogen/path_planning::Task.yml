@@ -36,11 +36,11 @@ cost_data: [50.0,  50.0,  50.0,  50.0,  50.0,
              10.0,   12.0,   15.0,   20.0,   40.0]
 local_res: 0.1
 
-risk_distance: 2.0
+risk_distance: 1.5
 
 reconnect_distance: 0.0
 
-risk_ratio: 2.0
+risk_ratio: 1.1
 
 --- name:decos
 

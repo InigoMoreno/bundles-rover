@@ -36,8 +36,8 @@ dynamic_transform "localization_frontend.world_to_navigation_out", "navigation" 
 dynamic_transform "ptu_directedperception.orientation_samples", "ptu_head" => "ptu_base"
 
 # Transformation from rover body to navigation but transformed expected in the inverse sense
-#dynamic_transform "gps_heading.pose_samples_out", "body" => "gnss_utm" # original gps one
-dynamic_transform "vicon.pose_samples", "body" => "world_osg" # original gps one
+dynamic_transform "gps_heading.pose_samples_out", "body" => "gnss_utm" # original gps one
+#dynamic_transform "vicon.pose_samples", "body" => "world_osg" # original gps one
 #dynamic_transform "viso2_with_imu.pose_samples_out", "body" => "viso_world"
 
 #static_transform Eigen::Quaternion.Identity(),

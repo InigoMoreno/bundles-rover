@@ -23,7 +23,7 @@ Orocos::Process.run 'unit_bb2', 'unit_shutter_controller' do
     stereo.configure
 
     shutter_controller = Orocos.name_service.get 'shutter_controller'
-    Orocos.conf.apply(shutter_controller, ['bb2fast'], :override => true)
+    Orocos.conf.apply(shutter_controller, ['bb2tenerife'], :override => true)
     shutter_controller.configure
 
     camera_firewire.frame.connect_to                camera.frame_in

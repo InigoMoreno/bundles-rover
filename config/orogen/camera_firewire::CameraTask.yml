@@ -35,7 +35,8 @@ disable_frame_raw: true
 # exposure value if exposure mode is not auto
 exposure: 10
 # exposure mode (auto, manual, external, none)
-exposure_mode: auto
+exposure_mode: manual
+exposure_power: false
 # frames per second
 fps: 3.75
 # size of the frame buffer
@@ -778,8 +779,8 @@ exposure_power: false
 # exposure value if exposure mode is not auto
 exposure: 350
 # exposure mode (auto, manual, external, none)
-#exposure_mode: auto
-exposure_mode: none
+exposure_mode: auto
+#exposure_mode: none
 # frames per second - When running a stereo camera (BB2, BB3) the value set for framerate should be doubled due to the fact that each frame contains two images
 fps: 7.5
 # size of the frame buffer

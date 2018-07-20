@@ -9,11 +9,11 @@ include Orocos
 
 # Command line options for the script, default values
 options = {
-    :v => true,
+    :v => false,
     :logging => false,
-    :bb2 => true,
+    :bb2 => false,
     :bb3 => false,
-    :pancam => false,
+    :pancam => true,
     :lidar => false,
     :tof => false,
     :csc => false
@@ -191,11 +191,11 @@ Orocos::Process.run 'dem_generation', 'control', 'pancam', 'lidar', 'tof', 'bb2'
         Orocos.conf.apply(dem_generation_pancam, ['panCam'], :override => true)
         dem_generation_pancam.configure
 
-        if options[:csc]
+        #if options[:csc] # PanCam has always the shutter controller
             shutter_controller = Orocos.name_service.get 'shutter_controller_pancam'
             Orocos.conf.apply(shutter_controller, ['default'], :override => true)
             shutter_controller.configure
-        end
+        #end
 
         ptu_directedperception = Orocos.name_service.get 'ptu_directedperception'
         Orocos.conf.apply(ptu_directedperception, ['default'], :override => true)
@@ -338,11 +338,11 @@ Orocos::Process.run 'dem_generation', 'control', 'pancam', 'lidar', 'tof', 'bb2'
         trigger_pancam.frame_left_out.connect_to            stereo_pancam.left_frame
         trigger_pancam.frame_right_out.connect_to           stereo_pancam.right_frame
         trigger_pancam.frame_left_out.connect_to            dem_generation_pancam.left_frame_rect
-        tereo_pancam.distance_frame.connect_to              dem_generation_pancam.distance_frame
+        stereo_pancam.distance_frame.connect_to             dem_generation_pancam.distance_frame
         stereo_pancam.left_frame_sync.connect_to            dem_generation_pancam.left_frame_rect
         stereo_pancam.right_frame_sync.connect_to           dem_generation_pancam.right_frame_rect
 
-        telemetry_telecommand.mast_trigger.connect_to       trigger_pancam.telecommand_in
+        telemetry_telecommand.pancam_trigger.connect_to     trigger_pancam.telecommand_in
         telemetry_telecommand.pancam_360_trigger.connect_to trigger_pancam_360.telecommand_in
         trigger_pancam.telecommands_out.connect_to          dem_generation_pancam.telecommands_in
         trigger_pancam_360.telecommands_out.connect_to      dem_generation_pancam_360.telecommands_in
