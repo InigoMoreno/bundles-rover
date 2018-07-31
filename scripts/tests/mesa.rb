@@ -11,7 +11,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'unit_mesa' do
+Orocos::Process.run 'tof' do
 
     # Configure
     tofcamera_mesasr = TaskContext.get 'tofcamera_mesasr'

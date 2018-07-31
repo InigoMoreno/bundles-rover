@@ -9,11 +9,11 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'hdpr_unit_bb3' do
+Orocos::Process.run 'unit_bb3' do
 
     # Configure
     camera_firewire_bb3 = TaskContext.get 'camera_firewire_bb3'
-    Orocos.conf.apply(camera_firewire_bb3, ['bumblebee3'], :override => true)
+    Orocos.conf.apply(camera_firewire_bb3, ['hdpr_bb3','altec_bb3_id'], :override => true)
     camera_firewire_bb3.configure
 
     camera_bb3 = TaskContext.get 'camera_bb3'
@@ -26,7 +26,7 @@ Orocos::Process.run 'hdpr_unit_bb3' do
 
     # Log
     #Orocos.log_all_ports
-    camera_firewire_bb3.log_all_ports
+    #camera_firewire_bb3.log_all_ports
     
     # Connect
     camera_firewire_bb3.frame.connect_to camera_bb3.frame_in

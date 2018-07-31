@@ -9,7 +9,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'unit_lidar' do
+Orocos::Process.run 'lidar' do
 
     # Configure
     velodyne_lidar = TaskContext.get 'velodyne_lidar'

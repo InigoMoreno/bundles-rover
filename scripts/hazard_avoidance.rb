@@ -6,7 +6,10 @@ require 'readline'
 require 'optparse'
 include Orocos
 
-options = {:bb2 => true, :v => false, :csc => true}
+options = {:bb2 => true,
+           :v => true,
+           :csc => true,
+           :logging => false}
 
 OptionParser.new do |opts|
   opts.banner = "Usage: start.rb [options]"
@@ -38,8 +41,8 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     Orocos.conf.apply(command_joint_dispatcher, ['hdpr_commanding'], :override => true)
     command_joint_dispatcher.configure
 
-    platform_driver = Orocos.name_service.get 'platform_driver'
-    Orocos.conf.apply(platform_driver, ['hdpr'], :override => true)
+    platform_driver = Orocos.name_service.get 'platform_driver_hdpr'
+    Orocos.conf.apply(platform_driver, ['default'], :override => true)
     platform_driver.configure
 
     read_joint_dispatcher = Orocos.name_service.get 'read_joint_dispatcher'
@@ -108,7 +111,7 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
 
     path_planner = Orocos.name_service.get 'path_planner'
     path_planner.keep_old_waypoints = true
-    Orocos.conf.apply(path_planner, ['hdpr','decos'], :override => true)
+    Orocos.conf.apply(path_planner, ['hdpr','prl'], :override => true)
     path_planner.configure
     puts "done"
 
@@ -236,14 +239,16 @@ Orocos::Process.run 'autonomy', 'navigation', 'control', 'unit_bb2', 'imu', 'gps
     end
 
     # start loggers
-    if options[:v] == false
-        logger_gps_heading.start
-    else
-        #logger_vicon.start
+    if options[:logging]
+        if options[:v] == false
+            logger_gps_heading.start
+        else
+            #logger_vicon.start
+        end
+        logger_hazard_detector.start
+        logger_path_planner.start
+        logger_imu.start
     end
-    logger_hazard_detector.start
-    logger_path_planner.start
-    logger_imu.start
 
     #goal.start
     goal_writer = path_planner.goalWaypoint.writer
