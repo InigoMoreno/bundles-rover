@@ -876,3 +876,8 @@ whitebalance_mode: manual
 whitebalance_red: 550
 # width of the camera frame
 width: 1024
+
+--- name:auto_exposure
+shutter_mode: auto
+exposure_power: true
+exposure_mode: auto
