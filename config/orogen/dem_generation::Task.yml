@@ -136,7 +136,7 @@ cameraCalibration:
   d3: 0.000959205363921
   width: 1280
   height: 960
-camera_name: 'FRONT' # PANCAM for exoter
+camera_name: 'NAVCAM' # FRONT for hdpr
 save_directory: '/media/logs/Products/'
 # K points for statistical pc filter
 k_points: 20

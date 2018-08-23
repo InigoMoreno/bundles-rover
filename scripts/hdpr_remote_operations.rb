@@ -11,10 +11,10 @@ include Orocos
 options = {
     :v => true,
     :logging => false,
-    :bb2 => true,
-    :bb3 => false,
+    :bb2 => false,
+    :bb3 => true,
     :pancam => true,
-    :lidar => true,
+    :lidar => false,
     :tof => false,
     :csc => false
 }
@@ -155,7 +155,7 @@ Orocos::Process.run 'dem_generation', 'control', 'pancam', 'lidar', 'tof', 'bb2'
         Orocos.conf.apply(camera_bb3, ['default'], :override => true)
         camera_bb3.configure
 
-        trigger_bb3 = TaskContext.get 'trigger_bb3'
+        trigger_bb3 = TaskContext.get 'trigger_navcam'
 
         stereo_bb3 = TaskContext.get 'stereo_bb3'
         Orocos.conf.apply(stereo_bb3, ['hdpr_bb3_left_right'], :override => true)
@@ -279,7 +279,7 @@ Orocos::Process.run 'dem_generation', 'control', 'pancam', 'lidar', 'tof', 'bb2'
         trigger_bb3.frame_left_out.connect_to               stereo_bb3.left_frame
         trigger_bb3.frame_right_out.connect_to              stereo_bb3.right_frame
         trigger_bb3.frame_left_out.connect_to               dem_generation_bb3.left_frame_rect
-        trigger_bb3.right_frame_sync.connect_to             dem_generation_bb3.right_frame_rect
+        trigger_bb3.frame_right_out.connect_to              dem_generation_bb3.right_frame_rect
         stereo_bb3.distance_frame.connect_to                dem_generation_bb3.distance_frame
 
         if options[:csc]
@@ -287,7 +287,7 @@ Orocos::Process.run 'dem_generation', 'control', 'pancam', 'lidar', 'tof', 'bb2'
             camera_firewire_bb3.shutter_value.connect_to    shutter_controller_bb3.shutter_value
         end
 
-        telemetry_telecommand.front_trigger.connect_to      trigger_bb3.telecommand_in
+        telemetry_telecommand.navcam_trigger.connect_to     trigger_bb3.telecommand_in
         trigger_bb3.telecommands_out.connect_to             dem_generation_bb3.telecommands_in
         dem_generation_bb3.telemetry_out.connect_to         telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
 
@@ -324,9 +324,8 @@ Orocos::Process.run 'dem_generation', 'control', 'pancam', 'lidar', 'tof', 'bb2'
         trigger_pancam_360.frame_left_out.connect_to        stereo_pancam_360.left_frame
         trigger_pancam_360.frame_right_out.connect_to       stereo_pancam_360.right_frame
         trigger_pancam_360.frame_left_out.connect_to        dem_generation_pancam_360.left_frame_rect
+        trigger_pancam_360.frame_right_out.connect_to       dem_generation_pancam_360.right_frame_rect
         stereo_pancam_360.distance_frame.connect_to         dem_generation_pancam_360.distance_frame
-        stereo_pancam_360.left_frame_sync.connect_to        dem_generation_pancam_360.left_frame_rect
-        stereo_pancam_360.right_frame_sync.connect_to       dem_generation_pancam_360.right_frame_rect
         dem_generation_pancam_360.sync_out.connect_to	    pancam_360.sync_in
 
         # PanCam connections to shutter controller
@@ -338,9 +337,8 @@ Orocos::Process.run 'dem_generation', 'control', 'pancam', 'lidar', 'tof', 'bb2'
         trigger_pancam.frame_left_out.connect_to            stereo_pancam.left_frame
         trigger_pancam.frame_right_out.connect_to           stereo_pancam.right_frame
         trigger_pancam.frame_left_out.connect_to            dem_generation_pancam.left_frame_rect
+        trigger_pancam.frame_right_out.connect_to           dem_generation_pancam.right_frame_rect
         stereo_pancam.distance_frame.connect_to             dem_generation_pancam.distance_frame
-        stereo_pancam.left_frame_sync.connect_to            dem_generation_pancam.left_frame_rect
-        stereo_pancam.right_frame_sync.connect_to           dem_generation_pancam.right_frame_rect
 
         telemetry_telecommand.pancam_trigger.connect_to     trigger_pancam.telecommand_in
         telemetry_telecommand.pancam_360_trigger.connect_to trigger_pancam_360.telecommand_in
