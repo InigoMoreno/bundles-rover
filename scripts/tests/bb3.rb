@@ -13,7 +13,7 @@ Orocos::Process.run 'unit_bb3' do
 
     # Configure
     camera_firewire_bb3 = TaskContext.get 'camera_firewire_bb3'
-    Orocos.conf.apply(camera_firewire_bb3, ['hdpr_bb3','altec_bb3_id'], :override => true)
+    Orocos.conf.apply(camera_firewire_bb3, ['hdpr_bb3','altec_bb3_id','auto_exposure'], :override => true)
     camera_firewire_bb3.configure
 
     camera_bb3 = TaskContext.get 'camera_bb3'
