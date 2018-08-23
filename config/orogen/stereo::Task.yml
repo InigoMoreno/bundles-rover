@@ -1,8 +1,3 @@
-#    ___        _____    ___   ___ ___ ___ 
-#   | __|_ ____|_   _|__| _ \ | _ ) _ )_  )
-#   | _|\ \ / _ \| |/ -_)   / | _ \ _ \/ / 
-#   |___/_\_\___/|_|\___|_|_\ |___/___/___|
-#                                          
 --- name:exoter_bb2
 # gaussian kernel for dense stereo pre-processing.
 gaussian_kernel: 0
@@ -90,11 +85,6 @@ stereoCameraCalibration:
     rz: -0.0005449859535995445
 output_format_sync: :MODE_GRAYSCALE
 
-#    _  _ ___  ___ ___   ___ ___ ___ 
-#   | || |   \| _ \ _ \ | _ ) _ )_  )
-#   | __ | |) |  _/   / | _ \ _ \/ / 
-#   |_||_|___/|_| |_|_\ |___/___/___|
-#                                    
 --- name:hdpr_bb2
 # gaussian kernel for dense stereo pre-processing.
 gaussian_kernel: 0
@@ -184,37 +174,6 @@ stereoCameraCalibration:
     rx: -0.001819615757731449
     ry: -0.008842211883599646
     rz: -0.003584645009846816
-#stereoCameraCalibration:
-#  camLeft:
-#    fx: 833.029249273
-#    fy: 834.36200043
-#    cx: 503.38475908
-#    cy: 394.969563968
-#    d0: -0.351348570994
-#    d1: 0.149480797792
-#    d2: 0.000305233424184
-#    d3: -0.000750163647335
-#    width: 1024
-#    height: 768
-#  camRight:
-#    fx: 838.801936516
-#    fy: 838.480016878
-#    cx: 487.625364421
-#    cy: 387.634126099
-#    d0: -0.356833447233
-#    d1: 0.161196429937
-#    d2: 0.000303425633673
-#    d3: -0.000540901163595
-#    width: 1024
-#    height: 768
-##Distance between left and right camera
-#  extrinsic:
-#    tx: -119.2447700000000
-#    ty: 0.1109700000000000
-#    tz: 1.691040000000000
-#    rx: -0.002033295208862309
-#    ry: -0.003170676988095988
-#    rz: -0.003374311026266406
 output_format_sync: :MODE_GRAYSCALE
 
 --- name:egp_bb2
@@ -309,91 +268,6 @@ stereoCameraCalibration:
 #output_format_sync: :MODE_GRAYSCALE
 output_format_sync: :MODE_RGB
 
---- name:bb3_left_right
-# gaussian kernel for dense stereo pre-processing.
-gaussian_kernel: 0
-# if set to true, the input images are assumed to already be rectified.
-image_rectified: false
-# if set to true, the input images are assumed to be rotated by 180 degrees.
-image_rotated: false
-# down- or upscale input images by this factor.
-image_scaling_factor: 1.0
-# configuration values for libElas
-libElas_conf:
-  disp_min: 5
-  disp_max: 350
-  support_threshold: 0.8500000238418579
-  support_texture: 10
-  candidate_stepsize: 5
-  incon_window_size: 5
-  incon_threshold: 5
-  incon_min_support: 5
-  add_corners: false
-  grid_size: 20
-  beta: 0.019999999552965164
-  gamma: 3.0
-  sigma: 1.0
-  sradius: 2.0
-  match_texture: 1
-  lr_threshold: 2
-  speckle_sim_threshold: 1.0
-  speckle_size: 200
-  ipol_gap_width: 3
-  filter_median: false
-  filter_adaptive_mean: true
-  postprocess_only_left: true
-  subsampling: false
-# configuration for sparse features.
-sparse_config:
-  debugImage: true
-  targetNumFeatures: 100
-  maxStereoYDeviation: 5
-  knn: 1
-  distanceFactor: 2
-  isometryFilterMaxSteps: 1000
-  isometryFilterThreshold: 0.1
-  adaptiveDetectorParam: false
-  detectorConfig:
-    SURFparam: 170
-    goodParam: 0.10000000149011612
-    mserParam: 3.0
-    starParam: 9.0
-    fastParam: 12.0
-  descriptorType: :DESCRIPTOR_PSURF
-  detectorType: :DETECTOR_MSER
-  filterType: :FILTER_STEREO
-# calibration parameters for stereo camera setup
-stereoCameraCalibration:
-  camLeft:
-    fx: 1636.20761888
-    fy: 1637.33777994
-    cx: 651.850565473
-    cy: 471.147308853
-    d0: -0.594977746871
-    d1: 0.325393349407
-    d2: 0.00144401244969
-    d3: 0.000959205363921
-    width: 1280
-    height: 960
-  camRight:
-    fx: 1639.72518101
-    fy: 1640.90202338
-    cx: 646.514647735
-    cy: 475.276983991
-    d0: -0.595106148265
-    d1: 0.331023501494
-    d2: 0.00238172923311
-    d3: -0.000967072920991
-    width: 1280
-    height: 960
-#Distance between left and right camera
-  extrinsic:
-    tx: -2.39663482e+02
-    ty: -8.14723521e-02
-    tz: -5.67111539e-01
-    rx: 0.006304017079544317
-    ry: -0.0012146750982623684
-    rz: -0.0029615554641445854
 
 --- name:hdpr_bb3_left_right
 # gaussian kernel for dense stereo pre-processing.
@@ -451,41 +325,126 @@ sparse_config:
 # calibration parameters for stereo camera setup
 stereoCameraCalibration:
   camLeft:
-    fx: 1636.20761888
-    fy: 1637.33777994
-    cx: 651.850565473
-    cy: 471.147308853
-    d0: -0.594977746871
-    d1: 0.325393349407
-    d2: 0.00144401244969
-    d3: 0.000959205363921
+    fx: 1641.539061
+    fy: 1636.484946
+    cx: 619.574162
+    cy: 498.107295
+    d0: -0.443161
+    d1: 0.272248
+    d2: -0.000985
+    d3: 0.000637
     width: 1280
     height: 960
   camRight:
-    fx: 1639.72518101
-    fy: 1640.90202338
-    cx: 646.514647735
-    cy: 475.276983991
-    d0: -0.595106148265
-    d1: 0.331023501494
-    d2: 0.00238172923311
-    d3: -0.000967072920991
+    fx: 1625.123559
+    fy: 1619.772852
+    cx: 654.168460
+    cy: 483.879295
+    d0: -0.425315
+    d1: 0.173233
+    d2: -0.000462
+    d3: -0.000873
     width: 1280
     height: 960
 #Distance between left and right camera
   extrinsic:
-    tx: -2.39663482e+02
-    ty: -8.14723521e-02
-    tz: -5.67111539e-01
-    rx: 0.006304017079544317
-    ry: -0.0012146750982623684
-    rz: -0.0029615554641445854
+    tx: -239.1616335944944
+    ty: 0.3858028340646606
+    tz: 3.762717060257373
+    rx: 0.0009187601643718313
+    ry: -0.006105566904453421
+    rz: -0.004294613372507138
 
-#    ___           ___            
-#   | _ \__ _ _ _ / __|__ _ _ __  
-#   |  _/ _` | ' \ (__/ _` | '  \ 
-#   |_| \__,_|_||_\___\__,_|_|_|_|
-#                                 
+--- name:marta_bb3_left_right
+# gaussian kernel for dense stereo pre-processing.
+gaussian_kernel: 0
+# if set to true, the input images are assumed to already be rectified.
+image_rectified: false
+# if set to true, the input images are assumed to be rotated by 180 degrees.
+image_rotated: false
+# down- or upscale input images by this factor.
+image_scaling_factor: 1.0
+# configuration values for libElas
+libElas_conf:
+  disp_min: 5
+  disp_max: 350
+  support_threshold: 0.8500000238418579
+  support_texture: 10
+  candidate_stepsize: 5
+  incon_window_size: 5
+  incon_threshold: 5
+  incon_min_support: 5
+  add_corners: false
+  grid_size: 20
+  beta: 0.019999999552965164
+  gamma: 3.0
+  sigma: 1.0
+  sradius: 2.0
+  match_texture: 1
+  lr_threshold: 2
+  speckle_sim_threshold: 1.0
+  speckle_size: 200
+  ipol_gap_width: 3
+  filter_median: false
+  filter_adaptive_mean: true
+  postprocess_only_left: true
+  subsampling: false
+# configuration for sparse features.
+sparse_config:
+  debugImage: true
+  targetNumFeatures: 100
+  maxStereoYDeviation: 5
+  knn: 1
+  distanceFactor: 2
+  isometryFilterMaxSteps: 1000
+  isometryFilterThreshold: 0.1
+  adaptiveDetectorParam: false
+  detectorConfig:
+    SURFparam: 170
+    goodParam: 0.10000000149011612
+    mserParam: 3.0
+    starParam: 9.0
+    fastParam: 12.0
+  descriptorType: :DESCRIPTOR_PSURF
+  detectorType: :DETECTOR_MSER
+  filterType: :FILTER_STEREO
+# calibration parameters for stereo camera setup
+stereoCameraCalibration:
+  camLeft:
+    fx: 1645.51714174
+    fy: 1646.09752195
+    cx: 631.156776829
+    cy: 480.300988996
+    d0: -0.444317086558
+    d1: 0.264611770415
+    d2: -0.00164976520823
+    d3: 0.000231870965717
+    width: 1280
+    height: 960
+    ex: 0
+    ey: 0
+  camRight:
+    fx: 1627.78455487
+    fy: 1627.16755792
+    cx: 652.187178655
+    cy: 469.893048887
+    d0: -0.4428254944
+    d1: 0.24504703595
+    d2: -0.000283744955525
+    d3: -0.00146112860417
+    width: 1280
+    height: 960
+    ex: 0.0
+    ey: 0.0
+#Distance between left and right camera
+  extrinsic:
+    tx: -239.5201200000000
+    ty: 0.3888600000000000
+    tz: 1.467990000000000
+    rx: 0.003034434388698680
+    ry: 0.002180973564268589
+    rz: -0.004953862715956596
+
 --- name:panCam
 # gaussian kernel for dense stereo pre-processing.
 gaussian_kernel: 0
@@ -542,36 +501,36 @@ sparse_config:
 # calibration parameters for stereo camera setup
 stereoCameraCalibration:
   camLeft:
-    fx: 1422.199525
-    fy: 1416.985835
-    cx: 634.672712
-    cy: 467.749462
-    d0: -0.273550
-    d1: 0.232715
-    d2: 0.000059
-    d3: 0.000060
+    fx: 1434.34057864
+    fy: 1434.48156538
+    cx: 656.482491027
+    cy: 478.284247083
+    d0: -0.260171121309
+    d1: 0.209943290439
+    d2: -0.000130643979542
+    d3: 0.000255815643856
     width: 1280
     height: 960
     ex: 0
     ey: 0
   camRight:
-    fx: 1423.838581
-    fy: 1418.730350
-    cx: 644.933830
-    cy: 474.889537
-    d0: -0.264097
-    d1: 0.223908
-    d2: -0.000612
-    d3: -0.000336
+    fx: 1436.38539084
+    fy: 1435.84256671
+    cx: 659.435415806
+    cy: 485.682779254
+    d0: -0.258044200466
+    d1: 0.207252488943
+    d2: -0.000466549247419
+    d3: 0.000308251936016
     width: 1280
     height: 960
     ex: 0.0
     ey: 0.0
 #Distance between left and right camera
   extrinsic:
-    tx: -499.4493508185427
-    ty: 1.120431748928685
-    tz: -0.5498971885996953
-    rx: -0.002774013005725643
-    ry: -0.003200948419396805
-    rz: -0.0007452146905860506
+    tx: -499.1893100000000
+    ty: 1.461460000000000
+    tz: -5.001850000000000
+    rx: -0.002154805092804208
+    ry: 0.0006652668141734516
+    rz: -0.0002057358731394412
