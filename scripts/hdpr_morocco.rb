@@ -8,10 +8,10 @@ include Orocos
 
 # Command line options for the script, default values
 options = {
-    :logging => false,
-    :bb2 => false,
+    :logging => true,
+    :bb2 => true,
     :bb3 => true,
-    :csc => false
+    :csc => true
 }
 
 # Options parser
@@ -119,6 +119,8 @@ Orocos::Process.run 'control', 'bb2', 'bb3', 'imu', 'gps', 'shutter_controller',
             logger_bb2 = Orocos.name_service.get 'bb2_Logger'
             logger_bb2.file = "bb2.log"
             logger_bb2.log(camera_firewire_bb2.frame)
+            logger_bb2.log(camera_bb2.left_frame)
+            logger_bb2.log(camera_bb2.right_frame)
             if options[:csc] == true
                 logger_bb2.log(shutter_controller_bb2.shutter_value)
             end
@@ -129,6 +131,9 @@ Orocos::Process.run 'control', 'bb2', 'bb3', 'imu', 'gps', 'shutter_controller',
             logger_bb3 = Orocos.name_service.get 'bb3_Logger'
             logger_bb3.file = "bb3.log"
             logger_bb3.log(camera_firewire_bb3.frame)
+            logger_bb3.log(camera_bb3.left_frame)
+            logger_bb3.log(camera_bb3.center_frame)
+            logger_bb3.log(camera_bb3.right_frame)
             if options[:csc] == true
                 logger_bb3.log(shutter_controller_bb3.shutter_value)
             end
@@ -146,7 +151,6 @@ Orocos::Process.run 'control', 'bb2', 'bb3', 'imu', 'gps', 'shutter_controller',
         logger_imu = Orocos.name_service.get 'imu_Logger'
         logger_imu.file = "imu.log"
         logger_imu.log(imu_stim300.inertial_sensors_out)
-        logger_imu.log(imu_stim300.temp_sensors_out)
         logger_imu.log(imu_stim300.orientation_samples_out)
         logger_imu.log(imu_stim300.compensated_sensors_out)
         logger_imu.start
