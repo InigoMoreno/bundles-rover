@@ -29,7 +29,7 @@ Bundles.initialize
 #
 # task context 'hdpr_unit_visual_odometry' is necessary, because it is used in the transforms,
 # eventhough we do not make use of visual odometry in this script.
-Orocos::Process.run 'control', 'bb2', 'bb3', 'imu', 'gps', 'shutter_controller', 'stereo' do
+Orocos::Process.run 'control', 'bb2', 'bb3', 'imu', 'gps', 'shutter_controller' do
 
     imu_stim300 = TaskContext.get 'imu_stim300'
     Orocos.conf.apply(imu_stim300, ['default', 'HDPR', 'ESTEC', 'stim300_5g'], :override => true)
@@ -46,13 +46,10 @@ Orocos::Process.run 'control', 'bb2', 'bb3', 'imu', 'gps', 'shutter_controller',
         Orocos.conf.apply(camera_bb2, ['hdpr_bb2'], :override => true)
         camera_bb2.configure
 
-        stereo_bb2 = TaskContext.get 'stereo_bb2'
-        Orocos.conf.apply(stereo_bb2, ['hdpr_bb2'], :override => true)
-        stereo_bb2.configure
-
         if options[:csc]
             shutter_controller_bb2 = Orocos.name_service.get 'shutter_controller_bb2'
             Orocos.conf.apply(shutter_controller_bb2, ['bb2tenerife'], :override => true)
+
             shutter_controller_bb2.configure
         end
     end
@@ -67,10 +64,6 @@ Orocos::Process.run 'control', 'bb2', 'bb3', 'imu', 'gps', 'shutter_controller',
         camera_bb3 = TaskContext.get 'camera_bb3'
         Orocos.conf.apply(camera_bb3, ['default'], :override => true)
         camera_bb3.configure
-
-        stereo_bb3 = TaskContext.get 'stereo_bb3'
-        Orocos.conf.apply(stereo_bb3, ['hdpr_bb3_left_right'], :override => true)
-        stereo_bb3.configure
 
         if options[:csc]
             shutter_controller_bb3 = Orocos.name_service.get 'shutter_controller_bb3'
@@ -88,7 +81,7 @@ Orocos::Process.run 'control', 'bb2', 'bb3', 'imu', 'gps', 'shutter_controller',
     gps_heading.configure
 
     if options[:bb2]
-        camera_firewire_bb2.frame.connect_to             camera_bb2.frame_in
+        #camera_firewire_bb2.frame.connect_to             camera_bb2.frame_in
 
         if options[:csc]
             camera_firewire_bb2.frame.connect_to         shutter_controller_bb2.frame
@@ -97,7 +90,7 @@ Orocos::Process.run 'control', 'bb2', 'bb3', 'imu', 'gps', 'shutter_controller',
     end
 
     if options[:bb3]
-        camera_firewire_bb3.frame.connect_to                camera_bb3.frame_in
+        #camera_firewire_bb3.frame.connect_to                camera_bb3.frame_in
 
         if options[:csc]
             camera_firewire_bb3.frame.connect_to            shutter_controller_bb3.frame
@@ -105,7 +98,6 @@ Orocos::Process.run 'control', 'bb2', 'bb3', 'imu', 'gps', 'shutter_controller',
         end
 
     end
-
 
     gps.pose_samples.connect_to                         gps_heading.gps_pose_samples
     gps.raw_data.connect_to                             gps_heading.gps_raw_data
@@ -162,17 +154,15 @@ Orocos::Process.run 'control', 'bb2', 'bb3', 'imu', 'gps', 'shutter_controller',
     gps_heading.start
 
     if options[:bb2] == true
+        #camera_firewire_bb2.start
         camera_bb2.start
-        camera_firewire_bb2.start
-        stereo_bb2.start
         if options[:csc]
             shutter_controller_bb2.start
         end
     end
     if options[:bb3] == true
+        #camera_firewire_bb3.start
         camera_bb3.start
-        camera_firewire_bb3.start
-        stereo_bb3.start
         if options[:csc]
             shutter_controller_bb3.start
         end
@@ -185,6 +175,31 @@ Orocos::Process.run 'control', 'bb2', 'bb3', 'imu', 'gps', 'shutter_controller',
        sleep 1
     end
     puts "GPS heading calibration done"
+
+    # take pictures every sample_distance meters
+    sample_distance = 0.10
+
+    reader_gps_pose = gps.pose_samples.reader
+    reader_camera_bb2_fw = camera_bb2_firewire.frame.reader
+    reader_camera_bb3_fw = camera_bb3_firewire.frame.reader
+    writer_camera_bb2 = camera_bb2.acquire_image.writer
+    writer_camera_bb3 = camera_bb3.acquire_image.writer
+
+    position = reader_gps_pose.position.read
+    last_position_x = position.x
+    last_position_y = position.y
+    while true
+        position = reader_gps_pose.position.read
+        distance = sqrt((position.x - last_position_x)**2 + (position.y - last_position_y)**2)
+
+        if distance > sample_distance
+            writer_camera_bb2.write(reader_camera_bb2_fw.read)
+            writer_camera_bb3.write(reader_camera_bb3_fw.read)
+
+            last_position_x = pose.x
+            last_position_y = pose.y
+        end
+    end
 
     Readline::readline("Press Enter to exit\n") do
     end
