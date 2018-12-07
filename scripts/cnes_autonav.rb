@@ -29,7 +29,7 @@ Bundles.initialize
 Bundles.transformer.load_conf(Bundles.find_file('config', 'transforms_scripts_exoter.rb'))
 
 # Execute the task
-Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchandling', 'unit_vicon', 'navigation', 'unit_visual_odometry', 'fdir' do
+Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchandling', 'unit_vicon', 'navigation', 'unit_visual_odometry', 'fdir', 'autonomy' do
     joystick = Orocos.name_service.get 'joystick'
     # Set the joystick input
     joystick.device = "/dev/input/js0"
@@ -64,8 +64,8 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     Orocos.conf.apply(command_joint_dispatcher, ['exoter_commanding'], :override => true)
     command_joint_dispatcher.configure
 
-    platform_driver = Orocos.name_service.get 'platform_driver_exoter'
-    Orocos.conf.apply(platform_driver, ['default'], :override => true)
+    platform_driver = Orocos.name_service.get 'platform_driver'
+    Orocos.conf.apply(platform_driver, ['exoter'], :override => true)
     platform_driver.configure
 
     read_joint_dispatcher = Orocos.name_service.get 'read_joint_dispatcher'
@@ -195,6 +195,12 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     Bundles.transformer.setup(telemetry_telecommand)
     telemetry_telecommand.configure
 
+    # setup autonav_interface
+    autonav = Orocos.name_service.get 'autonav_interface'
+    Orocos.conf.apply(autonav, ['exoter_navcam'], :override => true)
+    Bundles.transformer.setup(autonav)
+    autonav.configure
+
     # Configure the connections between the components
     joystick.raw_command.connect_to                     motion_translator.raw_command
     joystick.raw_command.connect_to                     command_arbiter.raw_command
@@ -235,6 +241,9 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         dem_generation_navcam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
         # Configure the sensor trigger after the ports are connected
         trigger_navcam.configure
+        camera_navcam.left_frame.connect_to             autonav.frame_left # might need to check timestamps of left & right images (must be the same)
+        camera_navcam.right_frame.connect_to            autonav.frame_right # might need to check timestamps of left & right images (must be the same)
+
     end
 
     if options[:loc] == true
@@ -294,6 +303,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         vicon.pose_samples.connect_to             	        waypoint_navigation.pose
     	vicon.pose_samples.connect_to             	        telemetry_telecommand.current_pose
         vicon.pose_samples.connect_to                       slippage_estimator.pose
+        vicon.pose_samples.connect_to                       autonav.pose
     	puts "using vicon"
     else
         camera_loccam.left_frame.connect_to                 visual_odometry.left_frame
@@ -321,11 +331,19 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     telemetry_telecommand.walking_command_rear.connect_to   locomotion_control.walking_command_rear
     telemetry_telecommand.mast_pan.connect_to               ptu_control.pan_command_in
     telemetry_telecommand.mast_tilt.connect_to              ptu_control.tilt_command_in
+    telemetry_telecommand.autonav_goal.connect_to           autonav.goal
+    autonav.target_ptu_pan.connect_to                       ptu_control.pan_command_in
+    autonav.target_ptu_tilt.connect_to                      ptu_control.tilt_command_in 
     telemetry_telecommand.trajectory.connect_to             waypoint_navigation.trajectory
     telemetry_telecommand.trajectory_speed.connect_to       waypoint_navigation.speed_input
+    autonav.trajectory.connect_to                           waypoint_navigation.trajectory
+    autonav.trajectory_speed.connect_to                     waypoint_navigation.speed_input 
     waypoint_navigation.trajectory_status.connect_to        telemetry_telecommand.trajectory_status
+    waypoint_navigation.trajectory_status.connect_to        autonav.navigation_state
     telemetry_telecommand.current_pan.connect_to            ptu_control.pan_samples_out
     telemetry_telecommand.current_tilt.connect_to           ptu_control.tilt_samples_out
+    autonav.current_ptu_pan.connect_to                      ptu_control.pan_samples_out
+    autonav.current_ptu_tilt.connect_to                     ptu_control.tilt_samples_out 
     #telemetry_telecommand.current_imu.connect_to           imu_stim300.orientation_samples_out
     read_joint_dispatcher.joints_readings_out.connect_to    telemetry_telecommand.joint_samples
     locomotion_control.bema_joints.connect_to               telemetry_telecommand.current_bema
