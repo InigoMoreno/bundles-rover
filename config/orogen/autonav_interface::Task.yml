@@ -1,0 +1,35 @@
+--- name:default
+# Hostname/IP of the Autonav server
+autonav_host: ''
+# Goal pose waypoint (x,y) coordinates in global frame
+goal_pose:
+  position:
+    data:
+    - 1.0
+    - 0.0
+    - 0.0
+  heading: 0.0
+  tol_position: 0.0
+  tol_heading: 0.0
+
+tolerance_heading: 0.0
+
+tolerance_position: 0.0
+
+--- name:exoter_navcam
+# Hostname/IP of the Autonav server
+autonav_host: '192.168.10.2'
+# Goal pose waypoint (x,y) coordinates in global frame
+goal_pose:
+  position:
+    data:
+    - 5.0
+    - 5.0
+    - 0.0
+  heading: 0.0
+  tol_position: 0.0
+  tol_heading: 0.0
+
+tolerance_heading: 0.0
+
+tolerance_position: 0.0
