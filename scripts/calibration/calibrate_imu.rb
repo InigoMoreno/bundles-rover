@@ -9,17 +9,17 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'unit_imu' do
+Orocos::Process.run 'imu' do
 
     # Configure
     imu_stim300 = TaskContext.get 'imu_stim300'
-    #Orocos.conf.apply(imu_stim300, ['default', 'calibration', 'HDPR', 'ESTEC', 'stim300_5g'], :override => true)
-    Orocos.conf.apply(imu_stim300, ['default', 'calibration', 'exoter', 'ESTEC', 'stim300_5g'], :override => true)
+    Orocos.conf.apply(imu_stim300, ['default', 'calibration', 'HDPR', 'Morocco', 'stim300_5g'], :override => true)
+    #Orocos.conf.apply(imu_stim300, ['default', 'calibration', 'exoter', 'ESTEC', 'stim300_5g'], :override => true)
     #Orocos.conf.apply(imu_stim300, ['default', 'calibration', 'HDPR', 'Tenerife', 'stim300_5g'], :override => true)
     imu_stim300.configure
 
     # Log all ports
-    logger_imu = Orocos.name_service.get 'unit_imu_Logger'
+    logger_imu = Orocos.name_service.get 'imu_Logger'
     logger_imu.file = "imu_calibration_samples.log"
     logger_imu.log(imu_stim300.inertial_sensors_out)
     logger_imu.log(imu_stim300.temp_sensors_out)

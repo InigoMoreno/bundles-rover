@@ -9,10 +9,10 @@ filter_configuration:
   initial_alignment_samples: 750 # 150000 # 20 minute(s) initial alignment. IMU rate is 125Hz. Set it to 7500 for 1 minute.
   correction_frequency: 1.0
 
-use_input_bias: false
-biasgyro: [-0.000448614,-4.24293e-05,-4.15614e-05]
-biasacc: [-5.07971e-07,-3.98021e-07,0]
-#init_heading: 140.0
+use_input_bias: true
+biasgyro: [-0.00067397,0.000164118,0.000480464]
+biasacc: [5.91841e-09,-4.54387e-10,0]
+init_heading: 180.0
 
 --- name:calibration
 # General configuration values to run the task
@@ -25,8 +25,8 @@ filter_configuration:
   initial_alignment_samples: 150000 # 150000 # 20 minute(s) initial alignment. IMU rate is 125Hz. Set it to 7500 for 1 minute.
   correction_frequency: 1.0
 use_input_bias: false
-init_heading: 140.0
-
+init_heading: -90.0
+bias_estimation_file: "/home/kvasir/rock/bundles/rover/logs/imu_bias.txt"
     
 ###      ###     ###
 ###     rover    ###
@@ -89,6 +89,16 @@ location:
   magnetic_declination: -0.09128072
   magnetic_declination_mode: :WEST
   dip_angle: 1.187696556
+
+--- name:Morocco
+# Localization properties related to the geographic place (i.e.: latitude, longitude, magnetic declination).
+location:
+  latitude: 0.548663 #31deg 26min 10sec NORTH
+  longitude: -0.0738759 # -4deg 13min 58sec EAST
+  altitude: 807.0
+  magnetic_declination: -0.0139626 # -0deg 48min EAST
+  magnetic_declination_mode: :WEST
+  dip_angle: 0.00663
 
 --- name:DLR-Oberpfaffenhofen
 # Localization properties related to the geographic place (i.e.: latitude, longitude, magnetic declination).
