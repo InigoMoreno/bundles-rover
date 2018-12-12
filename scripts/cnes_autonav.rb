@@ -64,8 +64,8 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     Orocos.conf.apply(command_joint_dispatcher, ['exoter_commanding'], :override => true)
     command_joint_dispatcher.configure
 
-    platform_driver = Orocos.name_service.get 'platform_driver'
-    Orocos.conf.apply(platform_driver, ['exoter'], :override => true)
+    platform_driver = Orocos.name_service.get 'platform_driver_exoter'
+    Orocos.conf.apply(platform_driver, ['default'], :override => true)
     platform_driver.configure
 
     read_joint_dispatcher = Orocos.name_service.get 'read_joint_dispatcher'
@@ -111,7 +111,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         puts "Starting NavCam"
 
         camera_firewire_navcam = TaskContext.get 'camera_firewire_navcam'
-        Orocos.conf.apply(camera_firewire_navcam, ['exoter_bb2'], :override => true)
+        Orocos.conf.apply(camera_firewire_navcam, ['exoter_bb2','auto_exposure'], :override => true)
         camera_firewire_navcam.configure
 
         camera_navcam = TaskContext.get 'camera_navcam'
@@ -133,7 +133,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         puts "Starting LocCam"
 
         camera_firewire_loccam = TaskContext.get 'camera_firewire_loccam'
-        Orocos.conf.apply(camera_firewire_loccam, ['exoter_bb2_b'], :override => true)
+        Orocos.conf.apply(camera_firewire_loccam, ['exoter_bb2_b','auto_exposure'], :override => true)
         camera_firewire_loccam.configure
 
         camera_loccam = TaskContext.get 'camera_loccam'
@@ -155,7 +155,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         puts "Starting PanCam"
 
         camera_firewire_pancam = TaskContext.get 'camera_firewire_pancam'
-        Orocos.conf.apply(camera_firewire_pancam, ['exoter_bb3'], :override => true)
+        Orocos.conf.apply(camera_firewire_pancam, ['exoter_bb3','auto_exposure'], :override => true)
         camera_firewire_pancam.configure
 
         camera_pancam = TaskContext.get 'camera_pancam'
@@ -165,7 +165,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         trigger_pancam = TaskContext.get 'trigger_pancam'
 
         stereo_pancam = TaskContext.get 'stereo_pancam'
-        Orocos.conf.apply(stereo_pancam, ['bb3_left_right'], :override => true)
+        Orocos.conf.apply(stereo_pancam, ['hdpr_bb3_left_right'], :override => true)
         stereo_pancam.configure
 
         dem_generation_pancam = TaskContext.get 'dem_generation_pancam'
@@ -198,7 +198,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     # setup autonav_interface
     autonav = Orocos.name_service.get 'autonav_interface'
     Orocos.conf.apply(autonav, ['exoter_navcam'], :override => true)
-    Bundles.transformer.setup(autonav)
+    #Bundles.transformer.setup(autonav)
     autonav.configure
 
     # Configure the connections between the components
@@ -331,7 +331,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     telemetry_telecommand.walking_command_rear.connect_to   locomotion_control.walking_command_rear
     telemetry_telecommand.mast_pan.connect_to               ptu_control.pan_command_in
     telemetry_telecommand.mast_tilt.connect_to              ptu_control.tilt_command_in
-    telemetry_telecommand.autonav_goal.connect_to           autonav.goal
+    #telemetry_telecommand.autonav_goal.connect_to           autonav.goal
     autonav.target_ptu_pan.connect_to                       ptu_control.pan_command_in
     autonav.target_ptu_tilt.connect_to                      ptu_control.tilt_command_in 
     telemetry_telecommand.trajectory.connect_to             waypoint_navigation.trajectory
@@ -339,7 +339,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     autonav.trajectory.connect_to                           waypoint_navigation.trajectory
     autonav.trajectory_speed.connect_to                     waypoint_navigation.speed_input 
     waypoint_navigation.trajectory_status.connect_to        telemetry_telecommand.trajectory_status
-    waypoint_navigation.trajectory_status.connect_to        autonav.navigation_state
+    waypoint_navigation.navigation_state.connect_to         autonav.navigation_state
     telemetry_telecommand.current_pan.connect_to            ptu_control.pan_samples_out
     telemetry_telecommand.current_tilt.connect_to           ptu_control.tilt_samples_out
     autonav.current_ptu_pan.connect_to                      ptu_control.pan_samples_out
@@ -407,6 +407,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     telemetry_telecommand.start
     slippage_estimator.start
     fdir.start
+    autonav.start
 
     Readline::readline("Press Enter to exit\n") do
     end
