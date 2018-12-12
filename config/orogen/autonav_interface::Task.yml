@@ -20,6 +20,9 @@ goal_threshold: 0.1
 
 ptu_threshold: 0.01
 
+min_pan: -180.0
+max_pan: 90.0
+
 # calibration parameters for stereo camera intrinsics and extrinsics
 stereo_camera_calibration:
   camLeft:
