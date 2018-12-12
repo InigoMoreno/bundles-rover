@@ -8,9 +8,9 @@ require 'optparse'
 include Orocos
 
 # Command line options for the script, default values
-options = {:nav => true, 
-           :pan => true, 
-           :v => true, 
+options = {:nav => true,
+           :pan => true,
+           :v => true,
            :loc => true}
 
 # Options parser
@@ -165,7 +165,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         trigger_pancam = TaskContext.get 'trigger_pancam'
 
         stereo_pancam = TaskContext.get 'stereo_pancam'
-        Orocos.conf.apply(stereo_pancam, ['bb3_left_right'], :override => true)
+        Orocos.conf.apply(stereo_pancam, ['hdpr_bb3_left_right'], :override => true)
         stereo_pancam.configure
 
         dem_generation_pancam = TaskContext.get 'dem_generation_pancam'
