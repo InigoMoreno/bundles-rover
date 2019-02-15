@@ -8,9 +8,9 @@ require 'optparse'
 include Orocos
 
 # Command line options for the script, default values
-options = {:nav => true, 
-           :pan => true, 
-           :v => true, 
+options = {:nav => true,
+           :pan => true,
+           :v => true,
            :loc => true}
 
 # Options parser
@@ -331,13 +331,19 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     telemetry_telecommand.walking_command_rear.connect_to   locomotion_control.walking_command_rear
     telemetry_telecommand.mast_pan.connect_to               ptu_control.pan_command_in
     telemetry_telecommand.mast_tilt.connect_to              ptu_control.tilt_command_in
-    #telemetry_telecommand.autonav_goal.connect_to           autonav.goal
+    telemetry_telecommand.autonav_goal.connect_to           autonav.goal
+    telemetry_telecommand.autonav_reset.connect_to          autonav.reset_component
+    telemetry_telecommand.autonav_obstacle.connect_to       autonav.obstacle_height
+    telemetry_telecommand.autonav_slope.connect_to          autonav.max_slope
+    telemetry_telecommand.autonav_coldstart.connect_to      autonav.cold_start
+    autonav.state_output.connect_to                         telemetry_telecommand.autonav_state
     autonav.target_ptu_pan.connect_to                       ptu_control.pan_command_in
     autonav.target_ptu_tilt.connect_to                      ptu_control.tilt_command_in 
     telemetry_telecommand.trajectory.connect_to             waypoint_navigation.trajectory
     telemetry_telecommand.trajectory_speed.connect_to       waypoint_navigation.speed_input
     autonav.trajectory.connect_to                           waypoint_navigation.trajectory
-    autonav.trajectory_speed.connect_to                     waypoint_navigation.speed_input 
+    autonav.trajectory_speed.connect_to                     waypoint_navigation.speed_input
+    autonav.cancel_trajectory.connect_to                    waypoint_navigation.cancel_trajectory
     waypoint_navigation.trajectory_status.connect_to        telemetry_telecommand.trajectory_status
     waypoint_navigation.navigation_state.connect_to         autonav.navigation_state
     telemetry_telecommand.current_pan.connect_to            ptu_control.pan_samples_out
