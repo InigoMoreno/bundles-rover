@@ -1,6 +1,9 @@
 --- name:exoter_navcam
 # Hostname/IP of the Autonav server
-autonav_host: '192.168.10.2'
+autonav_host: 'localhost'
+
+recovery_start: false
+
 # Goal pose waypoint (x,y) coordinates in global frame in meters
 goal_pose:
   position:

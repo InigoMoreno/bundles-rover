@@ -10,16 +10,18 @@ include Orocos
 # Command line options for the script, default values
 options = {:nav => true,
            :pan => true,
+           :loc => true,
            :v => true,
-           :loc => true}
+           :autonav => true}
 
 # Options parser
 OptionParser.new do |opts|
-  opts.banner = "Usage: start.rb [options]"
+  opts.banner = "Usage: <name>.rb [options]"
   opts.on('-nav', '--nav state', 'Enable/disable NavCam camera') { |state| options[:nav] = state }
   opts.on('-pan', '--pan state', 'Enable/disable PanCam camera') { |state| options[:pan] = state }
   opts.on('-v', '--vicon state', 'Enable/disable Vicon') { |state| options[:v] = state }
   opts.on('-loc', '--loc state', 'Enable/disable LocCam camera') { |state| options[:loc] = state }
+  opts.on('-autonav', '--autonav state', 'Enable/disable AutoNav interface') { |state| options[:loc] = state }
 end.parse!
 
 # Initialize bundles to find the configurations for the packages
@@ -195,11 +197,13 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     Bundles.transformer.setup(telemetry_telecommand)
     telemetry_telecommand.configure
 
-    # setup autonav_interface
-    autonav = Orocos.name_service.get 'autonav_interface'
-    Orocos.conf.apply(autonav, ['exoter_navcam'], :override => true)
-    #Bundles.transformer.setup(autonav)
-    autonav.configure
+    if options[:autonav]
+        # setup autonav_interface
+        autonav = Orocos.name_service.get 'autonav_interface'
+        Orocos.conf.apply(autonav, ['exoter_navcam'], :override => true)
+        #Bundles.transformer.setup(autonav)
+        autonav.configure
+    end
 
     # Configure the connections between the components
     joystick.raw_command.connect_to                     motion_translator.raw_command
@@ -241,8 +245,10 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         dem_generation_navcam.telemetry_out.connect_to      telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
         # Configure the sensor trigger after the ports are connected
         trigger_navcam.configure
-        camera_navcam.left_frame.connect_to             autonav.frame_left # might need to check timestamps of left & right images (must be the same)
-        camera_navcam.right_frame.connect_to            autonav.frame_right # might need to check timestamps of left & right images (must be the same)
+        if options[:autonav]
+            camera_navcam.left_frame.connect_to             autonav.frame_left # might need to check timestamps of left & right images (must be the same)
+            camera_navcam.right_frame.connect_to            autonav.frame_right # might need to check timestamps of left & right images (must be the same)
+        end
 
     end
 
@@ -303,7 +309,9 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         vicon.pose_samples.connect_to             	        waypoint_navigation.pose
     	vicon.pose_samples.connect_to             	        telemetry_telecommand.current_pose
         vicon.pose_samples.connect_to                       slippage_estimator.pose
-        vicon.pose_samples.connect_to                       autonav.pose
+        if options[:autonav]
+            vicon.pose_samples.connect_to                       autonav.pose
+        end
     	puts "using vicon"
     else
         camera_loccam.left_frame.connect_to                 visual_odometry.left_frame
@@ -331,25 +339,28 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     telemetry_telecommand.walking_command_rear.connect_to   locomotion_control.walking_command_rear
     telemetry_telecommand.mast_pan.connect_to               ptu_control.pan_command_in
     telemetry_telecommand.mast_tilt.connect_to              ptu_control.tilt_command_in
-    telemetry_telecommand.autonav_goal.connect_to           autonav.goal
-    telemetry_telecommand.autonav_reset.connect_to          autonav.reset_component
-    telemetry_telecommand.autonav_obstacle.connect_to       autonav.obstacle_height
-    telemetry_telecommand.autonav_slope.connect_to          autonav.max_slope
-    telemetry_telecommand.autonav_coldstart.connect_to      autonav.cold_start
-    autonav.state_output.connect_to                         telemetry_telecommand.autonav_state
-    autonav.target_ptu_pan.connect_to                       ptu_control.pan_command_in
-    autonav.target_ptu_tilt.connect_to                      ptu_control.tilt_command_in 
+    if options[:autonav]
+        telemetry_telecommand.autonav_goal.connect_to           autonav.goal
+        telemetry_telecommand.autonav_reset.connect_to          autonav.reset_component
+        telemetry_telecommand.autonav_obstacle.connect_to       autonav.obstacle_height
+        telemetry_telecommand.autonav_slope.connect_to          autonav.max_slope
+        telemetry_telecommand.autonav_coldstart.connect_to      autonav.cold_start
+        autonav.state_output.connect_to                         telemetry_telecommand.autonav_state
+        autonav.finished_trajectory.connect_to                  telemetry_telecommand.autonav_finished
+        autonav.target_ptu_pan.connect_to                       ptu_control.pan_command_in
+        autonav.target_ptu_tilt.connect_to                      ptu_control.tilt_command_in
+        autonav.trajectory.connect_to                           waypoint_navigation.trajectory
+        autonav.trajectory_speed.connect_to                     waypoint_navigation.speed_input
+        autonav.cancel_trajectory.connect_to                    waypoint_navigation.cancel_trajectory
+        waypoint_navigation.navigation_state.connect_to         autonav.navigation_state
+        autonav.current_ptu_pan.connect_to                      ptu_control.pan_samples_out
+        autonav.current_ptu_tilt.connect_to                     ptu_control.tilt_samples_out
+    end
+    waypoint_navigation.trajectory_status.connect_to        telemetry_telecommand.trajectory_status
     telemetry_telecommand.trajectory.connect_to             waypoint_navigation.trajectory
     telemetry_telecommand.trajectory_speed.connect_to       waypoint_navigation.speed_input
-    autonav.trajectory.connect_to                           waypoint_navigation.trajectory
-    autonav.trajectory_speed.connect_to                     waypoint_navigation.speed_input
-    autonav.cancel_trajectory.connect_to                    waypoint_navigation.cancel_trajectory
-    waypoint_navigation.trajectory_status.connect_to        telemetry_telecommand.trajectory_status
-    waypoint_navigation.navigation_state.connect_to         autonav.navigation_state
     telemetry_telecommand.current_pan.connect_to            ptu_control.pan_samples_out
     telemetry_telecommand.current_tilt.connect_to           ptu_control.tilt_samples_out
-    autonav.current_ptu_pan.connect_to                      ptu_control.pan_samples_out
-    autonav.current_ptu_tilt.connect_to                     ptu_control.tilt_samples_out 
     #telemetry_telecommand.current_imu.connect_to           imu_stim300.orientation_samples_out
     read_joint_dispatcher.joints_readings_out.connect_to    telemetry_telecommand.joint_samples
     locomotion_control.bema_joints.connect_to               telemetry_telecommand.current_bema
@@ -413,7 +424,9 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
     telemetry_telecommand.start
     slippage_estimator.start
     fdir.start
-    autonav.start
+    if options[:autonav]
+        autonav.start
+    end
 
     Readline::readline("Press Enter to exit\n") do
     end
