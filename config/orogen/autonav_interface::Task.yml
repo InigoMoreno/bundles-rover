@@ -4,7 +4,8 @@ autonav_host: 'localhost'
 
 recovery_start: false
 
-# Goal pose waypoint (x,y) coordinates in global frame in meters
+# Goal pose waypoint (x,y) coordinates in global frame in meters.
+# For use without 3DROCS
 goal_pose:
   position:
     data:
@@ -14,12 +15,12 @@ goal_pose:
   heading: 0.0
   tol_position: 0.0
   tol_heading: 0.0
-
-tolerance_heading: 0.0
-
-tolerance_position: 0.0
-
 goal_threshold: 0.5
+
+# use waypoint_navigation's default tolerances
+# if these tolerances are 0
+tolerance_heading: 0.0
+tolerance_position: 0.0
 
 ptu_threshold: 0.5
 

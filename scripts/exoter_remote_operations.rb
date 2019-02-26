@@ -11,7 +11,7 @@ include Orocos
 options = {:nav => true,
            :pan => true,
            :loc => true,
-           :v => true,
+           :v => false,
            :autonav => true}
 
 # Options parser
@@ -325,6 +325,9 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         viso2_with_imu.pose_samples_out.connect_to          waypoint_navigation.pose
         viso2_with_imu.pose_samples_out.connect_to          telemetry_telecommand.current_pose
         viso2_with_imu.pose_samples_out.connect_to          slippage_estimator.pose
+        if options[:autonav]
+            viso2_with_imu.pose_samples_out.connect_to      autonav.pose
+        end
     end
 
     # Telemetry Telecommand connections
