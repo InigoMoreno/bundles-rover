@@ -12,16 +12,17 @@ options = {:nav => true,
            :pan => true,
            :loc => true,
            :v => false,
-           :autonav => true}
+           :autonav => false}
 
 # Options parser
 OptionParser.new do |opts|
-  opts.banner = "Usage: <name>.rb [options]"
-  opts.on('-nav', '--nav state', 'Enable/disable NavCam camera') { |state| options[:nav] = state }
-  opts.on('-pan', '--pan state', 'Enable/disable PanCam camera') { |state| options[:pan] = state }
-  opts.on('-v', '--vicon state', 'Enable/disable Vicon') { |state| options[:v] = state }
-  opts.on('-loc', '--loc state', 'Enable/disable LocCam camera') { |state| options[:loc] = state }
-  opts.on('-autonav', '--autonav state', 'Enable/disable AutoNav interface') { |state| options[:loc] = state }
+  opts.banner = "Usage: ruby exoter_remote_operations.rb [options]"
+  opts.on('-h', '--help', 'Displays this help') do p opts; exit end
+  opts.on('-n', '--[no-]nav', 'Enable/disable NavCam camera') do |state| options[:nav] = state end
+  opts.on('-p', '--[no-]pan', 'Enable/disable PanCam camera') do |state| options[:pan] = state end
+  opts.on('-l', '--[no-]loc', 'Enable/disable LocCam camera') do |state| options[:loc] = state end
+  opts.on('-v', '--[no-]vicon', 'Enable/disable Vicon') do |state| options[:v] = state end
+  opts.on('-a', '--[no-]autonav', 'Enable/disable AutoNav interface') do |state| options[:autonav] = state end
 end.parse!
 
 # Initialize bundles to find the configurations for the packages
@@ -427,6 +428,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         autonav.start
     end
 
+    puts "READY TO RECEIVE COMMANDS"
     Readline::readline("Press Enter to exit\n") do
     end
     ptu_control.stop
