@@ -347,6 +347,7 @@ Orocos::Process.run 'control', 'pancam_bb3', 'navcam', 'loccam', 'imu', 'tmtchan
         telemetry_telecommand.autonav_coldstart.connect_to      autonav.cold_start
         autonav.state_output.connect_to                         telemetry_telecommand.autonav_state
         autonav.finished_trajectory.connect_to                  telemetry_telecommand.autonav_finished
+        autonav.telemetry_product.connect_to                    telemetry_telecommand.telemetry_product, :type => :buffer, :size => 10
         autonav.target_ptu_pan.connect_to                       ptu_control.pan_command_in
         autonav.target_ptu_tilt.connect_to                      ptu_control.tilt_command_in
         autonav.trajectory.connect_to                           waypoint_navigation.trajectory
