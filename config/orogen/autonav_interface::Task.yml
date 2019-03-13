@@ -29,6 +29,10 @@ max_pan: 90.0
 min_tilt: -90.0
 max_tilt: 90.0
 
+debug_images: true
+log_root_path: "/home/marta/autonav/"
+
+
 # calibration parameters for stereo camera intrinsics and extrinsics
 stereo_camera_calibration:
   camLeft:
