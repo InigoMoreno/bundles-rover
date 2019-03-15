@@ -354,6 +354,7 @@ stereoCameraCalibration:
     rx: 0.0009187601643718313
     ry: -0.006105566904453421
     rz: -0.004294613372507138
+output_format_sync: :MODE_GRAYSCALE
 
 --- name:marta_bb3_left_right
 # gaussian kernel for dense stereo pre-processing.
