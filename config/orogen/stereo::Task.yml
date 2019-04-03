@@ -325,36 +325,37 @@ sparse_config:
 # calibration parameters for stereo camera setup
 stereoCameraCalibration:
   camLeft:
-    fx: 1641.539061
-    fy: 1636.484946
-    cx: 619.574162
-    cy: 498.107295
-    d0: -0.443161
-    d1: 0.272248
-    d2: -0.000985
-    d3: 0.000637
+    fx: 1636.20761888
+    fy: 1637.33777994
+    cx: 651.850565473
+    cy: 471.147308853
+    d0: -0.594977746871
+    d1: 0.325393349407
+    d2: 0.00144401244969
+    d3: 0.000959205363921
     width: 1280
     height: 960
   camRight:
-    fx: 1625.123559
-    fy: 1619.772852
-    cx: 654.168460
-    cy: 483.879295
-    d0: -0.425315
-    d1: 0.173233
-    d2: -0.000462
-    d3: -0.000873
+    fx: 1639.72518101
+    fy: 1640.90202338
+    cx: 646.514647735
+    cy: 475.276983991
+    d0: -0.595106148265
+    d1: 0.331023501494
+    d2: 0.00238172923311
+    d3: -0.000967072920991
     width: 1280
     height: 960
 #Distance between left and right camera
   extrinsic:
-    tx: -239.1616335944944
-    ty: 0.3858028340646606
-    tz: 3.762717060257373
-    rx: 0.0009187601643718313
-    ry: -0.006105566904453421
-    rz: -0.004294613372507138
-output_format_sync: :MODE_GRAYSCALE
+    tx: -2.39663482e+02
+    ty: -8.14723521e-02
+    tz: -5.67111539e-01
+    rx: 0.006304017079544317
+    ry: -0.0012146750982623684
+    rz: -0.0029615554641445854
+#output_format_sync: :MODE_GRAYSCALE
+output_format_sync: :MODE_RGB
 
 --- name:marta_bb3_left_right
 # gaussian kernel for dense stereo pre-processing.
