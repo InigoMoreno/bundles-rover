@@ -12,15 +12,16 @@ voltage_factor: 3.93
 # system bogie angle measurement factor to convert from internal to physical units
 bogie_factor: 72
 # Number of motors in the platform.
-num_motors: 18
+num_motors: 20
 # Number of can nodes in the platform = Number of motors + number of group nodes
-num_nodes: 21
+num_nodes: 20
 # parameters of platform can nodes
 can_parameters:
-  CanId: [ 23, 22, 19, 18, 11, 10, 17, 15, 16, 14, 25, 24, 21, 20, 13, 12, 26, 27, 31, 32, 33 ]
-  Type: [WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, MAST_PAN, MAST_TILT, WHEEL_DRIVE, WHEEL_STEER, WHEEL_WALK]
-  Name: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_BL, WHEEL_STEER_BR, WHEEL_WALK_FL, WHEEL_WALK_FR, WHEEL_WALK_CL, WHEEL_WALK_CR, WHEEL_WALK_BL, WHEEL_WALK_BR, MAST_PAN, MAST_TILT, WHEEL_DRIVE_GROUP, WHEEL_STEER_GROUP, WHEEL_WALK_GROUP]
-  Active: [ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE]
+  CanId: [7, 18, 10, 15, 4, 1, 8, 19, 11, 16, 5, 2, 9, 20, 12, 17, 6, 3, 13, 14]
+  Type: [WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, MAST_PAN, MAST_TILT]
+  Name: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_CL, WHEEL_STEER_CR, WHEEL_STEER_BL, WHEEL_STEER_BR, WHEEL_WALK_FL, WHEEL_WALK_FR, WHEEL_WALK_CL, WHEEL_WALK_CR, WHEEL_WALK_BL, WHEEL_WALK_BR, MAST_PAN, MAST_TILT]
+  #Active: [ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, INACTIVE, INACTIVE]
+  Active: [ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE]
 
 # motor parameters of the arm joint drives
 param_gear_motor_arm: 
@@ -43,98 +44,98 @@ param_gear_motor_arm:
 
 # motor parameters of the tilt drive
 param_gear_motor_tilt: 
-  dPtpVelDefaultIncrS: 30000
-  dVelMaxEncIncrS: 68000
-  dPosLimitLowIncr: -200000
-  dBeltRatio: 1
-  iSign: 1
+  dPtpVelDefaultIncrS: 0
+  dVelMaxEncIncrS: 0
+  dPosLimitLowIncr: 0
+  dBeltRatio: 0
+  iSign: 0
   iEncOffsetIncr: 0
-  dCurrentToTorque: 1.0
-  dDecIncrS2: 100000
-  dCurrMax: 0.2
-  dGearRatio: 1600
-  bIsSteer: 1
-  iEncIncrPerRevMot: 512
-  dAccIncrS2: 100000
-  dPosLimitHighIncr: 200000
-  dAnalogFactor: 0.00067139
-  dNominalCurrent: 0.081
+  dCurrentToTorque: 0
+  dDecIncrS2: 0
+  dCurrMax: 0
+  dGearRatio: 0
+  bIsSteer: 0
+  iEncIncrPerRevMot: 0
+  dAccIncrS2: 0
+  dPosLimitHighIncr: 0
+  dAnalogFactor: 0
+  dNominalCurrent: 0
 
 # motor parameters of the pan drive
 param_gear_motor_pan: 
-  dPtpVelDefaultIncrS: 30000
-  dVelMaxEncIncrS: 68000
-  dPosLimitLowIncr: -410000
-  dBeltRatio: 1
-  iSign: 1
+  dPtpVelDefaultIncrS: 0
+  dVelMaxEncIncrS: 0
+  dPosLimitLowIncr: 0
+  dBeltRatio: 0
+  iSign: 0
   iEncOffsetIncr: 0
-  dCurrentToTorque: 1.0
-  dDecIncrS2: 100000
-  dCurrMax: 0.2
-  dGearRatio: 1600
-  bIsSteer: 1
-  iEncIncrPerRevMot: 512
-  dAccIncrS2: 100000
-  dPosLimitHighIncr: 240000
-  dAnalogFactor: 0.00067139
-  dNominalCurrent: 0.081
+  dCurrentToTorque: 0
+  dDecIncrS2: 0
+  dCurrMax: 0
+  dGearRatio: 0
+  bIsSteer: 0
+  iEncIncrPerRevMot: 0
+  dAccIncrS2: 0
+  dPosLimitHighIncr: 0
+  dAnalogFactor: 0
+  dNominalCurrent: 0
 
 # motor parameters of the steer drives
 param_gear_motor_steer: 
-  dPtpVelDefaultIncrS: 30000
-  dVelMaxEncIncrS: 70000
-  dPosLimitLowIncr: -115111
+  dPtpVelDefaultIncrS: 5000
+  dVelMaxEncIncrS: 68267    # corresponds to 8000 rpm
+  dPosLimitLowIncr: -311795 # corresponds to 100 deg 
   dBeltRatio: 1
   iSign: 1
   iEncOffsetIncr: 0
-  dCurrentToTorque: 1.0
+  dCurrentToTorque: 0.0181 
   dDecIncrS2: 100000
-  dCurrMax: 1.0
-  dGearRatio: 1900
+  dCurrMax: 1.94 
+  dGearRatio: 2192.3077
   bIsSteer: 1
   iEncIncrPerRevMot: 512
   dAccIncrS2: 100000
-  dPosLimitHighIncr: 115111
+  dPosLimitHighIncr: 311795
   dAnalogFactor: 0.00067139
-  dNominalCurrent: 0.393
+  dNominalCurrent: 0.657
 
 # motor parameters of the walk drives
 param_gear_motor_walk: 
-  dPtpVelDefaultIncrS: 50000
-  dVelMaxEncIncrS: 75000
-  dPosLimitLowIncr: -250222
+  dPtpVelDefaultIncrS: 5000
+  dVelMaxEncIncrS: 68267    # corresponds to 8000 rpm
+  dPosLimitLowIncr: -374154 # corresponds to 120 deg
   dBeltRatio: 1
   iSign: 1
   iEncOffsetIncr: 0
-  dCurrentToTorque: 1.0
+  dCurrentToTorque: 0.0181 
   dDecIncrS2: 100000
-  dCurrMax: 2.0
-  dGearRatio: 1900
-  bIsSteer: 1 #Leave this in 1 to use position commands!!
+  dCurrMax: 1.94
+  dGearRatio: 2192.3077
+  bIsSteer: 1
   iEncIncrPerRevMot: 512
   dAccIncrS2: 100000
-  dPosLimitHighIncr: 250222
+  dPosLimitHighIncr: 374154
   dAnalogFactor: 0.00067139
-  dNominalCurrent: 0.664
+  dNominalCurrent: 0.657
 
 # motor parameters of the wheel drives
-param_gear_motor_wheel: 
-  dPtpVelDefaultIncrS: 50000
-  dVelMaxEncIncrS: 75000
+param_gear_motor_wheel:
+  dPtpVelDefaultIncrS: 5000
+  dVelMaxEncIncrS: 68267    # corresponds to 8000 rpm
   dPosLimitLowIncr: -100000000
   dBeltRatio: 1
   iSign: 1
   iEncOffsetIncr: 0
-  dCurrentToTorque: 1.0
+  dCurrentToTorque: 0.0181 
   dDecIncrS2: 100000
-  dCurrMax: 2.0
-  dGearRatio: 675
+  dCurrMax: 1.94 
+  dGearRatio: 438.46154
   bIsSteer: 0
   iEncIncrPerRevMot: 512
   dAccIncrS2: 100000
   dPosLimitHighIncr: 100000000
   dAnalogFactor: 0.00067139
-  dNominalCurrent: 0.664
+  dNominalCurrent: 0.657
 
 #Analog identifiers and desirable names
 analog_readings_config:
