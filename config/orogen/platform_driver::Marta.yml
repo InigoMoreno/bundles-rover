@@ -80,55 +80,55 @@ param_gear_motor_pan:
   dAnalogFactor: 0
   dNominalCurrent: 0
 
-# motor parameters of the steer drives
-param_gear_motor_steer: 
-  dPtpVelDefaultIncrS: 5000
-  dVelMaxEncIncrS: 68267    # corresponds to 8000 rpm
-  dPosLimitLowIncr: -311795 # corresponds to 100 deg 
+# motor parameters of the steer drives (using absolute encoder on load)
+param_gear_motor_steer:
+  dPtpVelDefaultIncrS: 100
+  dVelMaxEncIncrS: 249    # corresponds to 8000 rpm
+  dPosLimitLowIncr: -1138 # corresponds to 100 deg
   dBeltRatio: 1
   iSign: 1
   iEncOffsetIncr: 0
-  dCurrentToTorque: 0.0181 
-  dDecIncrS2: 100000
-  dCurrMax: 1.94 
-  dGearRatio: 2192.3077
-  bIsSteer: 1
-  iEncIncrPerRevMot: 512
-  dAccIncrS2: 100000
-  dPosLimitHighIncr: 311795
-  dAnalogFactor: 0.00067139
-  dNominalCurrent: 0.657
-
-# motor parameters of the walk drives
-param_gear_motor_walk: 
-  dPtpVelDefaultIncrS: 5000
-  dVelMaxEncIncrS: 68267    # corresponds to 8000 rpm
-  dPosLimitLowIncr: -374154 # corresponds to 120 deg
-  dBeltRatio: 1
-  iSign: 1
-  iEncOffsetIncr: 0
-  dCurrentToTorque: 0.0181 
-  dDecIncrS2: 100000
+  dCurrentToTorque: 0.0181
+  dDecIncrS2: 1000
   dCurrMax: 1.94
-  dGearRatio: 2192.3077
+  dGearRatio: 1.0
   bIsSteer: 1
-  iEncIncrPerRevMot: 512
-  dAccIncrS2: 100000
-  dPosLimitHighIncr: 374154
+  iEncIncrPerRevMot: 4096
+  dAccIncrS2: 1000
+  dPosLimitHighIncr: 1138
   dAnalogFactor: 0.00067139
   dNominalCurrent: 0.657
 
-# motor parameters of the wheel drives
+# motor parameters of the walk drives (using absolute encoder on load)
+param_gear_motor_walk:
+  dPtpVelDefaultIncrS: 100
+  dVelMaxEncIncrS: 249    # corresponds to 8000 rpm
+  dPosLimitLowIncr: -1365 # corresponds to 120 deg
+  dBeltRatio: 1
+  iSign: 1
+  iEncOffsetIncr: 0
+  dCurrentToTorque: 0.0181
+  dDecIncrS2: 1000
+  dCurrMax: 1.94
+  dGearRatio: 1.0
+  bIsSteer: 1
+  iEncIncrPerRevMot: 4096
+  dAccIncrS2: 1000
+  dPosLimitHighIncr: 1365
+  dAnalogFactor: 0.00067139
+  dNominalCurrent: 0.657
+
+# motor parameters of the wheel drives (using relative encoder on motor)
 param_gear_motor_wheel:
-  dPtpVelDefaultIncrS: 5000
+  dPtpVelDefaultIncrS: 10000
   dVelMaxEncIncrS: 68267    # corresponds to 8000 rpm
   dPosLimitLowIncr: -100000000
   dBeltRatio: 1
   iSign: 1
   iEncOffsetIncr: 0
-  dCurrentToTorque: 0.0181 
+  dCurrentToTorque: 0.0181
   dDecIncrS2: 100000
-  dCurrMax: 1.94 
+  dCurrMax: 1.94
   dGearRatio: 438.46154
   bIsSteer: 0
   iEncIncrPerRevMot: 512
