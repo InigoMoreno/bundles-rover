@@ -11,20 +11,20 @@ current_factor: 41.6
 voltage_factor: 3.93
 # system bogie angle measurement factor to convert from internal to physical units
 bogie_factor: 72
-# Number of motors in the platform.
+# Number of motors in the platform
 num_motors: 20
-# Number of can nodes in the platform = Number of motors + number of group nodes
+# Number of can nodes in the platform
 num_nodes: 20
 # parameters of platform can nodes
 can_parameters:
   CanId: [7, 18, 10, 15, 4, 1, 8, 19, 11, 16, 5, 2, 9, 20, 12, 17, 6, 3, 13, 14]
   Type: [WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_DRIVE, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_STEER, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, WHEEL_WALK, MAST_PAN, MAST_TILT]
   Name: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_CL, WHEEL_STEER_CR, WHEEL_STEER_BL, WHEEL_STEER_BR, WHEEL_WALK_FL, WHEEL_WALK_FR, WHEEL_WALK_CL, WHEEL_WALK_CR, WHEEL_WALK_BL, WHEEL_WALK_BR, MAST_PAN, MAST_TILT]
-  #Active: [ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, INACTIVE, INACTIVE]
-  Active: [ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE]
+  Active: [ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, INACTIVE, INACTIVE]
+  #Active: [ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE, INACTIVE]
 
 # motor parameters of the arm joint drives
-param_gear_motor_arm: 
+param_gear_motor_arm:
   dPtpVelDefaultIncrS: 0.0
   dVelMaxEncIncrS: 0.0
   dPosLimitLowIncr: 0.0
@@ -43,7 +43,7 @@ param_gear_motor_arm:
   dNominalCurrent: 0.0
 
 # motor parameters of the tilt drive
-param_gear_motor_tilt: 
+param_gear_motor_tilt:
   dPtpVelDefaultIncrS: 0
   dVelMaxEncIncrS: 0
   dPosLimitLowIncr: 0
@@ -62,7 +62,7 @@ param_gear_motor_tilt:
   dNominalCurrent: 0
 
 # motor parameters of the pan drive
-param_gear_motor_pan: 
+param_gear_motor_pan:
   dPtpVelDefaultIncrS: 0
   dVelMaxEncIncrS: 0
   dPosLimitLowIncr: 0
@@ -86,7 +86,7 @@ param_gear_motor_steer:
   dVelMaxEncIncrS: 249    # corresponds to 8000 rpm
   dPosLimitLowIncr: -1138 # corresponds to 100 deg
   dBeltRatio: 1
-  iSign: 1
+  iSign: -1
   iEncOffsetIncr: 0
   dCurrentToTorque: 0.0181
   dDecIncrS2: 1000
