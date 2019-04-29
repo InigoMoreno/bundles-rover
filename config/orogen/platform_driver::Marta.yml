@@ -51,12 +51,12 @@ param_gear_motor_tilt:
   iSign: 0
   iEncOffsetIncr: 0
   dCurrentToTorque: 0
-  dDecIncrS2: 0
+  dDecIncrS2: 1
   dCurrMax: 0
   dGearRatio: 0
   bIsSteer: 0
   iEncIncrPerRevMot: 0
-  dAccIncrS2: 0
+  dAccIncrS2: 1
   dPosLimitHighIncr: 0
   dAnalogFactor: 0
   dNominalCurrent: 0
@@ -70,12 +70,12 @@ param_gear_motor_pan:
   iSign: 0
   iEncOffsetIncr: 0
   dCurrentToTorque: 0
-  dDecIncrS2: 0
+  dDecIncrS2: 1
   dCurrMax: 0
   dGearRatio: 0
   bIsSteer: 0
   iEncIncrPerRevMot: 0
-  dAccIncrS2: 0
+  dAccIncrS2: 1
   dPosLimitHighIncr: 0
   dAnalogFactor: 0
   dNominalCurrent: 0
@@ -108,12 +108,12 @@ param_gear_motor_walk:
   iSign: 1
   iEncOffsetIncr: 0
   dCurrentToTorque: 0.0181
-  dDecIncrS2: 1000
+  dDecIncrS2: 2000
   dCurrMax: 1.94
   dGearRatio: 1.0
   bIsSteer: 1
   iEncIncrPerRevMot: 4096
-  dAccIncrS2: 1000
+  dAccIncrS2: 2000
   dPosLimitHighIncr: 1365
   dAnalogFactor: 0.00067139
   dNominalCurrent: 0.657
@@ -127,12 +127,12 @@ param_gear_motor_wheel:
   iSign: 1
   iEncOffsetIncr: 0
   dCurrentToTorque: 0.0181
-  dDecIncrS2: 100000
+  dDecIncrS2: 200000
   dCurrMax: 1.94
   dGearRatio: 438.46154
   bIsSteer: 0
   iEncIncrPerRevMot: 512
-  dAccIncrS2: 100000
+  dAccIncrS2: 200000
   dPosLimitHighIncr: 100000000
   dAnalogFactor: 0.00067139
   dNominalCurrent: 0.657
