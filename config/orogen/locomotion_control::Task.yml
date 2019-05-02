@@ -8,8 +8,8 @@ number_nodes: 19
 canNodesNames: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_BL, WHEEL_STEER_BR, WHEEL_WALK_FL, WHEEL_WALK_FR, WHEEL_WALK_CL, WHEEL_WALK_CR, WHEEL_WALK_BL, WHEEL_WALK_BR, WHEEL_DRIVE_GROUP, WHEEL_STEER_GROUP, WHEEL_WALK_GROUP]
 
 # no documentation available for this property
-rover_parameters: 
-  IsDrivingWheel: 
+rover_parameters:
+  IsDrivingWheel:
   - 1
   - 1
   - 1
@@ -17,21 +17,21 @@ rover_parameters:
   - 1
   - 1
   WheelNumber: 6
-  LegLengthV: 
+  LegLengthV:
   - 0.120
   - 0.120
   - 0.120
   - 0.120
   - 0.120
   - 0.120
-  IsSteeringWheel: 
+  IsSteeringWheel:
   - 1
   - 1
   - 0
   - 0
   - 1
   - 1
-  WalkCoordCart: 
+  WalkCoordCart:
   - 0.265
   - 0.305
   - 0.265
@@ -44,21 +44,21 @@ rover_parameters:
   - 0.305
   - -0.265
   - -0.305
-  IsWalkingWheel: 
+  IsWalkingWheel:
   - 1
   - 1
   - 1
   - 1
   - 1
   - 1
-  WheelRadius: 
+  WheelRadius:
   - 0.072703
   - 0.072703
   - 0.072703
   - 0.072703
   - 0.072703
   - 0.072703
-  WheelCoordCart: 
+  WheelCoordCart:
   - 0.265
   - 0.305
   - 0.265
@@ -86,8 +86,8 @@ number_nodes: 12
 canNodesNames: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_BL, WHEEL_STEER_BR, WHEEL_DRIVE_GROUP, WHEEL_STEER_GROUP]
 
 # no documentation available for this property
-rover_parameters: 
-  IsDrivingWheel: 
+rover_parameters:
+  IsDrivingWheel:
   - 1
   - 1
   - 1
@@ -95,21 +95,21 @@ rover_parameters:
   - 1
   - 1
   WheelNumber: 6
-  LegLengthV: 
+  LegLengthV:
   - 0.0
   - 0.0
   - 0.0
   - 0.0
   - 0.0
   - 0.0
-  IsSteeringWheel: 
+  IsSteeringWheel:
   - 1
   - 1
   - 0
   - 0
   - 1
   - 1
-  WalkCoordCart: 
+  WalkCoordCart:
   - 0.0
   - 0.0
   - 0.0
@@ -122,21 +122,21 @@ rover_parameters:
   - 0.0
   - 0.0
   - 0.0
-  IsWalkingWheel: 
+  IsWalkingWheel:
   - 0
   - 0
   - 0
   - 0
   - 0
   - 0
-  WheelRadius: 
+  WheelRadius:
   - 0.125
   - 0.125
   - 0.125
   - 0.125
   - 0.125
   - 0.125
-  WheelCoordCart: 
+  WheelCoordCart:
   - 0.75
   - 0.41
   - 0.75
@@ -158,14 +158,14 @@ velocity_limit: 8
 # no documentation available for this property
 number_motors: 18
 # no documentation available for this property
-number_nodes: 21
+number_nodes: 18
 
 # Required CAN Nodes in that order. Searching by names.
-canNodesNames: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_CL, WHEEL_STEER_CR, WHEEL_STEER_BL, WHEEL_STEER_BR, WHEEL_WALK_FL, WHEEL_WALK_FR, WHEEL_WALK_CL, WHEEL_WALK_CR, WHEEL_WALK_BL, WHEEL_WALK_BR, WHEEL_DRIVE_GROUP, WHEEL_STEER_GROUP, WHEEL_WALK_GROUP]
+canNodesNames: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_CL, WHEEL_STEER_CR, WHEEL_STEER_BL, WHEEL_STEER_BR, WHEEL_WALK_FL, WHEEL_WALK_FR, WHEEL_WALK_CL, WHEEL_WALK_CR, WHEEL_WALK_BL, WHEEL_WALK_BR]
 
 # no documentation available for this property
-rover_parameters: 
-  IsDrivingWheel: 
+rover_parameters:
+  IsDrivingWheel:
   - 1
   - 1
   - 1
@@ -173,48 +173,49 @@ rover_parameters:
   - 1
   - 1
   WheelNumber: 6
-  LegLengthV: 
+  LegLengthV:
   - 0.120
   - 0.120
   - 0.120
   - 0.120
   - 0.120
   - 0.120
-  IsSteeringWheel: 
+  IsSteeringWheel:
   - 1
   - 1
   - 1
   - 1
   - 1
   - 1
-  WalkCoordCart: 
-  - 0.367
-  - 0.366
-  - 0.367
-  - -0.366
-  - 0.042
-  - 0.366
-  - 0.042
-  - -0.366
-  - -0.368
-  - 0.366
-  - -0.368
-  - -0.366
-  IsWalkingWheel: 
+
+  WalkCoordCart:
+  - 0.345
+  - 0.365
+  - 0.345
+  - -0.365
+  - 0.080
+  - 0.365
+  - 0.080
+  - -0.365
+  - -0.350
+  - 0.365
+  - -0.350
+  - -0.365
+  IsWalkingWheel:
   - 1
   - 1
   - 1
   - 1
   - 1
   - 1
-  WheelRadius: 
+  WheelRadius:
   - 0.07125
   - 0.07125
   - 0.07125
   - 0.07125
   - 0.07125
   - 0.07125
-  WheelCoordCart: 
+  WheelCoordCart:
   - 0.367
   - 0.366
   - 0.367

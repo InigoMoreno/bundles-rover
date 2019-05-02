@@ -17,19 +17,19 @@ Orocos::Process.run 'control' do
     begin
         joystick.configure
     rescue
-        abort("Cannot configure the joystick, is the dongle connected to ExoTeR?")
+        abort("Cannot configure the joystick, is the dongle connected to MaRTA?")
     end
 
     motion_translator = Orocos.name_service.get 'motion_translator'
-    Orocos.conf.apply(motion_translator, ['exoter'], :override => true)
+    Orocos.conf.apply(motion_translator, ['marta'], :override => true)
     motion_translator.configure
 
     locomotion_control = Orocos.name_service.get 'locomotion_control'
-    Orocos.conf.apply(locomotion_control, ['exoter'], :override => true)
+    Orocos.conf.apply(locomotion_control, ['marta'], :override => true)
     locomotion_control.configure
 
     wheel_walking_control = Orocos.name_service.get 'wheel_walking_control'
-    Orocos.conf.apply(wheel_walking_control, ['exoter'], :override => true)
+    Orocos.conf.apply(wheel_walking_control, ['marta'], :override => true)
     wheel_walking_control.configure
 
     locomotion_switcher = Orocos.name_service.get 'locomotion_switcher'
@@ -37,15 +37,15 @@ Orocos::Process.run 'control' do
     locomotion_switcher.configure
 
     command_joint_dispatcher = Orocos.name_service.get 'command_joint_dispatcher'
-    Orocos.conf.apply(command_joint_dispatcher, ['exoter_commanding'], :override => true)
+    Orocos.conf.apply(command_joint_dispatcher, ['marta_commanding'], :override => true)
     command_joint_dispatcher.configure
 
-    platform_driver = Orocos.name_service.get 'platform_driver_exoter'
+    platform_driver = Orocos.name_service.get 'platform_driver_marta'
     Orocos.conf.apply(platform_driver, ['default'], :override => true)
     platform_driver.configure
 
     read_joint_dispatcher = Orocos.name_service.get 'read_joint_dispatcher'
-    Orocos.conf.apply(read_joint_dispatcher, ['exoter_reading'], :override => true)
+    Orocos.conf.apply(read_joint_dispatcher, ['marta_reading'], :override => true)
     read_joint_dispatcher.configure
 
     ptu_control = Orocos.name_service.get 'ptu_control'

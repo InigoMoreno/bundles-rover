@@ -1,57 +1,66 @@
 --- name:exoter_navcam
 # Hostname/IP of the Autonav server
-autonav_host: '192.168.10.2'
-# Goal pose waypoint (x,y) coordinates in global frame in meters
+autonav_host: 'localhost'
+
+recovery_start: false
+
+# Goal pose waypoint (x,y) coordinates in global frame in meters.
+# For use without 3DROCS
 goal_pose:
   position:
     data:
-    - 5.0
-    - 2.0
+    - 6.5
+    - 2.1
     - 0.0
   heading: 0.0
   tol_position: 0.0
   tol_heading: 0.0
+goal_threshold: 0.5
 
+# use waypoint_navigation's default tolerances
+# if these tolerances are 0
 tolerance_heading: 0.0
-
 tolerance_position: 0.0
 
-goal_threshold: 0.1
+ptu_threshold: 0.5
 
-ptu_threshold: 0.01
-
-min_pan: -180.0
+min_pan: -90.0
 max_pan: 90.0
+min_tilt: -90.0
+max_tilt: 90.0
+
+log_root_path: "/home/marta/autonav/"
+
 
 # calibration parameters for stereo camera intrinsics and extrinsics
 stereo_camera_calibration:
   camLeft:
-    fx: 839.346939
-    fy: 838.403357
-    cx: 511.631466
-    cy: 381.318781
-    d0: -0.348859
-    d1: 0.150709
-    d2: -0.002313
-    d3: 0.001115
+    fx: 836.06946050655949
+    fy: 836.14916268708816
+    cx: 516.37155418305281
+    cy: 377.29889017486101
+    d0: -0.3389695490988
+    d1:  0.1217553065872
+    d2:  0.0002936920143
+    d3:  0.0000878463732
     width: 1024
     height: 768
   camRight:
-    fx: 835.480135
-    fy: 835.149129
-    cx: 513.882893
-    cy: 376.572047
-    d0: -0.343388
-    d1: 0.131368
-    d2: 0.000254
-    d3: -0.001798
+    fx: 832.27804742153376
+    fy: 832.56239966940871
+    cx: 507.37637964982628
+    cy: 380.63748343529795
+    d0: -0.33914092102560
+    d1:  0.12092692896553
+    d2:  0.00062442626516
+    d3: -0.00038293414690
     width: 1024
     height: 768
 #Distance between left and right camera
   extrinsic:
-    tx: -119.4423760483391
-    ty: 0.2563371225743041
-    tz: -0.3317162024801205
-    rx: -0.005911820317064395
-    ry: -0.006159386018927840
-    rz: -0.001589540777078733
+    tx: -120.01886209277160
+    ty: 0.25901217247349007
+    tz: 0.34917543917589172
+    rx: 0.003734249504278
+    ry: 0.006861413405440
+    rz: -0.000787881379522
