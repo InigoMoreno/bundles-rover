@@ -24,7 +24,6 @@ Orocos::Process.run 'control' do
     Orocos.conf.apply(motion_translator, ['exoter'], :override => true)
     motion_translator.configure
 
-
     locomotion_control = Orocos.name_service.get 'locomotion_control'
     Orocos.conf.apply(locomotion_control, ['marta'], :override => true)
     locomotion_control.configure
