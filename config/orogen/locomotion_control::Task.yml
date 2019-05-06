@@ -230,7 +230,7 @@ rover_parameters:
   - -0.366
 # steering window within which the driving wheels are enabled [rad]
 # target_window: 0.35 # 20 deg
-target_window: 0.05
+target_window: 0.5 # 30 deg
 # target_window: 0.0005
 # +- 100 deg
 position_limit: 1.74
