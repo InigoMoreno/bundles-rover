@@ -13,6 +13,8 @@ ptuMinPanAngle: -2.757507351
 ptuMinTiltAngle: -0.52688923589
 # Ratio step value
 speedRatioStep: 0.005
+# initial Speed Ratio
+initialSpeedRatio: 0.005
 
 --- name:hdpr
 # Minimum translation speed preventing automatic mode switch
@@ -29,6 +31,8 @@ ptuMinPanAngle: -3.05
 ptuMinTiltAngle: -0.52688923589
 # Ratio step value
 speedRatioStep: 0.005
+# initial Speed Ratio
+initialSpeedRatio: 0.005
 
 --- name:marta
 # Minimum translation speed preventing automatic mode switch
@@ -45,3 +49,5 @@ ptuMinPanAngle: -2.757507351
 ptuMinTiltAngle: -0.52688923589
 # Ratio step value
 speedRatioStep: 0.005
+# initial Speed Ratio
+initialSpeedRatio: 0.005
