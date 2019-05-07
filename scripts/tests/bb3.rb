@@ -21,7 +21,7 @@ Orocos::Process.run 'unit_bb3' do
     camera_bb3.configure
     
     stereo_bb3 = TaskContext.get 'stereo_bb3'
-    Orocos.conf.apply(stereo_bb3, ['hdpr_bb3_left_right'], :override => true)
+    Orocos.conf.apply(stereo_bb3, ['marta_bb3_left_right'], :override => true)
     stereo_bb3.configure
 
     # Log
