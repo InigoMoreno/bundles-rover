@@ -127,6 +127,53 @@ body_reference:
     - 0.00
     - 0.00
 
+--- name:marta
+# the subject that is being tracked
+subject: 'marta'
+# the segment of the subject that is tracked
+segment: 'marta'
+
+# transformation between segment cs (vicon data) and a chosen body fixed reference cs
+# Assuming the translation is before the rotation in the task. Tselected_marker_to_body_vicon
+body_reference:
+  time:
+    microseconds: 0
+  sourceFrame: 'body_vicon'
+  targetFrame: 'selected_marker'
+  position:
+    data:
+    - 0.0
+    - 0.0
+    - 0.0
+  cov_position:
+    data:
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+  orientation:
+    im:
+    - 0.0
+    - 0.0
+    - 0.0
+    re: 1.0
+  cov_orientation:
+    data:
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+
 ## Orientation is -90.0deg along Z axis and (90.0-2.26)deg along Y axis.
 ## The 2.26 deg comes from the different in height between front and back markers
 # transformation between segment cs (vicon data) and a chosen body fixed reference cs
