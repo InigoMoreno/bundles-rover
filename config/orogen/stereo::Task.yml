@@ -446,6 +446,7 @@ stereoCameraCalibration:
     rx: 0.003034434388698680
     ry: 0.002180973564268589
     rz: -0.004953862715956596
+output_format_sync: :MODE_GRAYSCALE
 
 --- name:panCam
 # gaussian kernel for dense stereo pre-processing.

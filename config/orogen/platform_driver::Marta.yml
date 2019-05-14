@@ -49,7 +49,7 @@ param_gear_motor_tilt:
   dVelMaxEncIncrS: 68267    # corresponds to 8000 rpm
   dPosLimitLowIncr: -136533 # corresponds to 80 deg
   dBeltRatio: 1
-  iSign: -1
+  iSign: 1
   iEncOffsetIncr: 0
   dCurrentToTorque: 0.00955
   dDecIncrS2: 1000000

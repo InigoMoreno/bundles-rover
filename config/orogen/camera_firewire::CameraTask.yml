@@ -111,7 +111,9 @@ camera_id: '49712223532076485'
 
 --- name:altec_bb3_id
 camera_id: '49712223529993971'
-
+operation_mode: 65 # ASCII for 'A'
+isochronous_speed: 400
+fps: 12 # 4*3 (3 images with 1280*960 resolution each time)
 #    ___            _    _     _               ___ 
 #   | _ )_  _ _ __ | |__| |___| |__  ___ ___  |_  )
 #   | _ \ || | '  \| '_ \ / -_) '_ \/ -_) -_)  / / 
