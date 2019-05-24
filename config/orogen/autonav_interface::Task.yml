@@ -102,7 +102,7 @@ max_pan: 90.0
 min_tilt: -90.0
 max_tilt: 90.0
 
-log_root_path: "/home/marta/autonav/"
+log_root_path: "/home/marta/cnes-autonav-server/"
 
 # calibration parameters for stereo camera intrinsics and extrinsics
 stereo_camera_calibration:
