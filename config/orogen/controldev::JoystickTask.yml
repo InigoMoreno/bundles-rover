@@ -1,7 +1,7 @@
 --- name:default
 device: /dev/input/js0
 axisScale: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-deadzone_size_locomotion: 0.1
+deadzone_size_locomotion: 0.05
 deadzone_size_ptu: 0.2
 
 --- name:thrustmaster
