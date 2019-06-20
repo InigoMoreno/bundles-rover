@@ -46,6 +46,13 @@ revision: :REV_D
 timeout: 0.008 #in seconds
 use_filter: true
 
+--- name:MaRTA
+# IMU port in ExoTer
+port: '/dev/marta-imu'
+revision: :REV_D
+timeout: 0.010 #in seconds
+use_filter: true
+
 ###      ###     ###
 ###   location   ###
 ###      ###     ###
