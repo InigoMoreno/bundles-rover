@@ -27,12 +27,16 @@ Orocos::Process.run 'unit_following', 'navigation', 'control', 'simulation', 'au
     simulation_vrep.configure
     puts "done"
 
-  # setup joystick
-    puts "Setting up joystick"
-    joystick = Orocos.name_service.get 'joystick'
-    Orocos.conf.apply(joystick, ['default', 'logitech_gamepad'], :override => true)
-    joystick.configure
-    puts "done"
+    if ARGV[0]=="noJoystick"
+        puts "Joystick is not set up"
+    else
+      # setup joystick
+        puts "Setting up joystick"
+        joystick = Orocos.name_service.get 'joystick'
+        Orocos.conf.apply(joystick, ['default', 'logitech_gamepad'], :override => true)
+        joystick.configure
+        puts "done"
+    end
 
   # setup motion_translator
     puts "Setting up motion_translator"
@@ -73,7 +77,7 @@ Orocos::Process.run 'unit_following', 'navigation', 'control', 'simulation', 'au
     puts "Setting up path planner"
     path_planner = Orocos.name_service.get 'path_planner'
     path_planner.keep_old_waypoints = true
-    Orocos.conf.apply(path_planner, ['hdpr','prl'], :override => true)
+    Orocos.conf.apply(path_planner, ['hdpr','decos'], :override => true)
     path_planner.configure
     puts "done"
 
@@ -97,9 +101,13 @@ Orocos::Process.run 'unit_following', 'navigation', 'control', 'simulation', 'au
     
     read_joint_dispatcher.motors_samples.connect_to       locomotion_control.joints_readings
 
-    joystick.raw_command.connect_to                       motion_translator.raw_command
-    joystick.raw_command.connect_to                       arbiter.raw_command
-    motion_translator.motion_command.connect_to           arbiter.joystick_motion_command
+    if ARGV[0] == "noJoystick"
+        puts "Joystick Ports are not connected"
+    else
+        joystick.raw_command.connect_to                       motion_translator.raw_command
+        joystick.raw_command.connect_to                       arbiter.raw_command
+        motion_translator.motion_command.connect_to           arbiter.joystick_motion_command
+    end
     waypoint_navigation.motion_command.connect_to         arbiter.follower_motion_command
     arbiter.motion_command.connect_to                     locomotion_control.motion_command
 
@@ -108,7 +116,9 @@ Orocos::Process.run 'unit_following', 'navigation', 'control', 'simulation', 'au
     read_joint_dispatcher.start
     command_joint_dispatcher.start
     locomotion_control.start
-    joystick.start
+    if ARGV[0] != "noJoystick"
+        joystick.start
+    end
     motion_translator.start
     arbiter.start
     waypoint_navigation.start
