@@ -1,0 +1,146 @@
+--- name:exoter_navcam
+# Hostname/IP of the Autonav server
+autonav_host: 'localhost'
+
+recovery_start: false
+
+# Goal pose waypoint (x,y) coordinates in global frame in meters.
+# For use without 3DROCS
+goal_pose:
+  position:
+    data:
+    - 6.5
+    - 2.1
+    - 0.0
+  heading: 0.0
+  tol_position: 0.0
+  tol_heading: 0.0
+goal_threshold: 0.5
+
+# use waypoint_navigation's default tolerances
+# if these tolerances are 0
+tolerance_heading: 0.0
+tolerance_position: 0.0
+
+ptu_threshold: 0.5
+
+min_pan: -90.0
+max_pan: 90.0
+min_tilt: -90.0
+max_tilt: 90.0
+
+log_root_path: "/home/marta/autonav/"
+
+# calibration parameters for stereo camera intrinsics and extrinsics
+stereo_camera_calibration:
+  camLeft:
+    fx: 836.06946050655949
+    fy: 836.14916268708816
+    cx: 516.37155418305281
+    cy: 377.29889017486101
+    d0: -0.3389695490988
+    d1:  0.1217553065872
+    d2:  0.0002936920143
+    d3:  0.0000878463732
+    width: 1024
+    height: 768
+  camRight:
+    fx: 832.27804742153376
+    fy: 832.56239966940871
+    cx: 507.37637964982628
+    cy: 380.63748343529795
+    d0: -0.33914092102560
+    d1:  0.12092692896553
+    d2:  0.00062442626516
+    d3: -0.00038293414690
+    width: 1024
+    height: 768
+#Distance between left and right camera
+  extrinsic:
+    tx: -120.01886209277160
+    ty: 0.25901217247349007
+    tz: 0.34917543917589172
+    rx: 0.003734249504278
+    ry: 0.006861413405440
+    rz: -0.000787881379522
+
+camera_ptu_offset: 0.094
+ptu_position_front: 0.078
+ptu_position_height: 0.833
+
+focal_length: 3.8
+pixel_size: 0.00465
+
+--- name:marta_navcam
+# Hostname/IP of the Autonav server
+autonav_host: 'localhost'
+
+recovery_start: false
+
+# Goal pose waypoint (x,y) coordinates in global frame in meters.
+# For use without 3DROCS
+goal_pose:
+  position:
+    data:
+    - 6.5
+    - 2.1
+    - 0.0
+  heading: 0.0
+  tol_position: 0.0
+  tol_heading: 0.0
+goal_threshold: 0.5
+
+# use waypoint_navigation's default tolerances
+# if these tolerances are 0
+tolerance_heading: 0.0
+tolerance_position: 0.0
+
+ptu_threshold: 0.5
+
+min_pan: -90.0
+max_pan: 90.0
+min_tilt: -90.0
+max_tilt: 90.0
+
+log_root_path: "/home/marta/cnes-autonav-server/"
+
+# calibration parameters for stereo camera intrinsics and extrinsics
+stereo_camera_calibration:
+  camLeft:
+    fx: 1645.51714174
+    fy: 1646.09752195
+    cx: 631.156776829
+    cy: 480.300988996
+    d0: -0.444317086558
+    d1: 0.264611770415
+    d2: -0.00164976520823
+    d3: 0.000231870965717
+    width: 1280
+    height: 960
+  camRight:
+    fx: 1627.78455487
+    fy: 1627.16755792
+    cx: 652.187178655
+    cy: 469.893048887
+    d0: -0.4428254944
+    d1: 0.24504703595
+    d2: -0.000283744955525
+    d3: -0.00146112860417
+    width: 1280
+    height: 960
+#Distance between left and right camera
+  extrinsic:
+    tx: -239.5201200000000
+    ty: 0.3888600000000000
+    tz: 1.467990000000000
+    rx: 0.003034434388698680
+    ry: 0.002180973564268589
+    rz: -0.004953862715956596
+
+camera_ptu_offset: 0.035
+ptu_position_front: 0.2
+ptu_position_height: 0.768
+
+focal_length: 6.0
+pixel_size: 0.00375
+

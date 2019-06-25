@@ -11,19 +11,18 @@ include Orocos
 
 Bundles.initialize
 
-Orocos::Process.run 'camera_bb2::Task' => 'camera_bb2' do
+Orocos::Process.run 'camera_bb3::Task' => 'camera_bb3' do
 
     ## Get the task context ##
-    STDERR.print "setting up camera_bb2..."
-    camera_bb2 = TaskContext.get 'camera_bb2'
-    Orocos.conf.apply(camera_bb2, ['hdpr_bb2'], :override => true)
-    #Orocos.conf.apply(camera_bb2, ['egp_bb2'], :override => true)
-    camera_bb2.configure
+    STDERR.print "setting up camera_bb3..."
+    camera_bb3 = TaskContext.get 'camera_bb3'
+    Orocos.conf.apply(camera_bb3, ['default'], :override => true)
+    camera_bb3.configure
     STDERR.puts "done"
 
     # logs files
     log_replay = Orocos::Log::Replay.open( ARGV[0] )
-    log_replay.camera_firewire_bb2.frame.connect_to(camera_bb2.frame_in, :type => :buffer, :size => 200)
+    log_replay.camera_firewire_bb3.frame.connect_to(camera_bb3.frame_in, :type => :buffer, :size => 200)
 
 
     ###################
@@ -31,7 +30,7 @@ Orocos::Process.run 'camera_bb2::Task' => 'camera_bb2' do
     ###################
     Bundles.log_all
 
-    camera_bb2.start
+    camera_bb3.start
 
     # open the log replay widget
     control = Vizkit.control log_replay

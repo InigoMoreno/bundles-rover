@@ -52,38 +52,38 @@ undistort: false
 #   |___/_\_\___/|_|\___|_|_\ |___/___/___|
 #                                        
 --- name:exoter_bb2
-# parameter for distortion using the frame_helper
+# calibration parameters for stereo camera intrinsics and extrinsics
 calibration_parameters:
   camLeft:
-    fx: 837.98636
-    fy: 838.56569
-    cx: 509.74846
-    cy: 376.99711
-    d0: -0.35914
-    d1: 0.16317
-    d2: 0.00039
-    d3: 0.00041
+    fx: 836.06946050655949
+    fy: 836.14916268708816
+    cx: 516.37155418305281
+    cy: 377.29889017486101
+    d0: -0.3389695490988
+    d1:  0.1217553065872
+    d2:  0.0002936920143
+    d3:  0.0000878463732
     width: 1024
     height: 768
   camRight:
-    fx: 837.40801
-    fy: 838.06473
-    cx: 536.53701
-    cy: 377.66591
-    d0: -0.35499
-    d1: 0.15218
-    d2: 0.00019
-    d3: -0.00016
+    fx: 832.27804742153376
+    fy: 832.56239966940871
+    cx: 507.37637964982628
+    cy: 380.63748343529795
+    d0: -0.33914092102560
+    d1:  0.12092692896553
+    d2:  0.00062442626516
+    d3: -0.00038293414690
     width: 1024
     height: 768
 #Distance between left and right camera
   extrinsic:
-    tx: 0.12042814 #baseline in x (meters)
-    ty: 0.00063857 #baseline in y (meters)
-    tz: 0.0003051 #baseline in z (meters)
-    rx: 0.00125 #rotation along x (rad)
-    ry: -0.00333 #rotation along y (rad)
-    rz: 0.00542 #rotation along z (rad)
+    tx: -0.12001886209277160 #baseline in x (meters)
+    ty: 0.00025901217247349007 #baseline in y (meters)
+    tz: 0.00034917543917589172 #baseline in z (meters)
+    rx: 0.003734249504278 #rotation along x (rad)
+    ry: 0.006861413405440 #rotation along y (rad)
+    rz: -0.000787881379522 #rotation along z (rad)
 
 # bit depth per channel
 #output_format: :MODE_RGB

@@ -45,3 +45,6 @@ calibration_parameters_right:
 output_format: :MODE_RGB
 # output the camera images undistorted/rectified
 undistort: false
+
+--- name:grayscale
+output_format: :MODE_GRAYSCALE
