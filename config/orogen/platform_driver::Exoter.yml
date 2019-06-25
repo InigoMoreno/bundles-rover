@@ -23,7 +23,7 @@ can_parameters:
   Active: [ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE]
 
 # motor parameters of the arm joint drives
-param_gear_motor_arm: 
+param_gear_motor_arm:
   dPtpVelDefaultIncrS: 0.0
   dVelMaxEncIncrS: 0.0
   dPosLimitLowIncr: 0.0
@@ -42,7 +42,7 @@ param_gear_motor_arm:
   dNominalCurrent: 0.0
 
 # motor parameters of the tilt drive
-param_gear_motor_tilt: 
+param_gear_motor_tilt:
   dPtpVelDefaultIncrS: 30000
   dVelMaxEncIncrS: 68000
   dPosLimitLowIncr: -200000
@@ -61,7 +61,7 @@ param_gear_motor_tilt:
   dNominalCurrent: 0.081
 
 # motor parameters of the pan drive
-param_gear_motor_pan: 
+param_gear_motor_pan:
   dPtpVelDefaultIncrS: 30000
   dVelMaxEncIncrS: 68000
   dPosLimitLowIncr: -535000
@@ -80,7 +80,7 @@ param_gear_motor_pan:
   dNominalCurrent: 0.081
 
 # motor parameters of the steer drives
-param_gear_motor_steer: 
+param_gear_motor_steer:
   dPtpVelDefaultIncrS: 30000
   dVelMaxEncIncrS: 70000
   dPosLimitLowIncr: -115111
@@ -99,7 +99,7 @@ param_gear_motor_steer:
   dNominalCurrent: 0.393
 
 # motor parameters of the walk drives
-param_gear_motor_walk: 
+param_gear_motor_walk:
   dPtpVelDefaultIncrS: 50000
   dVelMaxEncIncrS: 75000
   dPosLimitLowIncr: -250222
@@ -118,7 +118,7 @@ param_gear_motor_walk:
   dNominalCurrent: 0.664
 
 # motor parameters of the wheel drives
-param_gear_motor_wheel: 
+param_gear_motor_wheel:
   dPtpVelDefaultIncrS: 50000
   dVelMaxEncIncrS: 75000
   dPosLimitLowIncr: -100000000
@@ -151,3 +151,48 @@ passive_readings_config:
       name: RIGHT_PASSIVE
     - id: 3
       name: BACK_PASSIVE
+
+
+
+--- name:arm
+# device address in the system. pcan32 for USB. pcan0 for PCIe
+can_dev_address: /dev/pcan32
+# 1 for Peak-Systems interface. Only device type supported so far
+can_dev_type: 1
+# activate/deactivate watchdog on can network
+watchdog: 0
+# system current measurement factor to convert from internal to physical units
+current_factor: 41.6
+# system voltage measurement factor to convert from internal to physical units
+voltage_factor: 3.93
+# system bogie angle measurement factor to convert from internal to physical units
+bogie_factor: 72
+# Number of motors in the platform.
+num_motors: 5
+# Number of can nodes in the platform = Number of motors + number of group nodes
+num_nodes: 5
+# parameters of platform can nodes
+can_parameters:
+  CanId: [ 6,2,3,4,5]
+  Type: [MANIP_JOINT,MANIP_JOINT,MANIP_JOINT,MANIP_JOINT,MANIP_JOINT]
+  Name: [ARM_JOINT_1,ARM_JOINT_2,ARM_JOINT_3,ARM_JOINT_4,ARM_JOINT_5]
+  Active: [ACTIVE, ACTIVE, ACTIVE, ACTIVE, ACTIVE]
+
+# motor parameters of the arm joint drives
+param_gear_motor_arm:
+  dPtpVelDefaultIncrS: 6400
+  dVelMaxEncIncrS: 7200
+  dPosLimitLowIncr: -1000000000
+  dBeltRatio: 1
+  iSign: 1
+  iEncOffsetIncr: 0
+  dCurrentToTorque: 0.0
+  dDecIncrS2: 10000
+  dCurrMax: 36
+  dGearRatio: 83200
+  bIsSteer: 1
+  iEncIncrPerRevMot: 48
+  dAccIncrS2: 10000
+  dPosLimitHighIncr: 1000000000
+  dAnalogFactor: 0.00067139
+  dNominalCurrent: 0.081
