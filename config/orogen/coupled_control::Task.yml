@@ -1,0 +1,7 @@
+--- name:exoter
+
+mMaxSpeed: 0.01
+
+gain: 1
+
+num_joints: 5

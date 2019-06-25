@@ -1,0 +1,8 @@
+--- name:default
+
+scriptFile: 'Coupled_motion_planner'
+pathVariable: 'finalRoverPath'
+headingVariable: 'finalRoverHeading'
+jointsVariable: 'finalJoints'
+assignmentVariable: 'assignment'
+numJoints: 5
