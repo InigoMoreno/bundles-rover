@@ -8,9 +8,9 @@ dist_min: 1.0
 # GPS position offset (x, y, z) with regards to the platform it is mounted on
 offset:
   data:
-    - -0.22
+    - -0.14
     - 0
-    - -1.15
+    - -1.16
 
 gnss_source_frame: "body" #transformer names. No transformation convention
 # to frame for the transformer
