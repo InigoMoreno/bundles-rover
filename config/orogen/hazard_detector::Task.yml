@@ -1,5 +1,5 @@
 --- name:default
-calibration_path: "/home/marta/rock/hazardCalibration.txt"
+calibration_path: "/home/hdpr/rock/hazardCalibration.txt"
 num_frames_while_stopped: 10
 hazard_threshold: 7
 new_calibration: false
