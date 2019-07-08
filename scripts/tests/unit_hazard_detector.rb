@@ -10,7 +10,7 @@ Bundles.initialize
 Orocos::Process.run 'unit_bb2', 'unit_hazard_detector' do
 
     camera_firewire_bb2 = TaskContext.get 'camera_firewire_bb2'
-    Orocos.conf.apply(camera_firewire_bb2, ['exoter_bb2','egp_bb2_id','auto_exposure'], :override => true)
+    Orocos.conf.apply(camera_firewire_bb2, ['hdpr_bb2','egp_bb2_id','auto_exposure'], :override => true)
     camera_firewire_bb2.configure
 
     camera_bb2 = TaskContext.get 'camera_bb2'

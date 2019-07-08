@@ -75,9 +75,9 @@ ptConfig:
   minTurnRadius: 1.10
   translationalVelocity: 0.1
   rotationalVelocity: 0.05
-  corridor: 0.5
+  corridor: 0.75
   maxDisalignment: 0.15
-  lookaheadDistance: 1.2
+  lookaheadDistance: 1.5
   backwards: false
 
 pdConfig:
