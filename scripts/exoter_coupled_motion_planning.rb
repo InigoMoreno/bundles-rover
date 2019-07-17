@@ -8,7 +8,7 @@ include Orocos
 Bundles.initialize
 
 
-Orocos.run 'unit_following', 'navigation', 'control', 'simulation', 'autonomy', 'vortex::Task' => 'vortex', 'motion_planning::Task' => 'motion_planning', 'coupled_control::Task' => 'coupled_control' do
+Orocos.run 'navigation', 'control', 'simulation', 'vortex::Task' => 'vortex', 'motion_planning::Task' => 'motion_planning', 'coupled_control::Task' => 'coupled_control' do
 
 	# setup locomotion_control
     puts "Setting up locomotion_control"
@@ -48,36 +48,39 @@ Orocos.run 'unit_following', 'navigation', 'control', 'simulation', 'autonomy', 
 	puts "Connecting ports"
 
 	# Motion planning outputs
-	motion_planning.roverPath.connect_to	            waypoint_navigation.trajectory
+	motion_planning.roverPath.connect_to waypoint_navigation.trajectory
 
-	motion_planning.joints.connect_to	            	coupled_control.manipulatorConfig
-	motion_planning.assignment.connect_to	            coupled_control.assignment
-	motion_planning.sizePath.connect_to	           		coupled_control.sizePath
+	motion_planning.joints.connect_to coupled_control.manipulatorConfig
+	motion_planning.assignment.connect_to coupled_control.assignment
+	motion_planning.sizePath.connect_to coupled_control.sizePath
 
 	# Coupled control outputs
-	coupled_control.modifiedMotionCommand.connect_to	locomotion_control.motion_command
+	coupled_control.modifiedMotionCommand.connect_to locomotion_control.motion_command
 	
-	coupled_control.manipulatorCommand.connect_to		vortex.manipulator_commands
+	coupled_control.manipulatorCommand.connect_to vortex.manipulator_commands
 
 	# Waypoint navigation outputs
-	waypoint_navigation.motion_command.connect_to		coupled_control.motionCommand
-	waypoint_navigation.current_segment.connect_to		coupled_control.currentSegment
+	waypoint_navigation.motion_command.connect_to coupled_control.motionCommand
+	waypoint_navigation.current_segment.connect_to coupled_control.currentSegment
 
 	# Locomotion control outputs
-	locomotion_control.joints_commands.connect_to		vortex.joints_commands
+	locomotion_control.joints_commands.connect_to vortex.joints_commands
 
 	# Vortex outputs
-	vortex.joints_readings.connect_to					locomotion_control.joints_readings
+	vortex.joints_readings.connect_to locomotion_control.joints_readings
 
-	vortex.pose.connect_to								waypoint_navigation.pose
+	vortex.pose.connect_to waypoint_navigation.pose
 
-	vortex.manipulator_readings.connect_to				coupled_control.currentConfig
+	vortex.manipulator_readings.connect_to coupled_control.currentConfig
 
+	motion_planning.start
+	coupled_control.start
 	vortex.start
 	locomotion_control.start
-    arbiter.start
     waypoint_navigation.start
-    path_planner.start
 
 
 	Readline::readline("Press ENTER to exit\n")
+end
+
+

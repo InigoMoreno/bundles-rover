@@ -74,12 +74,13 @@ Orocos.run 'unit_following', 'navigation', 'control', 'simulation', 'autonomy', 
 	vortex.joints_readings.connect_to					locomotion_control.joints_readings
 	locomotion_control.joints_commands.connect_to		vortex.joints_commands
 
-    waypoint_navigation.motion_command.connect_to       arbiter.follower_motion_command
-    arbiter.motion_command.connect_to                   locomotion_control.motion_command
+    waypoint_navigation.motion_command.connect_to       locomotion_control.motion_command
+                
 
 	vortex.start
 	locomotion_control.start
-    arbiter.start
+
+
     waypoint_navigation.start
     path_planner.start
 	# read_joint_dispatcher.start

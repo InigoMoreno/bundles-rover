@@ -1,7 +1,30 @@
---- name:exoter
+--- name:vortex
+
+positionCommands: 0
 
 mMaxSpeed: 0.01
 
 gain: 1
 
-num_joints: 5
+numJoints: 5
+
+modelInitialConfig: [1.570796,0,-2.356194,0,0]
+realInitialConfig: [0,0,0,0,0]
+
+jointsDirection: [-1,-1,1,-1,1]
+
+--- name:exoter
+
+positionCommands: 1
+
+mMaxSpeed: 0.01
+
+gain: 1
+
+numJoints: 5
+
+modelInitialConfig: [1.570796,0,-2.356194,0,0]
+realInitialConfig: [0,1.570796,-2.356194,1.570796,0]
+
+jointsDirection: [-1,1,1,-1,1]
+
