@@ -8,7 +8,7 @@ gain: 1
 
 numJoints: 5
 
-modelInitialConfig: [1.570796,0,-2.356194,0,0]
+modelInitialConfig: [1.570796,0,-2.21,0,0]
 realInitialConfig: [0,0,0,0,0]
 
 jointsDirection: [-1,-1,1,-1,1]
@@ -23,8 +23,8 @@ gain: 1
 
 numJoints: 5
 
-modelInitialConfig: [1.570796,0,-2.356194,0,0]
-realInitialConfig: [0,1.570796,-2.356194,1.570796,0]
+modelInitialConfig: [1.570796,0,-2.21,0,0]
+realInitialConfig: [0,-1.570796,2.21,-1.570796,0]
 
-jointsDirection: [-1,1,1,-1,1]
+jointsDirection: [-1,-1,-1,1,1]
 
