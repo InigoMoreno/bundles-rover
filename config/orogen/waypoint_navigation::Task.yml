@@ -92,6 +92,29 @@ tolPos:     0.25
 
 repeatCommand: true
 
+--- name:hdpr_simulation
+# Configuration of Path Tracker parameters, namely distances, velocities and turn radius
+ptConfig:
+  minTurnRadius: 0.95
+  translationalVelocity: 0.4
+  rotationalVelocity: 0.2
+  corridor: 1.5
+  maxDisalignment: 1.0
+  lookaheadDistance: 2.0
+  backwards: false
+
+pdConfig:
+  P: 0.5
+  D: 0.025
+  saturation: 0.3491
+
+# Set the heading tolerance to 3 degrees
+tolHeading: 5
+# 50cm is precise enough for HDPR
+tolPos:     0.5
+
+repeatCommand: true
+
 --- name:marta
 # Configuration of Path Tracker parameters, namely distances, velocities and turn radius
 ptConfig:

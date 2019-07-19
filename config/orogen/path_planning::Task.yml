@@ -58,16 +58,16 @@ globalCostFile: '../../../rover/data/maps/umaRescueArea/umaRA_globalTerrainMap.t
 --- name:hdpr
 #
 locomotion_modes: [DRIVING]
-slope_values: [0,5,10,15,20]
+slope_values: [0,5,10,15]
 #
 #          Locomotion1        Locomotion2
 #Obstacles slope1-slope2-...  slope1-slope2-... value much higher than for terrains (f.e. 100 times)
 #Terrain1  slope1-slope2-...  slope1-slope2-... 
 #Terrain2  slope1-slope2-...  slope1-slope2-...
 #
-cost_data: [50.0,  50.0,  50.0,  50.0,  50.0,
-             10.0,   12.0,   15.0,   20.0,   40.0,
-             10.0,   12.0,   15.0,   20.0,   40.0]
+cost_data: [50.0,   50.0,   50.0,   50.0,
+            10.0,   12.0,   15.0,   20.0,
+            10.0,   12.0,   15.0,   20.0]
 
 global_res: 1.0
 
