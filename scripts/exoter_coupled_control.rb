@@ -50,7 +50,7 @@ Orocos.run 'control', 'unit_vicon', 'navigation', 'motion_planning::Task' => 'mo
 
     # setup platform_driver
     puts "Setting up platform driver"
-    platform_driver = Orocos.name_service.get 'platform_driver'
+    platform_driver = Orocos.name_service.get 'platform_driver_exoter'
     Orocos.conf.apply(platform_driver, ['arm'], :override => true)
     platform_driver.configure
     puts "done"
