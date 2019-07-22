@@ -23,8 +23,8 @@ num_motors: 10
 num_joints: 14
 
 joint_vrep_names: [joint_drive_fl, joint_drive_fr, joint_drive_ml, joint_drive_mr,
-joint_drive_rl, joint_drive_rr, joint_steer_fl, joint_steer_fr, joint_steer_rl,
-joint_steer_rr, joint_bogie_left_bottom, joint_bogie_right_bottom, joint_bogie_left_top, joint_bogie_right_top]
+joint_drive_bl, joint_drive_br, joint_steer_fl, joint_steer_fr, joint_steer_bl,
+joint_steer_br, joint_bogie_left_bottom, joint_bogie_right_bottom, joint_bogie_left_top, joint_bogie_right_top]
 
 joint_readings_names: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_BL, WHEEL_STEER_BR, LEFT_ROCKER, RIGHT_ROCKER, LEFT_BOGIE, RIGHT_BOGIE]
 
