@@ -65,9 +65,9 @@ slope_values: [0,5,10,15]
 #Terrain1  slope1-slope2-...  slope1-slope2-... 
 #Terrain2  slope1-slope2-...  slope1-slope2-...
 #
-cost_data: [30.0,     30.0,     30.0,   30.0,
-            10.0,   10.038,   10.154,   15.0,
-            10.0,   10.038,   10.154,   15.0]
+cost_data: [80.0,     80.0,     80.0,   80.0,
+            10.0,     15,       25,     40.0,
+            10.0,     15,       25,     40.0]
 
 global_res: 1.0
 
