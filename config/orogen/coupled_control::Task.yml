@@ -13,7 +13,7 @@ realInitialConfig: [0,0,0,0,0]
 
 jointsDirection: [-1,-1,1,-1,1]
 
-smoothFactor: 0.5 # 0 for non smoothing, 0.9 for big smoothing
+smoothFactor: 0.9 # 0 for non smoothing, 0.9 for big smoothing
 
 negativeAngles: 0   
 
@@ -32,6 +32,6 @@ realInitialConfig: [0,-1.570796,2.21,-1.570796,0]
 
 jointsDirection: [-1,-1,-1,1,1]
 
-smoothFactor: 0.5 # 0 for non smoothing, 0.9 for big smoothing
+smoothFactor: 0.9 # 0 for non smoothing, 0.9 for big smoothing
 
 negativeAngles: 1 
