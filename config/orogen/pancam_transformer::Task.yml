@@ -1,0 +1,23 @@
+--- name:default
+motorPitchOffset: -26.0
+sensorToMotorRotation:
+    data:
+        - 0.0
+        - 0.0
+        - 0.0
+sensorToMotorTranslation:
+    data:
+        - 0.01
+        - 0.25
+        - 0.055
+motorToBodyRotation:
+    data:
+        - 0.0
+        - -0.05
+        - 0.0
+motorToBodyTranslation:
+    data:
+        - 0.138
+        - -0.005
+        - 1.286
+

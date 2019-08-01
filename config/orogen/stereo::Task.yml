@@ -176,6 +176,125 @@ stereoCameraCalibration:
     rz: -0.003584645009846816
 output_format_sync: :MODE_GRAYSCALE
 
+--- name:hdpr_bb2_ga_slam_tenerife
+# gaussian kernel for dense stereo pre-processing.
+gaussian_kernel: 0
+# if set to true, the input images are assumed to already be rectified.
+image_rectified: false
+# if set to true, the input images are assumed to be rotated by 180 degrees.
+image_rotated: false
+# down- or upscale input images by this factor.
+image_scaling_factor: 1.0
+
+# configuration values for libElas
+libElas_conf:
+  disp_min: 5
+  disp_max: 350
+  support_threshold: 0.8500000238418579
+  support_texture: 10
+  candidate_stepsize: 5
+  incon_window_size: 5
+  incon_threshold: 5
+  incon_min_support: 5
+  add_corners: false
+  grid_size: 20
+  beta: 0.019999999552965164
+  gamma: 3.0
+  sigma: 1.0
+  sradius: 2.0
+  match_texture: 1
+  lr_threshold: 2
+  speckle_sim_threshold: 1.0
+  speckle_size: 200
+  ipol_gap_width: 3
+  filter_median: false
+  filter_adaptive_mean: true
+  postprocess_only_left: true
+  subsampling: false
+# configuration for sparse features.
+sparse_config:
+  debugImage: true
+  targetNumFeatures: 100
+  maxStereoYDeviation: 5
+  knn: 1
+  distanceFactor: 2
+  isometryFilterMaxSteps: 1000
+  isometryFilterThreshold: 0.1
+  adaptiveDetectorParam: false
+  detectorConfig:
+    SURFparam: 170
+    goodParam: 0.10000000149011612
+    mserParam: 3.0
+    starParam: 9.0
+    fastParam: 12.0
+  descriptorType: :DESCRIPTOR_PSURF
+  detectorType: :DETECTOR_MSER
+  filterType: :FILTER_STEREO
+# calibration parameters for stereo camera setup
+#stereoCameraCalibration:
+#  camLeft:
+#    fx: 837.253850
+#    fy: 838.490409
+#    cx: 500.836269
+#    cy: 396.129781
+#    d0: -0.350699 
+#    d1: 0.143871 
+#    d2: 0.000772 
+#    d3: 0.000436
+#    width: 1024
+#    height: 768
+#  camRight:
+#    fx: 840.576003
+#    fy: 839.660192
+#    cx: 486.582638
+#    cy: 390.268319
+#    d0: -0.349734 
+#    d1: 0.140961 
+#    d2: 0.000373 
+#    d3: 0.000030
+#    width: 1024
+#    height: 768
+##Distance between left and right camera
+#  extrinsic:
+#    tx: -121.85240164807148
+#    ty: 0.1948076202153522
+#    tz: -0.39816877115110094
+#    rx: -0.00012901913800443746
+#    ry: -0.0038610733653918344
+#    rz: -0.0033187483729531205
+# Calibration results from Kalibr
+stereoCameraCalibration:
+  camLeft:
+    fx: 833.029249273
+    fy: 834.36200043
+    cx: 503.38475908
+    cy: 394.969563968
+    d0: -0.351348570994
+    d1: 0.149480797792
+    d2: 0.000305233424184
+    d3: -0.000750163647335
+    width: 1024
+    height: 768
+  camRight:
+    fx: 838.801936516
+    fy: 838.480016878
+    cx: 487.625364421
+    cy: 387.634126099
+    d0: -0.356833447233
+    d1: 0.161196429937
+    d2: 0.000303425633673
+    d3: -0.000540901163595
+    width: 1024
+    height: 768
+#Distance between left and right camera
+  extrinsic:
+    tx: -119.2447700000000
+    ty: 0.1109700000000000
+    tz: 1.691040000000000
+    rx: -0.002033295208862309
+    ry: -0.003170676988095988
+    rz: -0.003374311026266406
+
 --- name:egp_bb2
 # gaussian kernel for dense stereo pre-processing.
 gaussian_kernel: 0

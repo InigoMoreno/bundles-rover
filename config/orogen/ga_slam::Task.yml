@@ -1,0 +1,53 @@
+--- name:default
+mapLength: 8.0
+mapResolution: 0.05
+minElevation: -5.0
+maxElevation: 5.0
+voxelSize: 0.05
+depthSigmaCoeff1: 0.001
+depthSigmaCoeff2: 0.0
+depthSigmaCoeff3: 0.01
+numParticles: 100
+initialSigmaX: 0.0
+initialSigmaY: 0.0
+initialSigmaYaw: 0.0
+predictSigmaX: 0.05
+predictSigmaY: 0.05
+predictSigmaYaw: 3.14/36
+traversedDistanceThreshold: 5.0
+minSlopeThreshold: 0.5
+slopeSumThresholdMultiplier: 10.0
+matchAcceptanceThreshold: 0.90
+orbiterMapLength: 100.0
+orbiterMapResolution: 1.0
+
+--- name:test
+debugInfoEnabled: true
+cloudDebugEnabled: false
+serializationDebugEnabled: true
+mapLength: 20.0
+mapResolution: 0.1
+minElevation: -3.0 # changed from -2.0
+maxElevation: 3.0 # changed from 2.0
+voxelSize: 0.05 # changed from 0.2
+depthSigmaCoeff1: 0.002564
+depthSigmaCoeff2: 0.0
+depthSigmaCoeff3: 0.01
+numParticles: 200 # changed from 1
+resampleFrequency: 5
+initialSigmaX: 0.0
+initialSigmaY: 0.0
+initialSigmaYaw: 0.0
+predictSigmaX: 0.1 # changed from 0.005
+predictSigmaY: 0.1 # changed from 0.005
+predictSigmaYaw: 0.02 # changed from 0.00174 
+traversedDistanceThreshold: 100.0 # changed from 100.0
+minSlopeThreshold: 0.5
+slopeSumThresholdMultiplier: 10.0
+matchAcceptanceThreshold: 0.9 # changed from 0.9
+matchYaw: false
+matchYawRange: 3.48
+matchYawStep: 0.0174
+orbiterMapLength: 100
+orbiterMapResolution: 0.5
+
