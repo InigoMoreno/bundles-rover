@@ -231,7 +231,93 @@ rover_parameters:
 # steering window within which the driving wheels are enabled [rad]
 # target_window: 0.35 # 20 deg
 target_window: 0.5 # 30 deg
+# target_window: 1 # 60 deg
 # target_window: 0.0005
 # +- 100 deg
 position_limit: 1.74
-velocity_limit: 1.35
+#velocity_limit: 1.35
+velocity_limit: 2.0
+
+--- name:marta_without_center_steering
+# no documentation available for this property
+number_motors: 18
+# no documentation available for this property
+number_nodes: 18
+
+# Required CAN Nodes in that order. Searching by names.
+canNodesNames: [WHEEL_DRIVE_FL, WHEEL_DRIVE_FR, WHEEL_DRIVE_CL, WHEEL_DRIVE_CR, WHEEL_DRIVE_BL, WHEEL_DRIVE_BR, WHEEL_STEER_FL, WHEEL_STEER_FR, WHEEL_STEER_CL, WHEEL_STEER_CR, WHEEL_STEER_BL, WHEEL_STEER_BR, WHEEL_WALK_FL, WHEEL_WALK_FR, WHEEL_WALK_CL, WHEEL_WALK_CR, WHEEL_WALK_BL, WHEEL_WALK_BR]
+
+# no documentation available for this property
+rover_parameters:
+  IsDrivingWheel:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  WheelNumber: 6
+  LegLengthV:
+  - 0.120
+  - 0.120
+  - 0.120
+  - 0.120
+  - 0.120
+  - 0.120
+  IsSteeringWheel:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+
+  WalkCoordCart:
+  - 0.265
+  - 0.365
+  - 0.265
+  - -0.365
+  - 0.000
+  - 0.365
+  - 0.000
+  - -0.365
+  - -0.430
+  - 0.365
+  - -0.430
+  - -0.365
+  IsWalkingWheel:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  WheelRadius:
+  - 0.07125
+  - 0.07125
+  - 0.07125
+  - 0.07125
+  - 0.07125
+  - 0.07125
+  WheelCoordCart:
+  - 0.325
+  - 0.366
+  - 0.325
+  - -0.366
+  - 0.0
+  - 0.366
+  - 0.0
+  - -0.366
+  - -0.410
+  - 0.366
+  - -0.410
+  - -0.366
+# steering window within which the driving wheels are enabled [rad]
+# target_window: 0.35 # 20 deg
+target_window: 0.5 # 30 deg
+# target_window: 1 # 60 deg
+# target_window: 0.0005
+# +- 95 deg
+position_limit: 1.65806279
+#velocity_limit: 1.35
+velocity_limit: 2.0
