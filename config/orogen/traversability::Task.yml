@@ -5,10 +5,6 @@ laplacian_kernel_size: 9
 laplacian_threshold: 100.0
 # Resolution of each cell in meters
 map_resolution: 0.1
-# Size of the map height in meters
-map_size_height: 10.0
-# Size of the map width in meters
-map_size_width: 10.0
 # First obstacle dilation iterations
 obstacle_iterations: 2
 # Kernel size to dilate obstacle first time [cells]
@@ -17,8 +13,10 @@ obstacle_kernel_size: 3
 obstacle_vicinity_iterations: 3
 # Kernel size to dilate obstacle second time [cells]
 obstacle_vicinity_kernel_size: 3
-# in meters, needed for obstacle dilation
+# Robot size for square kernel used for final traversability map dilation [m]
 robot_size: 0.6
+# Final traversability map dilation iterations
+dilation_iterations: 2
 # Obstacles the rover can tolerate when there is no sinkage [m]
 rover_obstacle_clearance: 0.2
 # Slope the rover can travel in nominal case [rad]
@@ -33,10 +31,6 @@ laplacian_kernel_size: 9
 laplacian_threshold: 100.0
 # Resolution of each cell in meters
 map_resolution: 0.05
-# Size of the map height in meters
-map_size_height: 5.0
-# Size of the map width in meters
-map_size_width: 5.0
 # First obstacle dilation iterations
 obstacle_iterations: 2
 # Kernel size to dilate obstacle first time [cells]
@@ -45,8 +39,10 @@ obstacle_kernel_size: 3
 obstacle_vicinity_iterations: 3
 # Kernel size to dilate obstacle second time [cells]
 obstacle_vicinity_kernel_size: 3
-# in meters, needed for obstacle dilation
+# Robot size for square kernel used for final traversability map dilation [m]
 robot_size: 0.4
+# Final traversability map dilation iterations
+dilation_iterations: 2
 # Obstacles the rover can tolerate when there is no sinkage [m]
 rover_obstacle_clearance: 0.12
 # Slope the rover can travel in nominal case [rad]
