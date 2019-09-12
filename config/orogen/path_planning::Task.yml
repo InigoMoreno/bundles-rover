@@ -65,9 +65,10 @@ slope_values: [0,5,10,15]
 #
 cost_data: [80.0,     80.0,     80.0,   80.0,
             10.0,     15,       25,     40.0,
-            10.0,     15,       25,     40.0]
+            10.0,     15,       25,     40.0,
+			12.0,     17,       27,     42.0]
 
-#global_res: 1.0
+global_res: 1.0
 
 local_res: 0.1
 
@@ -76,6 +77,12 @@ risk_distance: 1.5
 reconnect_distance: 0.0
 
 risk_ratio: 1.1
+
+num_terrains: 3 # without considering obstacles
+
+num_criteria: 3
+
+weights: [40,40,20] #%
 
 --- name:decos
 
