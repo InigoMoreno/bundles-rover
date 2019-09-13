@@ -63,9 +63,9 @@ slope_values: [0,5,10,15]
 #Terrain1  slope1-slope2-...  slope1-slope2-... 
 #Terrain2  slope1-slope2-...  slope1-slope2-...
 #
-cost_data: [80.0,     80.0,     80.0,   80.0,
+cost_data: [120.0,    120.0,    120.0,  120.0,
             10.0,     15,       25,     40.0,
-            10.0,     15,       25,     40.0,
+            20.0,     25,       35,     50.0,
 			12.0,     17,       27,     42.0]
 
 global_res: 1.0
@@ -80,15 +80,15 @@ risk_ratio: 1.1
 
 num_terrains: 3 # without considering obstacles
 
-num_criteria: 3
+num_criteria: 1
 
-weights: [40,40,20] #%
+weights: [40] #%
 
 --- name:decos
 
 elevationFile: '../../../rover/data/maps/decos/elevationMap.txt'
 localCostFile: '../../../rover/data/maps/decos/local_terrainMap.txt'
-globalCostFile: '../../../rover/data/maps/decos/global_terrainMap.txt'
+globalCostFile: '../../../rover/data/maps/decos/global_terrainMapTEST.txt'
 global_offset: [0,0]
 global_res: 1.0
 #local_res: 0.0625
