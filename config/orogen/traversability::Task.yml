@@ -1,8 +1,8 @@
 --- name:hdpr
 # Size of the kernel used in the laplacian to detect rocks edges
-laplacian_kernel_size: 9
-# Threshold of the laplacian to detect rocks edges. It is not zet tied to a physical property.
-laplacian_threshold: 100.0
+laplacian_kernel_size: 5
+# Threshold of the laplacian to detect rocks edges. It is not yet tied to a physical property.
+laplacian_threshold: 0.2
 # Resolution of each cell in meters
 map_resolution: 0.1
 # First obstacle dilation iterations
@@ -22,13 +22,13 @@ rover_obstacle_clearance: 0.2
 # Slope the rover can travel in nominal case [rad]
 rover_slope_gradeability: 0.262 # 15 deg
 # How many normal cell a slope map cell will contain
-slope_map_scale: 3
+slope_map_scale: 5
 
 --- name:exoter
 # Size of the kernel used in the laplacian to detect rocks edges
-laplacian_kernel_size: 9
+laplacian_kernel_size: 5
 # Threshold of the laplacian to detect rocks edges. It is not zet tied to a physical property.
-laplacian_threshold: 100.0
+laplacian_threshold: 0.2
 # Resolution of each cell in meters
 map_resolution: 0.05
 # First obstacle dilation iterations
