@@ -1,0 +1,10 @@
+--- name:default
+
+
+--- name:hdpr_all
+wheel_radius: 0.125
+update_criterias: [SLIP_RATIO, OBSTACLES_DENSITY]
+
+--- name:hdpr_slip
+wheel_radius: 0.125
+update_criterias: [SLIP_RATIO]

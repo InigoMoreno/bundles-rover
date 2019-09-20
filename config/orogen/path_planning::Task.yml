@@ -80,9 +80,9 @@ risk_ratio: 1.1
 
 num_terrains: 3 # without considering obstacles
 
-num_criteria: 1
+num_criteria: 2
 
-weights: [40] #%
+weights: [50,50] #%
 
 --- name:decos
 
