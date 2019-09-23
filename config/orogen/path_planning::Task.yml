@@ -52,7 +52,6 @@ localCostFile: ''
 globalCostFile: '../../../rover/data/maps/umaRescueArea/umaRA_globalTerrainMap.txt'
 
 
-
 --- name:hdpr
 #
 locomotion_modes: [DRIVING]
@@ -77,8 +76,6 @@ risk_distance: 1.5
 reconnect_distance: 0.0
 
 risk_ratio: 1.1
-
-num_terrains: 3 # without considering obstacles
 
 num_criteria: 2
 

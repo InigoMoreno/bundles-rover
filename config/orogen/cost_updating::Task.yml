@@ -1,10 +1,17 @@
 --- name:default
 
+--- name:all_criteria
 
---- name:hdpr_all
 wheel_radius: 0.125
+
 update_criterias: [SLIP_RATIO, OBSTACLES_DENSITY]
 
---- name:hdpr_slip
+num_terrains: 3 # without considering obstacles
+
+--- name:slip
+
 wheel_radius: 0.125
+
 update_criterias: [SLIP_RATIO]
+
+num_terrains: 3 # without considering obstacles
