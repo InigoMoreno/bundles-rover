@@ -92,5 +92,6 @@ global_res: 1.0
 elevationFile: '../../../rover/data/maps/prl/elevationMap.txt'
 localCostFile: '../../../rover/data/maps/prl/local_terrainMap.txt'
 globalCostFile: '../../../rover/data/maps/prl/global_terrainMap.txt'
+global_offset: [0,0]
 global_res: 1.0
 #local_res: 0.05
