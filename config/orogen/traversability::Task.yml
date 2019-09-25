@@ -6,11 +6,11 @@ laplacian_threshold: 0.2
 # Resolution of each cell in meters
 map_resolution: 0.1
 # First obstacle dilation iterations
-obstacle_iterations: 2
+obstacle_iterations: 1
 # Kernel size to dilate obstacle first time [cells]
 obstacle_kernel_size: 3
 # Second obstacle dilation iterations (area surrounding an obstacle)
-obstacle_vicinity_iterations: 3
+obstacle_vicinity_iterations: 2
 # Kernel size to dilate obstacle second time [cells]
 obstacle_vicinity_kernel_size: 3
 # Robot size for square kernel used for final traversability map dilation [m]
@@ -18,17 +18,17 @@ robot_size: 0.6
 # Final traversability map dilation iterations
 dilation_iterations: 2
 # Obstacles the rover can tolerate when there is no sinkage [m]
-rover_obstacle_clearance: 0.2
+rover_obstacle_clearance: 0.15
 # Slope the rover can travel in nominal case [rad]
 rover_slope_gradeability: 0.262 # 15 deg
 # How many normal cell a slope map cell will contain
-slope_map_scale: 5
+slope_map_scale: 3
 
 --- name:exoter
 # Size of the kernel used in the laplacian to detect rocks edges
 laplacian_kernel_size: 5
 # Threshold of the laplacian to detect rocks edges. It is not zet tied to a physical property.
-laplacian_threshold: 0.2
+laplacian_threshold: 0.1
 # Resolution of each cell in meters
 map_resolution: 0.05
 # First obstacle dilation iterations
