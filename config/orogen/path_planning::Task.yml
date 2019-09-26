@@ -77,9 +77,17 @@ reconnect_distance: 0.0
 
 risk_ratio: 1.1
 
+--- name:slip&obstacles
+
 num_criteria: 2
 
 weights: [50,50] #%
+
+--- name:slip
+
+num_criteria: 1
+
+weights: [100] #%
 
 --- name:decos
 
