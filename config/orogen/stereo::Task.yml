@@ -656,3 +656,216 @@ stereoCameraCalibration:
     rx: -0.002154805092804208
     ry: 0.0006652668141734516
     rz: -0.0002057358731394412
+
+
+####################################################################
+
+--- name:test_hdpr_bb2
+# gaussian kernel for dense stereo pre-processing.
+gaussian_kernel: 0
+# if set to true, the input images are assumed to already be rectified.
+image_rectified: false
+# if set to true, the input images are assumed to be rotated by 180 degrees.
+image_rotated: false
+# down- or upscale input images by this factor.
+image_scaling_factor: 1.0
+# configuration values for libElas
+libElas_conf:
+  disp_min: 5
+  disp_max: 350
+  support_threshold: 0.8500000238418579
+  support_texture: 10
+  candidate_stepsize: 5
+  incon_window_size: 5
+  incon_threshold: 5
+  incon_min_support: 5
+  add_corners: false
+  grid_size: 20
+  beta: 0.019999999552965164
+  gamma: 3.0
+  sigma: 1.0
+  sradius: 2.0
+  match_texture: 1
+  lr_threshold: 2
+  speckle_sim_threshold: 1.0
+  speckle_size: 200
+  ipol_gap_width: 3
+  filter_median: false
+  filter_adaptive_mean: true
+  postprocess_only_left: true
+  subsampling: false
+# configuration for sparse features.
+sparse_config:
+  debugImage: true
+  targetNumFeatures: 100
+  maxStereoYDeviation: 5
+  knn: 1
+  distanceFactor: 2
+  isometryFilterMaxSteps: 1000
+  isometryFilterThreshold: 0.1
+  adaptiveDetectorParam: false
+  detectorConfig:
+    SURFparam: 170
+    goodParam: 0.10000000149011612
+    mserParam: 3.0
+    starParam: 9.0
+    fastParam: 12.0
+  descriptorType: :DESCRIPTOR_PSURF
+  detectorType: :DETECTOR_MSER
+  filterType: :FILTER_STEREO
+
+
+## camera calib 1
+stereoCameraCalibration:
+  camLeft:
+    fx: 837.253850
+    fy: 838.490409
+    cx: 500.836269
+    cy: 396.129781
+    d0: -0.350699 
+    d1: 0.143871 
+    d2: 0.000772 
+    d3: 0.000436
+    width: 1024
+    height: 768
+    ex: 0.0
+    ey: 0.0 
+  camRight:
+    fx: 840.576003
+    fy: 839.660192
+    cx: 486.582638
+    cy: 390.268319
+    d0: -0.349734 
+    d1: 0.140961 
+    d2: 0.000373 
+    d3: 0.000030
+    ex: 0.0
+    ey: 0.0 
+    width: 1024
+    height: 768
+#Distance between left and right camera
+  extrinsic:
+    tx: -121.85240164807148
+    ty: 0.1948076202153522
+    tz: -0.039816877115110094
+    rx: -0.000012901913800443746
+    ry: -0.00038610733653918344
+    rz: -0.00033187483729531205
+output_format_sync: :MODE_GRAYSCALE
+
+
+## camera calib 2
+#stereoCameraCalibration:
+#  camLeft:
+#    fx: 822.227706935
+#    fy: 822.927185544
+#    cx: 500.570003209
+#    cy: 389.677579798
+#    d0: -0.329304723377
+#    d1: 0.111047291678
+#    d2: 0.00112087517133
+#    d3: -0.000214995608353
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+#  camRight:
+#    fx: 826.863502923
+#    fy: 825.62436397
+#    cx: 490.041877899
+#    cy: 382.244076897
+#    d0: -0.335039958312
+#    d1: 0.119533691278
+#    d2: 0.000731208184955
+#    d3: -0.00070900223821
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+##Distance between left and right camera
+#  extrinsic:
+#    tx: -120.4224030000000
+#    ty: 0.3256255180000000
+#    tz: -0.07402001730000000
+#    rx: -0.001819615757731449
+#    ry: -0.008842211883599646
+#    rz: -0.003584645009846816
+#output_format_sync: :MODE_GRAYSCALE
+
+
+## camera_calib_3
+#stereoCameraCalibration:
+#  camLeft:
+#    fx: 837.98636
+#    fy: 838.56569
+#    cx: 509.74846
+#    cy: 376.99711
+#    d0: -0.35914
+#    d1: 0.16317
+#    d2: 0.00039
+#    d3: 0.00041
+#    ex: 0.06887
+#    ey: 0.08192
+#    width: 1024
+#    height: 768
+#  camRight:
+#    fx: 837.40801
+#    fy: 838.06473
+#    cx: 536.53701
+#    cy: 377.66591
+#    d0: -0.35499
+#    d1: 0.15218
+#    d2: 0.00019
+#    d3: -0.00016
+#    ex: 0.07723
+#    ey: 0.08236
+#    width: 1024
+#    height: 768
+##Distance between left and right camera
+#  extrinsic:
+#    tx: -120.42814
+#    ty: -0.63857
+#    tz: -0.3051
+#    rx: -0.00125
+#    ry: 0.00333
+#    rz: -0.00542
+#output_format_sync: :MODE_GRAYSCALE
+
+
+## camera calib 4
+#stereoCameraCalibration:
+#  camLeft:
+#    fx: 822.227706935
+#    fy: 822.927185544
+#    cx: 500.570003209
+#    cy: 389.677579798
+#    d0: -0.329304723377
+#    d1: 0.111047291678
+#    d2: 0.00112087517133
+#    d3: -0.000214995608353
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+#  camRight:
+#    fx: 826.863502923
+#    fy: 825.62436397
+#    cx: 490.041877899
+#    cy: 382.244076897
+#    d0: -0.335039958312
+#    d1: 0.119533691278
+#    d2: 0.000731208184955
+#    d3: -0.00070900223821
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+##Distance between left and right camera
+#  extrinsic:
+#    tx: -120.4224030000000
+#    ty: 0.3256255180000000
+#    tz: -0.07402001730000000
+#    rx: -0.001819615757731449
+#    ry: -0.008842211883599646
+#    rz: -0.003584645009846816
+#output_format_sync: :MODE_GRAYSCALE

@@ -17,8 +17,8 @@ calibration_parameters:
     d3: -0.000214995608353
     width: 1024
     height: 768
-    ex: 0
-    ey: 0
+    ex: 0.0
+    ey: 0.0
   camRight:
     fx: 826.863502923
     fy: 825.62436397
@@ -103,8 +103,8 @@ calibration_parameters:
     d3: 5.68636874228e-05
     width: 1024
     height: 768
-    ex: 0
-    ey: 0
+    ex: 0.0
+    ey: 0.0
   camRight:
     fx: 522.653509665
     fy: 525.187263599
@@ -251,3 +251,165 @@ undistort: false
 #--- name:stitch
 # Distance in pixels between left and right image for a rough stitching. Leave empty for not stitching
 #stitching_offset: [30, 0]
+
+
+
+
+
+#######################################################################
+--- name:test_hdpr_bb2
+## camera calib 1
+#calibration_parameters:
+#    camLeft:
+#      fx: 837.253850
+#      fy: 838.490409
+#      cx: 500.836269
+#      cy: 396.129781
+#      d0: -0.350699 
+#      d1: 0.143871 
+#      d2: 0.000772 
+#      d3: 0.000436
+#      ex: 0.0
+#      ey: 0.0
+#      width: 1024
+#      height: 768
+#    camRight:
+#      fx: 840.576003
+#      fy: 839.660192
+#      cx: 486.582638
+#      cy: 390.268319
+#      d0: -0.349734 
+#      d1: 0.140961 
+#      d2: 0.000373 
+#      d3: 0.000030
+#      ex: 0
+#      ey: 0
+#      width: 1024
+#      height: 768
+#  #Distance between left and right camera
+#    extrinsic:
+#      tx: 0.12185240164807148
+#      ty: -0.01948076202153522
+#      tz: 0.039816877115110094
+#      rx: 0.000012901913800443746
+#      ry: 0.00038610733653918344
+#      rz: 0.00033187483729531205
+
+## camera calib 2
+calibration_parameters:
+  camLeft:
+    fx: 822.227706935
+    fy: 822.927185544
+    cx: 500.570003209
+    cy: 389.677579798
+    d0: -0.329304723377
+    d1: 0.111047291678
+    d2: 0.00112087517133
+    d3: -0.000214995608353
+    width: 1024
+    height: 768
+    ex: 0.0
+    ey: 0.0
+  camRight:
+    fx: 826.863502923
+    fy: 825.62436397
+    cx: 490.041877899
+    cy: 382.244076897
+    d0: -0.335039958312
+    d1: 0.119533691278
+    d2: 0.000731208184955
+    d3: -0.00070900223821
+    width: 1024
+    height: 768
+    ex: 0.0
+    ey: 0.0
+#Distance between left and right camera
+  extrinsic:
+    tx: -0.1204224030000000
+    ty: 0.0003256255180000000
+    tz: -0.00007402001730000000
+    rx: -0.001819615757731449
+    ry: -0.008842211883599646
+    rz: -0.003584645009846816
+
+## camera calib 3
+#calibration_parameters:
+#  camLeft:
+#    fx: 837.98636
+#    fy: 838.56569
+#    cx: 509.74846
+#    cy: 376.99711
+#    d0: -0.35914
+#    d1: 0.16317
+#    d2: 0.00039
+#    d3: 0.00041
+#    ex: 0.06887
+#    ey: 0.08192
+#    width: 1024
+#    height: 768
+#  camRight:
+#    fx: 837.40801
+#    fy: 838.06473
+#    cx: 536.53701
+#    cy: 377.66591
+#    d0: -0.35499
+#    d1: 0.15218
+#    d2: 0.00019
+#    d3: -0.00016
+#    ex: 0.07723
+#    ey: 0.08236
+#    width: 1024
+#    height: 768
+##Distance between left and right camera
+#  extrinsic:
+#    tx: 0.12042814 #baseline in x (meters)
+#    ty: 0.00063857 #baseline in y (meters)
+#    tz: 0.0003051 #baseline in z (meters)
+#    rx: 0.00125 #rotation along x (rad)
+#    ry: -0.00333 #rotation along y (rad)
+#    rz: 0.00542 #rotation along z (rad)
+
+
+# camera calib 4
+#calibration_parameters:
+#  camLeft:
+#    fx: 822.227706935
+#    fy: 822.927185544
+#    cx: 500.570003209
+#    cy: 389.677579798
+#    d0: -0.329304723377
+#    d1: 0.111047291678
+#    d2: 0.00112087517133
+#    d3: -0.000214995608353
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+#  camRight:
+#    fx: 826.863502923
+#    fy: 825.62436397
+#    cx: 490.041877899
+#    cy: 382.244076897
+#    d0: -0.335039958312
+#    d1: 0.119533691278
+#    d2: 0.000731208184955
+#    d3: -0.00070900223821
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+##Distance between left and right camera
+#  extrinsic:
+#    tx: 0.1204224030000000
+#    ty: -0.0003256255180000000
+#    tz: 0.00007402001730000000
+#    rx: 0.001819615757731449
+#    ry: 0.008842211883599646
+#    rz: 0.003584645009846816
+
+       
+       
+# bit depth per channel
+#output_format: :MODE_RGB
+output_format: :MODE_GRAYSCALE
+undistort: false
