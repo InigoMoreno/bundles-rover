@@ -75,9 +75,17 @@ static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0,
     Eigen::Vector3.new( 0.195, 0.06, 0.23 ), "left_camera_loccam" => "body"
 
 # transformation used for visual odometry
-static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -2.0*Math::PI*(122.0/360.0)), 2,1,0),
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI*(-90.0/180.0), Math::PI*(0.0/180.0), Math::PI*(-122/180.0)), 2,1,0),
+### from vicon calib
+#static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI*(-88.0258/180.0), Math::PI*(-1.8827/180.0), Math::PI*(-117.8849/180.0)), 2,1,0),
+### original
+#static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 0.00, -2.0*Math::PI*(122.0/360.0)), 2,1,0),
 #static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0, 2.0*Math::PI*(0.0/360.0), -2.0*Math::PI*(119.0/360.0)), 2,1,0),
-    Eigen::Vector3.new( 0.195, 0.06, 0.23 ), "left_camera_viso2" => "body"
+    Eigen::Vector3.new( 0.195, 0.06, 0.24 ), "left_camera_viso2" => "body" 
+    ### original
+    #Eigen::Vector3.new( 0.195, 0.06, 0.24 ), "left_camera_viso2" => "body" 
+    ### from vicon calib
+    #Eigen::Vector3.new( 0.2038, 0.06+0.0085, 0.2402 ), "left_camera_viso2" => "body"
 
 # Transformation Left camera to Right camera (Right camera frame expressed in Left camera frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.Identity(),
