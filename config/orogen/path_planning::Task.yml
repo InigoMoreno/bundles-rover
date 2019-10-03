@@ -82,7 +82,7 @@ risk_ratio: 1.1
 elevationFile: '../../../rover/data/maps/decos/elevationMap.txt'
 localCostFile: '../../../rover/data/maps/decos/local_terrainMap.txt'
 globalCostFile: '../../../rover/data/maps/decos/global_terrainMap.txt'
-global_offset: [0,0]
+#global_offset: [0,0]
 global_res: 1.0
 #local_res: 0.0625
 
