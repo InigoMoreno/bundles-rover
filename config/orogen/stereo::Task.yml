@@ -716,42 +716,42 @@ sparse_config:
 
 
 ## camera calib 1
-stereoCameraCalibration:
-  camLeft:
-    fx: 837.253850
-    fy: 838.490409
-    cx: 500.836269
-    cy: 396.129781
-    d0: -0.350699 
-    d1: 0.143871 
-    d2: 0.000772 
-    d3: 0.000436
-    width: 1024
-    height: 768
-    ex: 0.0
-    ey: 0.0 
-  camRight:
-    fx: 840.576003
-    fy: 839.660192
-    cx: 486.582638
-    cy: 390.268319
-    d0: -0.349734 
-    d1: 0.140961 
-    d2: 0.000373 
-    d3: 0.000030
-    ex: 0.0
-    ey: 0.0 
-    width: 1024
-    height: 768
-#Distance between left and right camera
-  extrinsic:
-    tx: -121.85240164807148
-    ty: 0.1948076202153522
-    tz: -0.039816877115110094
-    rx: -0.000012901913800443746
-    ry: -0.00038610733653918344
-    rz: -0.00033187483729531205
-output_format_sync: :MODE_GRAYSCALE
+#stereoCameraCalibration:
+#  camLeft:
+#    fx: 837.253850
+#    fy: 838.490409
+#    cx: 500.836269
+#    cy: 396.129781
+#    d0: -0.350699 
+#    d1: 0.143871 
+#    d2: 0.000772 
+#    d3: 0.000436
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0 
+#  camRight:
+#    fx: 840.576003
+#    fy: 839.660192
+#    cx: 486.582638
+#    cy: 390.268319
+#    d0: -0.349734 
+#    d1: 0.140961 
+#    d2: 0.000373 
+#    d3: 0.000030
+#    ex: 0.0
+#    ey: 0.0 
+#    width: 1024
+#    height: 768
+##Distance between left and right camera
+#  extrinsic:
+#    tx: -121.85240164807148
+#    ty: 0.1948076202153522
+#    tz: -0.039816877115110094
+#    rx: -0.000012901913800443746
+#    ry: -0.00038610733653918344
+#    rz: -0.00033187483729531205
+#output_format_sync: :MODE_GRAYSCALE
 
 
 ## camera calib 2
@@ -869,3 +869,40 @@ output_format_sync: :MODE_GRAYSCALE
 #    ry: -0.008842211883599646
 #    rz: -0.003584645009846816
 #output_format_sync: :MODE_GRAYSCALE
+
+## camera calib 5
+stereoCameraCalibration:
+  camLeft:
+    fx: 835.613262
+    fy: 836.518170
+    cx: 501.407573
+    cy: 397.561462
+    d0: -0.343033
+    d1: 0.133004
+    d2: 0.000646
+    d3: -0.000385
+    width: 1024
+    height: 768
+    ex: 0.0
+    ey: 0.0
+  camRight:
+    fx: 842.605017
+    fy: 841.620232
+    cx: 488.470336
+    cy: 394.619559
+    d0: -0.354349
+    d1: 0.153314
+    d2: -0.000513
+    d3: -0.000609
+    width: 1024
+    height: 768
+    ex: 0.0
+    ey: 0.0
+#Distance between left and right camera
+  extrinsic:
+    tx: -119.7151995243167
+    ty: -3.396114170968318
+    tz: 8.476374462101683
+    rx: -0.004282030930230953
+    ry: -0.009139639185479510
+    rz: -0.01149874602976915
