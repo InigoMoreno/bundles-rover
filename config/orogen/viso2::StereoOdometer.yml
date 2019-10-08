@@ -22,7 +22,7 @@ viso2_parameters:
     nms_n: 3 #non-max-suppression: min. distance between maxima (in pixels)
     nms_tau: 50 #non-max-suppression: interest point peakiness threshold
     match_binsize: 50 #matching bin width/height (affects efficiency only) Step size for matching features (forward/backward and right/left)
-    match_radius: 350 #200 #matching radius (du/dv in pixels)
+    match_radius: 200 #matching radius (du/dv in pixels)
     match_disp_tolerance: 1 #dv tolerance for stereo matches (in pixels)
     outlier_disp_tolerance: 5 #outlier removal: disparity tolerance (in pixels)
     outlier_flow_tolerance: 5 #outlier removal: flow tolerance (in pixels)
@@ -64,7 +64,7 @@ viso2_parameters:
     nms_n: 3 #non-max-suppression: min. distance between maxima (in pixels)
     nms_tau: 50 #non-max-suppression: interest point peakiness threshold
     match_binsize: 50 #matching bin width/height (affects efficiency only) Step size for matching features (forward/backward and right/left)
-    match_radius: 350 #matching radius (du/dv in pixels)
+    match_radius: 350 #200 #matching radius (du/dv in pixels)
     match_disp_tolerance: 1 #dv tolerance for stereo matches (in pixels)
     outlier_disp_tolerance: 5 #outlier removal: disparity tolerance (in pixels)
     outlier_flow_tolerance: 5 #outlier removal: flow tolerance (in pixels)
@@ -72,9 +72,9 @@ viso2_parameters:
     half_resolution: 1 #0=disabled,1=match at half resolution, refine at full resolution
     refinement: 2 #refinement (0=none,1=pixel,2=subpixel)
   bucket:
-    max_features: 3 #maximal number of features per bucket
-    bucket_width: 10.0 #width of bucket
-    bucket_height: 10.0 #height of bucket
+    max_features: 10 #3 #maximal number of features per bucket
+    bucket_width: 256.0 #10.0 #width of bucket
+    bucket_height: 240.0 #10.0 #height of bucket
 
 
 ##camera_calib_1
@@ -190,45 +190,6 @@ viso2_parameters:
 
 
 ##camera_calib_4
-#calib_parameters:
-#  camLeft:
-#    fx: 822.227706935
-#    fy: 822.927185544
-#    cx: 500.570003209
-#    cy: 389.677579798
-#    d0: -0.329304723377
-#    d1: 0.111047291678
-#    d2: 0.00112087517133
-#    d3: -0.000214995608353
-#    width: 1024
-#    height: 768
-#    ex: 0.0
-#    ey: 0.0
-#  camRight:
-#    fx: 826.863502923
-#    fy: 825.62436397
-#    cx: 490.041877899
-#    cy: 382.244076897
-#    d0: -0.335039958312
-#    d1: 0.119533691278
-#    d2: 0.000731208184955
-#    d3: -0.00070900223821
-#    width: 1024
-#    height: 768
-#    ex: 0.0
-#    ey: 0.0
-##Distance between left and right camera
-#  extrinsic:
-#    tx: 0.1204224030000000
-#    ty: -0.0003256255180000000
-#    tz: 0.00007402001730000000
-#    rx: 0.001819615757731449
-#    ry: 0.008842211883599646
-#    rz: 0.003584645009846816
-
-
-        
-##camera_calib_5
 calib_parameters:
   camLeft:
     fx: 822.227706935
@@ -258,12 +219,51 @@ calib_parameters:
     ey: 0.0
 #Distance between left and right camera
   extrinsic:
-    tx: 0.12185240164807148
-    ty: -0.01948076202153522
-    tz: 0.039816877115110094
-    rx: 0.000012901913800443746
-    ry: 0.00038610733653918344
-    rz: 0.00033187483729531205
+    tx: 0.1204224030000000
+    ty: -0.0003256255180000000
+    tz: 0.00007402001730000000
+    rx: 0.001819615757731449
+    ry: 0.008842211883599646
+    rz: 0.003584645009846816
+
+
+        
+##camera_calib_5
+#calib_parameters:
+#  camLeft:
+#    fx: 822.227706935
+#    fy: 822.927185544
+#    cx: 500.570003209
+#    cy: 389.677579798
+#    d0: -0.329304723377
+#    d1: 0.111047291678
+#    d2: 0.00112087517133
+#    d3: -0.000214995608353
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+#  camRight:
+#    fx: 826.863502923
+#    fy: 825.62436397
+#    cx: 490.041877899
+#    cy: 382.244076897
+#    d0: -0.335039958312
+#    d1: 0.119533691278
+#    d2: 0.000731208184955
+#    d3: -0.00070900223821
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+##Distance between left and right camera
+#  extrinsic:
+#    tx: 0.12185240164807148
+#    ty: -0.01948076202153522
+#    tz: 0.039816877115110094
+#    rx: 0.000012901913800443746
+#    ry: 0.00038610733653918344
+#    rz: 0.00033187483729531205
 
 
 output_debug: true 
