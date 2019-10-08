@@ -20,9 +20,9 @@ Orocos::Process.run 'unit_bb2' do
 
     camera_bb2 = TaskContext.get 'camera_bb2'
     #Orocos.conf.apply(camera_bb2, ['egp_bb2'], :override => true)
-    Orocos.conf.apply(camera_bb2, ['hdpr_bb2'], :override => true)
+    #Orocos.conf.apply(camera_bb2, ['hdpr_bb2'], :override => true)
     #Orocos.conf.apply(camera_bb2, ['exoter_bb2'], :override => true)
-    #Orocos.conf.apply(camera_bb2, ['test_hdpr_bb2'], :override => true)
+    Orocos.conf.apply(camera_bb2, ['test_hdpr_bb2'], :override => true)
     camera_bb2.configure
 
     stereo_bb2 = TaskContext.get 'stereo_bb2'
