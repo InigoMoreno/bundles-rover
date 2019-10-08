@@ -832,7 +832,7 @@ sparse_config:
 #output_format_sync: :MODE_GRAYSCALE
 
 
-## camera calib 4
+## camera calib 4 (neg 2)
 #stereoCameraCalibration:
 #  camLeft:
 #    fx: 822.227706935
@@ -871,6 +871,45 @@ sparse_config:
 #output_format_sync: :MODE_GRAYSCALE
 
 ## camera calib 5
+#stereoCameraCalibration:
+#  camLeft:
+#    fx: 835.613262
+#    fy: 836.518170
+#    cx: 501.407573
+#    cy: 397.561462
+#    d0: -0.343033
+#    d1: 0.133004
+#    d2: 0.000646
+#    d3: -0.000385
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+#  camRight:
+#    fx: 842.605017
+#    fy: 841.620232
+#    cx: 488.470336
+#    cy: 394.619559
+#    d0: -0.354349
+#    d1: 0.153314
+#    d2: -0.000513
+#    d3: -0.000609
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+##Distance between left and right camera
+#  extrinsic:
+#    tx: -119.7151995243167
+#    ty: -3.396114170968318
+#    tz: 8.476374462101683
+#    rx: -0.004282030930230953
+#    ry: -0.009139639185479510
+#    rz: -0.01149874602976915
+#output_format_sync: :MODE_GRAYSCALE
+
+
+## camera calib 6 (neg calib 5)
 stereoCameraCalibration:
   camLeft:
     fx: 835.613262
