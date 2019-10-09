@@ -52,9 +52,9 @@ image_ouput_type: :INTRA_MATCHES #:INTRA_MATCHES #:INTER_KEYPOINTS
 # greater than this
 transformer_max_latency: 1.0
 # minimum time, in s, between two sequential samples arrive on left_frame
-left_frame_period: 0.1
+left_frame_period: 0.4
 # minimum time, in s, between two sequential samples arrive on right_frame
-right_frame_period: 0.1
+right_frame_period: 0.4
 
 viso2_parameters:
   ransac_iters: 200 #number of RANSAC iterations
