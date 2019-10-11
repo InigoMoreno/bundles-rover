@@ -72,9 +72,9 @@ viso2_parameters:
     half_resolution: 1 #0=disabled,1=match at half resolution, refine at full resolution
     refinement: 2 #refinement (0=none,1=pixel,2=subpixel)
   bucket:
-    max_features: 10 #3 #maximal number of features per bucket
-    bucket_width: 256.0 #10.0 #width of bucket
-    bucket_height: 240.0 #10.0 #height of bucket
+    max_features: 3 #maximal number of features per bucket
+    bucket_width: 10.0 #width of bucket
+    bucket_height: 10.0 #height of bucket
 
 
 ##camera_calib_1
@@ -231,39 +231,39 @@ calib_parameters:
 ##camera_calib_5
 #calib_parameters:
 #  camLeft:
-#    fx: 822.227706935
-#    fy: 822.927185544
-#    cx: 500.570003209
-#    cy: 389.677579798
-#    d0: -0.329304723377
-#    d1: 0.111047291678
-#    d2: 0.00112087517133
-#    d3: -0.000214995608353
+#    fx: 835.613262
+#    fy: 836.518170
+#    cx: 501.407573
+#    cy: 397.561462
+#    d0: -0.343033
+#    d1: 0.133004
+#    d2: 0.000646
+#    d3: -0.000385
 #    width: 1024
 #    height: 768
 #    ex: 0.0
 #    ey: 0.0
 #  camRight:
-#    fx: 826.863502923
-#    fy: 825.62436397
-#    cx: 490.041877899
-#    cy: 382.244076897
-#    d0: -0.335039958312
-#    d1: 0.119533691278
-#    d2: 0.000731208184955
-#    d3: -0.00070900223821
+#    fx: 842.605017
+#    fy: 841.620232
+#    cx: 488.470336
+#    cy: 394.619559
+#    d0: -0.354349
+#    d1: 0.153314
+#    d2: -0.000513
+#    d3: -0.000609
 #    width: 1024
 #    height: 768
 #    ex: 0.0
 #    ey: 0.0
 ##Distance between left and right camera
 #  extrinsic:
-#    tx: 0.12185240164807148
-#    ty: -0.01948076202153522
-#    tz: 0.039816877115110094
-#    rx: 0.000012901913800443746
-#    ry: 0.00038610733653918344
-#    rz: 0.00033187483729531205
+#    tx: 119.7151995243167
+#    ty: 3.396114170968318
+#    tz: -8.476374462101683
+#    rx: 0.004282030930230953
+#    ry: 0.009139639185479510
+#    rz: 0.01149874602976915
 
 
 output_debug: true 
