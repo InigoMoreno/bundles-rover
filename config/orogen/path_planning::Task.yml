@@ -52,7 +52,6 @@ localCostFile: ''
 globalCostFile: '../../../rover/data/maps/umaRescueArea/umaRA_globalTerrainMap.txt'
 
 
-
 --- name:hdpr
 #
 locomotion_modes: [DRIVING]
@@ -63,9 +62,10 @@ slope_values: [0,5,10,15]
 #Terrain1  slope1-slope2-...  slope1-slope2-... 
 #Terrain2  slope1-slope2-...  slope1-slope2-...
 #
-cost_data: [80.0,     80.0,     80.0,   80.0,
+cost_data: [120.0,    120.0,    120.0,  120.0,
             10.0,     15,       25,     40.0,
-            10.0,     15,       25,     40.0]
+            10.0,     15,       25,     40.0,
+			32.0,     37,       47,     62.0]
 
 #global_res: 1.0
 
@@ -77,6 +77,18 @@ reconnect_distance: 0.0
 
 risk_ratio: 1.1
 
+--- name:slip&obstacles
+
+num_criteria: 2
+
+weights: [50,50] #%
+
+--- name:slip
+
+num_criteria: 1
+
+weights: [100] #%
+
 --- name:decos
 
 elevationFile: '../../../rover/data/maps/decos/elevationMap.txt'
@@ -87,10 +99,21 @@ global_res: 1.0
 #local_res: 0.0625
 
 
+--- name:decos_test
+
+elevationFile: '../../../rover/data/maps/decos/elevationMap.txt'
+localCostFile: '../../../rover/data/maps/decos/local_terrainMap.txt'
+globalCostFile: '../../../rover/data/maps/decos/global_terrainMapTEST.txt'
+global_offset: [0,0]
+global_res: 1.0
+#local_res: 0.0625
+
+
 --- name:prl
 
 elevationFile: '../../../rover/data/maps/prl/elevationMap.txt'
 localCostFile: '../../../rover/data/maps/prl/local_terrainMap.txt'
 globalCostFile: '../../../rover/data/maps/prl/global_terrainMap.txt'
+global_offset: [0,0]
 global_res: 1.0
 #local_res: 0.05

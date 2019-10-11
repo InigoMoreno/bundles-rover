@@ -9,7 +9,7 @@ include Orocos
 Bundles.initialize
 
 # Execute the task
-Orocos::Process.run 'unit_imu' do
+Orocos::Process.run 'imu' do
 
     # Configure
     imu_stim300 = TaskContext.get 'imu_stim300'
@@ -17,7 +17,7 @@ Orocos::Process.run 'unit_imu' do
     imu_stim300.configure
 
     # Log
-    logger_imu = Orocos.name_service.get 'unit_imu_Logger'
+    logger_imu = Orocos.name_service.get 'imu_Logger'
     logger_imu.file = "imu.log"
     logger_imu.log(imu_stim300.inertial_sensors_out)
     logger_imu.log(imu_stim300.temp_sensors_out)
