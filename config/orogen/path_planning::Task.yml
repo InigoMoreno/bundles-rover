@@ -99,11 +99,11 @@ global_res: 1.0
 #local_res: 0.0625
 
 
---- name:decos_test
+--- name:decos_3terrains
 
 elevationFile: '../../../rover/data/maps/decos/elevationMap.txt'
 localCostFile: '../../../rover/data/maps/decos/local_terrainMap.txt'
-globalCostFile: '../../../rover/data/maps/decos/global_terrainMapTEST.txt'
+globalCostFile: '../../../rover/data/maps/decos/global_terrainMap_3terrains.txt'
 global_offset: [0,0]
 global_res: 1.0
 #local_res: 0.0625
