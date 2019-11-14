@@ -78,31 +78,10 @@ right_frame_period: 0.4
 #    bucket_height: 10.0 #height of bucket
 
 # params set 2
-#viso2_parameters:
-#    #base: 1.0
-#  ransac_iters: 200 #number of RANSAC iterations
-#  inlier_threshold: 1.5 #fundamental matrix inlier threshold
-#  reweighting: true #lower border weights (more robust to calibration errors)
-#  match:
-#    nms_n: 3 #non-max-suppression: min. distance between maxima (in pixels)
-#    nms_tau: 50 #non-max-suppression: interest point peakiness threshold
-#    match_binsize: 50 #matching bin width/height (affects efficiency only) Step size for matching features (forward/backward and right/left)
-#    match_radius: 350 #200 #matching radius (du/dv in pixels)
-#    match_disp_tolerance: 2 #1 #dv tolerance for stereo matches (in pixels)
-#    outlier_disp_tolerance: 5 #outlier removal: disparity tolerance (in pixels)
-#    outlier_flow_tolerance: 5 #outlier removal: flow tolerance (in pixels)
-#    multi_stage: 1 #0=disabled,1=multistage matching (denser and faster)
-#    half_resolution: 1 #0=disabled,1=match at half resolution, refine at full resolution
-#    refinement: 2 #refinement (0=none,1=pixel,2=subpixel)
-#  bucket:
-#    max_features: 3 #maximal number of features per bucket
-#    bucket_width: 10.0 #width of bucket
-#    bucket_height: 10.0 #height of bucket
-
-# params set 3 (new from viso2.zip)
 viso2_parameters:
-  ransac_iters: 300 #200 #number of RANSAC iterations
-  inlier_threshold: 2.0 #1.5 #fundamental matrix inlier threshold
+    #base: 1.0
+  ransac_iters: 200 #number of RANSAC iterations
+  inlier_threshold: 1.5 #fundamental matrix inlier threshold
   reweighting: true #lower border weights (more robust to calibration errors)
   match:
     nms_n: 3 #non-max-suppression: min. distance between maxima (in pixels)
@@ -114,11 +93,32 @@ viso2_parameters:
     outlier_flow_tolerance: 5 #outlier removal: flow tolerance (in pixels)
     multi_stage: 1 #0=disabled,1=multistage matching (denser and faster)
     half_resolution: 1 #0=disabled,1=match at half resolution, refine at full resolution
-    refinement: 1 #2 #refinement (0=none,1=pixel,2=subpixel)
+    refinement: 2 #refinement (0=none,1=pixel,2=subpixel)
   bucket:
-    max_features: 10 #2 #3 #maximal number of features per bucket
-    bucket_width: 50.0 #10.0 #width of bucket
-    bucket_height: 50.0 #10.0 #height of bucket
+    max_features: 3 #maximal number of features per bucket
+    bucket_width: 10.0 #width of bucket
+    bucket_height: 10.0 #height of bucket
+
+# params set 3 (new from viso2.zip)
+#viso2_parameters:
+#  ransac_iters: 300 #200 #number of RANSAC iterations
+#  inlier_threshold: 2.0 #1.5 #fundamental matrix inlier threshold
+#  reweighting: true #lower border weights (more robust to calibration errors)
+#  match:
+#    nms_n: 3 #non-max-suppression: min. distance between maxima (in pixels)
+#    nms_tau: 50 #non-max-suppression: interest point peakiness threshold
+#    match_binsize: 50 #matching bin width/height (affects efficiency only) Step size for matching features (forward/backward and right/left)
+#    match_radius: 350 #200 #matching radius (du/dv in pixels)
+#    match_disp_tolerance: 2 #1 #dv tolerance for stereo matches (in pixels)
+#    outlier_disp_tolerance: 5 #outlier removal: disparity tolerance (in pixels)
+#    outlier_flow_tolerance: 5 #outlier removal: flow tolerance (in pixels)
+#    multi_stage: 1 #0=disabled,1=multistage matching (denser and faster)
+#    half_resolution: 1 #0=disabled,1=match at half resolution, refine at full resolution
+#    refinement: 1 #2 #refinement (0=none,1=pixel,2=subpixel)
+#  bucket:
+#    max_features: 15 #3 #maximal number of features per bucket
+#    bucket_width: 50.0 #10.0 #width of bucket
+#    bucket_height: 50.0 #10.0 #height of bucket
 
 
 output_debug: true 
@@ -162,42 +162,42 @@ image_ouput_type: :INTRA_MATCHES #INTRA_MATCHES #:INTER_KEYPOINTS
 #    ry: 0.00038610733653918344
 #    rz: 0.00033187483729531205
 
-##camera_calib_2
-calib_parameters:
-  camLeft:
-    fx: 822.227706935
-    fy: 822.927185544
-    cx: 500.570003209
-    cy: 389.677579798
-    d0: -0.329304723377
-    d1: 0.111047291678
-    d2: 0.00112087517133
-    d3: -0.000214995608353
-    width: 1024
-    height: 768
-    ex: 0.0
-    ey: 0.0
-  camRight:
-    fx: 826.863502923
-    fy: 825.62436397
-    cx: 490.041877899
-    cy: 382.244076897
-    d0: -0.335039958312
-    d1: 0.119533691278
-    d2: 0.000731208184955
-    d3: -0.00070900223821
-    width: 1024
-    height: 768
-    ex: 0.0
-    ey: 0.0
-#Distance between left and right camera
-  extrinsic:
-    tx: 0.1204224030000000
-    ty: -0.0003256255180000000
-    tz: 0.00007402001730000000
-    rx: 0.001819615757731449
-    ry: 0.008842211883599646
-    rz: 0.003584645009846816
+#camera_calib_2
+#calib_parameters:
+#  camLeft:
+#    fx: 822.227706935
+#    fy: 822.927185544
+#    cx: 500.570003209
+#    cy: 389.677579798
+#    d0: -0.329304723377
+#    d1: 0.111047291678
+#    d2: 0.00112087517133
+#    d3: -0.000214995608353
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+#  camRight:
+#    fx: 826.863502923
+#    fy: 825.62436397
+#    cx: 490.041877899
+#    cy: 382.244076897
+#    d0: -0.335039958312
+#    d1: 0.119533691278
+#    d2: 0.000731208184955
+#    d3: -0.00070900223821
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+##Distance between left and right camera
+#  extrinsic:
+#    tx: 0.1204224030000000
+#    ty: -0.0003256255180000000
+#    tz: 0.00007402001730000000
+#    rx: 0.001819615757731449
+#    ry: 0.008842211883599646
+#    rz: 0.003584645009846816
 
 ## camera_calib_3
 #calib_parameters:
@@ -276,7 +276,7 @@ calib_parameters:
 
 
 
-##camera_calib_5
+###camera_calib_5
 #calib_parameters:
 #  camLeft:
 #    fx: 835.613262
@@ -316,76 +316,144 @@ calib_parameters:
 
 
 ##camera_calib_6 (for exoter_bb2)
-calib_parameters:
-  camLeft:
-    fx: 836.06946050655949 
-    fy: 836.14916268708816
-    cx: 516.37155418305281
-    cy: 377.29889017486101
-    d0: -0.3389695490988
-    d1:  0.1217553065872
-    d2:  0.0002936920143
-    d3:  0.0000878463732
-    width: 1024
-    height: 768
-    ex: 0.0
-    ey: 0.0
-  camRight:
-    fx: 832.27804742153376
-    fy: 832.56239966940871
-    cx: 507.37637964982628
-    cy: 380.63748343529795
-    d0: -0.33914092102560
-    d1:  0.12092692896553
-    d2:  0.00062442626516
-    d3: -0.00038293414690
-    width: 1024
-    height: 768
-    ex: 0.0
-    ey: 0.0
-#Distance between left and right camera
-  extrinsic:
-    tx: 0.12001886209277160
-    ty: -0.00025901217247349007
-    tz: -0.00034917543917589172
-    rx: 0.003734249504278
-    ry: 0.006861413405440
-    rz: -0.000787881379522
+#calib_parameters:
+#  camLeft:
+#    fx: 836.06946050655949 
+#    fy: 836.14916268708816
+#    cx: 516.37155418305281
+#    cy: 377.29889017486101
+#    d0: -0.3389695490988
+#    d1:  0.1217553065872
+#    d2:  0.0002936920143
+#    d3:  0.0000878463732
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+#  camRight:
+#    fx: 832.27804742153376
+#    fy: 832.56239966940871
+#    cx: 507.37637964982628
+#    cy: 380.63748343529795
+#    d0: -0.33914092102560
+#    d1:  0.12092692896553
+#    d2:  0.00062442626516
+#    d3: -0.00038293414690
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+##Distance between left and right camera
+#  extrinsic:
+#    tx: 0.12001886209277160
+#    ty: -0.00025901217247349007
+#    tz: -0.00034917543917589172
+#    rx: 0.003734249504278
+#    ry: 0.006861413405440
+#    rz: -0.000787881379522
 
 
 ##camera_calib_7 (for exoter_bb3)
+#calib_parameters:
+#  camLeft:
+#    fx: 836.06946050655949 
+#    fy: 836.14916268708816
+#    cx: 516.37155418305281
+#    cy: 377.29889017486101
+#    d0: -0.3389695490988
+#    d1:  0.1217553065872
+#    d2:  0.0002936920143
+#    d3:  0.0000878463732
+#    width: 1024
+#    height: 768
+#    ex: 0.0
+#    ey: 0.0
+#  camRight:
+#    fx: 832.27804742153376
+#    fy: 832.56239966940871
+#    cx: 507.37637964982628
+#    cy: 380.63748343529795
+#    d0: -0.33914092102560
+#    d1:  0.12092692896553
+#    d2:  0.00062442626516
+#    d3: -0.00038293414690
+#    width: 1280
+#    height: 960
+#    ex: 0.0
+#    ey: 0.0
+##Distance between left and right camera
+#  extrinsic:
+#    tx: 0.12001886209277160
+#    ty: -0.00025901217247349007
+#    tz: -0.00034917543917589172
+#    rx: 0.003734249504278
+#    ry: 0.006861413405440
+#    rz: -0.000787881379522
+
+
+#--- name:camera_calib_8 (big chess board calib 20191031-1347)
+#calib_parameters:
+#  camLeft:
+#    fx: 833.806011 
+#    fy: 831.388109
+#    cx: 501.660313
+#    cy: 392.920874
+#    d0: -0.347915
+#    d1: 0.135383
+#    d2: 0.000407
+#    d3: 0.000227
+#    width: 1024
+#    height: 768
+#  camRight:
+#    fx: 838.036383
+#    fy: 834.199705
+#    cx: 488.598746
+#    cy: 385.268162
+#    d0: -0.351836
+#    d1: 0.146326
+#    d2: 0.000339
+#    d3: 0.000018
+#    width: 1024
+#    height: 768
+##Distance between left and right camera
+#  extrinsic:
+#    tx: 0.1194354007870229
+#    ty: -0.0001299070806224557
+#    tz: -0.00005993031936267972
+#    rx: 0.002325402016645923
+#    ry: 0.005681772284078503
+#    rz: 0.003592954990861891
+
+
+##--- name:camera_calib_9 (new calib v2 20191031-1347)
 calib_parameters:
   camLeft:
-    fx: 836.06946050655949 
-    fy: 836.14916268708816
-    cx: 516.37155418305281
-    cy: 377.29889017486101
-    d0: -0.3389695490988
-    d1:  0.1217553065872
-    d2:  0.0002936920143
-    d3:  0.0000878463732
+    fx: 835.721222 
+    fy: 835.945125
+    cx: 501.362423
+    cy: 394.594956
+    d0: -0.342542
+    d1: 0.131223
+    d2: 0.000923
+    d3: -0.000465
     width: 1024
     height: 768
-    ex: 0.0
-    ey: 0.0
   camRight:
-    fx: 832.27804742153376
-    fy: 832.56239966940871
-    cx: 507.37637964982628
-    cy: 380.63748343529795
-    d0: -0.33914092102560
-    d1:  0.12092692896553
-    d2:  0.00062442626516
-    d3: -0.00038293414690
-    width: 1280
-    height: 960
-    ex: 0.0
-    ey: 0.0
+    fx: 839.902617
+    fy: 838.434080
+    cx: 484.409581
+    cy: 389.624066
+    d0: -0.352337
+    d1: 0.152190
+    d2: -0.000089
+    d3: 0.000434
+    width: 1024
+    height: 768
 #Distance between left and right camera
   extrinsic:
-    tx: 0.12001886209277160
-    ty: -0.00025901217247349007
-    tz: -0.00034917543917589172
-    rx: 0.003734249504278
-    ry: 0.006861413405440
-    rz: -0.000787881379522
+    tx: 0.1195299879900258
+    ty: -0.0001048025041322265
+    tz: -0.0003883656879277015
+    rx: -0.0007853669160429155
+    ry: 0.001251399735706012
+    rz: 0.003367313611264093
