@@ -1,0 +1,13 @@
+
+--- name:default
+# List containing time to execute the commands
+commandsTime: [0.0, 1.0, 11.0]
+# List containing the translation velocity command associated to the CommandsTimes
+commandsTranslation: [0.0, 0.04, 0.0]
+# List containing the rotation velocity command associated to the CommandsTimes
+commandsRotation: [0.0, 0.0, 0.0]
+# List containing the locomotion_mode switches associated to the CommandsTimes
+# 1 = DRIVING
+# 2 = WHEEL_WALKING
+commandsLocomotionMode: [2, 2, 2]
+
