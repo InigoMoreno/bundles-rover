@@ -415,3 +415,57 @@ body_reference:
     - 0.00
     - 0.00
     - 0.00
+
+
+##--- new ExoTer ---##
+#based on Roll and Pitch from the IMU, and position and heading from the old ExoTer
+--- name:exoter_new
+# the segment of the subject that is tracked
+segment: 'exoter_new'
+# the subject that is being tracked
+subject: 'exoter_new'
+# from frame for the transformer
+source_frame: "body" # transformer names. No transformation convention
+# to frame for the transformer
+target_frame: "lab" # transformer names. No transformation convention
+# transformation between segment cs (vicon data) and a chosen body fixed reference cs
+# Assuming the translation is before the rotation in the task. Tselected_marker_to_body_vicon
+body_reference:
+  time:
+    microseconds: 0
+  sourceFrame: 'body_vicon'
+  targetFrame: 'selected_marker'
+  position:
+    data:
+    - 0.0 #0.234 #0.16879
+    - 0.0 #0.16879 #-0.09
+    - 0.0 #-0.09 #0.234
+  cov_position:
+    data:
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+  orientation:
+    im:
+    - 0.0 #0.49004229064263805
+    - 0.0 #-0.49004229064263816
+    - 0.0 #-0.5097632326695547
+    re: 1.0 #0.5097632326695547
+  cov_orientation:
+    data:
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+    - 0.00
+
