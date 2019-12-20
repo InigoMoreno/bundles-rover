@@ -75,6 +75,9 @@ static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( -Math::PI/2.0,
     Eigen::Vector3.new( 0.195, 0.06, 0.23 ), "left_camera_loccam" => "body"
 
 # transformation used for visual odometry
+# SpartanVOi on the loccam works the best on "optimized by mdb"
+### navcam
+#static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI*(-91.0/180.0), Math::PI*(0.0/180.0), Math::PI*(-127.7/180.0)), 2,1,0),
 ### wip
 #static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI*(-90.2/180.0), Math::PI*(0.0/180.0), Math::PI*(-120.8/180.0)), 2,1,0),
 ### optimized by mdb
@@ -93,6 +96,8 @@ static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new( Math::PI*(-90/
     Eigen::Vector3.new( 0.195, 0.06, 0.23 ), "left_camera_viso2" => "body" 
     ### wip
     #Eigen::Vector3.new( 0.195, 0.06, 0.28 ), "left_camera_viso2" => "body" 
+    ### navcam 
+    #Eigen::Vector3.new( 0.1124, 0.06, 0.633 ), "left_camera_viso2" => "body" 
 
 # Transformation Left camera to Right camera (Right camera frame expressed in Left camera frame) but transformer expects the other sense
 static_transform Eigen::Quaternion.Identity(),
