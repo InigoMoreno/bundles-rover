@@ -47,17 +47,23 @@ do
 #        '/media/kvasir/Dataset1/10June/Traverse/20170610-1615/waypoint_navigation.log',
 #        '/media/kvasir/Dataset1/10June/Traverse/20170610-1615/imu.log',
 #       Side Track
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/bb2.log',
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/bb3.log',
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/pancam.log',
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/waypoint_navigation.log',
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/imu.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/bb2.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/bb3.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/pancam.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/waypoint_navigation.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/imu.log',
 #       Eight Track (Dusk)
 #        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/bb2.log',
 #        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/bb3.log',
 #        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/pancam.log',
 #        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/waypoint_navigation.log',
 #        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/imu.log',
+#       Side Track (Galar)
+        '/media/galar/Dataset1/9June/Traverse/20170609-1556/bb2.log',
+        '/media/galar/Dataset1/9June/Traverse/20170609-1556/bb3.log',
+        '/media/galar/Dataset1/9June/Traverse/20170609-1556/pancam.log',
+        '/media/galar/Dataset1/9June/Traverse/20170609-1556/waypoint_navigation.log',
+        '/media/galar/Dataset1/9June/Traverse/20170609-1556/imu.log',
 
     )
     bag.use_sample_time = true
