@@ -4,6 +4,7 @@ PI = Math::PI
 
 static_transform Quaternion.Identity(), Vector.Zero(),
     'left_camera_viso2' => 'left_camera_bb2'
+    #'left_camera_viso2' => 'left_camera_bb3'
 
 static_transform Quaternion.Identity(), Vector.Zero(),
     'hazcam' => 'left_camera_bb2'
