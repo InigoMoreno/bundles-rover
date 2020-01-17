@@ -22,7 +22,7 @@ Orocos.run(
     'traversability::Task' => 'traversability',
     'spartan::Task' => 'spartan_vo',
     'viso2_with_imu::Task' => 'viso2_with_imu',
-    'viso2_evaluation::Task' => 'viso2_evaluation_imu',
+    'viso2_evaluation::Task' => 'viso2_evaluation',
     ####### Debug #######
     # :output => '%m-%p.log',
     # :gdb => ['ga_slam'],
@@ -98,17 +98,18 @@ do
     viso2.configure
 
     spartan_vo = Orocos.name_service.get 'spartan_vo'
-    spartan_vo.apply_conf_file("/home/marta/rock/perception/orogen/spartan/config/spartan::Task.yml", ["default"])
-    Orocos.transformer.setup(spartan_vo);
+    spartan_vo.apply_conf_file("/home/galar/rock/perception/orogen/spartan/config/spartan::Task.yml", ["default"])
+    #Orocos.conf.apply(spartan_vo, ['default'], :override => true)
+    Bundles.transformer.setup(spartan_vo);
     spartan_vo.configure
 
     viso2_with_imu = TaskContext.get 'viso2_with_imu'
     Orocos.conf.apply(viso2_with_imu, ['default'], :override => true)
     viso2_with_imu.configure
 
-    viso2_evaluation_imu = Orocos.name_service.get 'viso2_evaluation_imu'
-    Orocos.conf.apply(viso2_evaluation_imu, ['default'], :override => true)
-    viso2_evaluation_imu.configure
+    viso2_evaluation = Orocos.name_service.get 'viso2_evaluation'
+    Orocos.conf.apply(viso2_evaluation, ['default'], :override => true)
+    viso2_evaluation.configure
 
     pancam_transformer = TaskContext.get 'pancam_transformer'
     Orocos.conf.apply(pancam_transformer, ['default'], :override => true)
@@ -118,7 +119,8 @@ do
     gps_transformer.configure
 
     orbiter_preprocessing = TaskContext.get 'orbiter_preprocessing'
-    Orocos.conf.apply(orbiter_preprocessing, ['default'], :override => true)
+    #Orocos.conf.apply(orbiter_preprocessing, ['default'], :override => true)
+    Orocos.conf.apply(orbiter_preprocessing, ['galar_default'], :override => true)
     # Orocos.conf.apply(orbiter_preprocessing, ['prepared'], :override => true)
     orbiter_preprocessing.configure
 
@@ -151,8 +153,8 @@ do
     stereo_bb3.point_cloud.connect_to               ga_slam.loccamCloud
     stereo_pancam.point_cloud.connect_to            ga_slam.pancamCloud
 
-    camera_bb2.left_frame.connect_to                spartan.img_in_left
-    camera_bb2.right_frame.connect_to               spartan.img_in_right
+    camera_bb2.left_frame.connect_to                spartan_vo.img_in_left
+    camera_bb2.right_frame.connect_to               spartan_vo.img_in_right
 
     bag.pancam_panorama.
         tilt_angle_out_degrees.connect_to           pancam_transformer.pitch
@@ -164,11 +166,15 @@ do
     bag.gps_heading.pose_samples_out.connect_to     orbiter_preprocessing.
                                                         robotPose
     # Spartan VO tasks
-    spartan.delta_vo_out.connect_to                     viso2_with_imu.delta_pose_samples_in
-    bag.imu_stim300.orientation_samples_out.connect_to  viso2_with_imu.pose_samples_imu
-    viso2_with_imu.pose_samples_out.connect_to          viso2_evaluation_imu.odometry_pose
-    gps_transformer.outputPose.connect_to               viso2_evaluation_imu.groundtruth_pose
-    gps_transformer.outputPose.connect_to               viso2_evaluation_imu.groundtruth_pose_not_aligned
+    spartan_vo.delta_vo_out.connect_to                  viso2_with_imu.delta_pose_samples_in
+    #bag.imu_stim300.orientation_samples_out.connect_to  viso2_with_imu.pose_samples_imu
+    gps_transformer.outputPose.connect_to               viso2_with_imu.pose_samples_imu
+    #bag.gps.pose_samples.connect_to                     viso2_with_imu.pose_samples_imu
+    viso2_with_imu.pose_samples_out.connect_to          viso2_evaluation.odometry_pose
+    #gps_transformer.outputPose.connect_to               viso2_evaluation.groundtruth_pose
+    bag.gps.pose_samples.connect_to                     viso2_evaluation.groundtruth_pose
+    #gps_transformer.outputPose.connect_to               viso2_evaluation.groundtruth_pose_not_aligned
+    bag.gps.pose_samples.connect_to                     viso2_evaluation.groundtruth_pose_not_aligned
 
     spartan_vo.vo_out.connect_to                    ga_slam.odometryPose
     #gps_transformer.outputDriftPose.connect_to      ga_slam.odometryPose
@@ -182,17 +188,26 @@ do
     ga_slam.elevationMap.connect_to                 traversability.elevation_map
 
     ####### Start Tasks #######
-    # camera_bb2.start
+    camera_bb2.start
     camera_bb3.start
     # stereo_bb2.start
     stereo_bb3.start
     # stereo_pancam.start
     # viso2.start
+    spartan_vo.start
+    viso2_with_imu.start
+    viso2_evaluation.start
     # pancam_transformer.start
     gps_transformer.start
     orbiter_preprocessing.start
     ga_slam.start
     traversability.start
+
+    #Orocos.log_all_ports
+
+    #viso2_evaluation.log_all_ports
+    #spartan_vo.log_all_ports
+    #ga_slam.log_all_ports
 
     ####### Vizkit Display #######
     # Vizkit.display viso2.pose_samples_out,
