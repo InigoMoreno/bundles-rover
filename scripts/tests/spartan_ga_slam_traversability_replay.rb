@@ -62,11 +62,23 @@ do
 #        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/waypoint_navigation.log',
 #        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/imu.log',
 #       Side Track (Galar)
-        '/media/galar/Dataset1/9June/Traverse/20170609-1556/bb2.log',
-        '/media/galar/Dataset1/9June/Traverse/20170609-1556/bb3.log',
-        '/media/galar/Dataset1/9June/Traverse/20170609-1556/pancam.log',
-        '/media/galar/Dataset1/9June/Traverse/20170609-1556/waypoint_navigation.log',
-        '/media/galar/Dataset1/9June/Traverse/20170609-1556/imu.log',
+#        '/media/galar/Dataset1/9June/Traverse/20170609-1556/bb2.log',
+#        '/media/galar/Dataset1/9June/Traverse/20170609-1556/bb3.log',
+#        '/media/galar/Dataset1/9June/Traverse/20170609-1556/pancam.log',
+#        '/media/galar/Dataset1/9June/Traverse/20170609-1556/waypoint_navigation.log',
+#        '/media/galar/Dataset1/9June/Traverse/20170609-1556/imu.log',
+#       Nominal start (Galar)
+        '/media/galar/Dataset1/9June/Traverse/20170609-1413/bb2.log',
+        '/media/galar/Dataset1/9June/Traverse/20170609-1413/bb3.log',
+        '/media/galar/Dataset1/9June/Traverse/20170609-1413/pancam.log',
+        '/media/galar/Dataset1/9June/Traverse/20170609-1413/waypoint_navigation.log',
+        '/media/galar/Dataset1/9June/Traverse/20170609-1413/imu.log',
+#       Eight Track (Dusk on galar)
+#        '/media/galar/Dataset1/9June/Traverse/20170609-1909/bb2.log',
+#        '/media/galar/Dataset1/9June/Traverse/20170609-1909/bb3.log',
+#        '/media/galar/Dataset1/9June/Traverse/20170609-1909/pancam.log',
+#        '/media/galar/Dataset1/9June/Traverse/20170609-1909/waypoint_navigation.log',
+#        '/media/galar/Dataset1/9June/Traverse/20170609-1909/imu.log',
 
     )
     bag.use_sample_time = true
@@ -99,7 +111,6 @@ do
 
     spartan_vo = Orocos.name_service.get 'spartan_vo'
     spartan_vo.apply_conf_file("/home/galar/rock/perception/orogen/spartan/config/spartan::Task.yml", ["default"])
-    #Orocos.conf.apply(spartan_vo, ['default'], :override => true)
     Bundles.transformer.setup(spartan_vo);
     spartan_vo.configure
 
@@ -167,16 +178,22 @@ do
                                                         robotPose
     # Spartan VO tasks
     spartan_vo.delta_vo_out.connect_to                  viso2_with_imu.delta_pose_samples_in
-    #bag.imu_stim300.orientation_samples_out.connect_to  viso2_with_imu.pose_samples_imu
-    gps_transformer.outputPose.connect_to               viso2_with_imu.pose_samples_imu
-    #bag.gps.pose_samples.connect_to                     viso2_with_imu.pose_samples_imu
-    viso2_with_imu.pose_samples_out.connect_to          viso2_evaluation.odometry_pose
-    #gps_transformer.outputPose.connect_to               viso2_evaluation.groundtruth_pose
-    bag.gps.pose_samples.connect_to                     viso2_evaluation.groundtruth_pose
-    #gps_transformer.outputPose.connect_to               viso2_evaluation.groundtruth_pose_not_aligned
-    bag.gps.pose_samples.connect_to                     viso2_evaluation.groundtruth_pose_not_aligned
 
-    spartan_vo.vo_out.connect_to                    ga_slam.odometryPose
+    bag.imu_stim300.orientation_samples_out.connect_to  viso2_with_imu.pose_samples_imu
+    #gps_transformer.outputPose.connect_to               viso2_with_imu.pose_samples_imu
+    #bag.gps.pose_samples.connect_to                     viso2_with_imu.pose_samples_imu
+
+    viso2_with_imu.pose_samples_out.connect_to          viso2_evaluation.odometry_pose
+    #spartan_vo.vo_out.connect_to                        viso2_evaluation.odometry_pose
+
+    gps_transformer.outputPose.connect_to               viso2_evaluation.groundtruth_pose
+    #bag.gps.pose_samples.connect_to                     viso2_evaluation.groundtruth_pose
+    #bag.gps_heading.pose_samples.connect_to                     viso2_evaluation.groundtruth_pose
+
+    gps_transformer.outputPose.connect_to               viso2_evaluation.groundtruth_pose_not_aligned
+    #bag.gps.pose_samples.connect_to                     viso2_evaluation.groundtruth_pose_not_aligned
+
+    viso2_evaluation.odometry_in_world_pose.connect_to  ga_slam.odometryPose
     #gps_transformer.outputDriftPose.connect_to      ga_slam.odometryPose
 
     # Connect IMU (roll, pitch) + Laser Gyro (yaw)
@@ -205,9 +222,11 @@ do
 
     #Orocos.log_all_ports
 
-    #viso2_evaluation.log_all_ports
-    #spartan_vo.log_all_ports
-    #ga_slam.log_all_ports
+    viso2_evaluation.log_all_ports
+    viso2_with_imu.log_all_ports
+    spartan_vo.log_all_ports
+    ga_slam.log_all_ports
+    gps_transformer.log_all_ports
 
     ####### Vizkit Display #######
     # Vizkit.display viso2.pose_samples_out,
@@ -241,13 +260,16 @@ do
     control = Vizkit.control bag
     control.speed = 1.0
 #    control.seek_to 13000 # Nominal
+    control.seek_to 50000 # Nominal right before moving
+#    control.seek_to 48545 # Nominal ~10 sec before moving
 #    control.seek_to 34700 #17181 #34000 #31000 # Nurburing
 #    control.seek_to 59000 # Eight Track Dusk
-    control.seek_to 15378 #4955 #24000 #15378 # Side Track
+#    control.seek_to 15378 #4955 #24000 #15378 # Side Track
     control.bplay_clicked
 
     ####### ROS RViz #######
     #spawn 'roslaunch ga_slam_visualization ga_slam_visualization.launch'
+
     sleep 3
 
     ####### Vizkit #######

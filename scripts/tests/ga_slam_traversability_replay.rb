@@ -102,7 +102,8 @@ do
     gps_transformer.configure
 
     orbiter_preprocessing = TaskContext.get 'orbiter_preprocessing'
-    Orocos.conf.apply(orbiter_preprocessing, ['default'], :override => true)
+    #Orocos.conf.apply(orbiter_preprocessing, ['default'], :override => true)
+    Orocos.conf.apply(orbiter_preprocessing, ['galar_default'], :override => true)
     # Orocos.conf.apply(orbiter_preprocessing, ['prepared'], :override => true)
     orbiter_preprocessing.configure
 
@@ -210,7 +211,7 @@ do
     control.bplay_clicked
 
     ####### ROS RViz #######
-    spawn 'roslaunch ga_slam_visualization ga_slam_visualization.launch'
+    #spawn 'roslaunch ga_slam_visualization ga_slam_visualization.launch'
     sleep 3
 
     ####### Vizkit #######
