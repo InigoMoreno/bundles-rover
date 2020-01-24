@@ -22,3 +22,23 @@ robotElevationOffset: 2543.0
 loadFilename: '/home/hdpr/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.pcd'
 preprocessingEnabled: false
 
+--- name:galar_default
+loadFilename: '/home/galar/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.ply'
+saveFilename: '/home/galar/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.pcd'
+savePreprocessedCloud: true
+smoothCloud: true
+sorMeanK: 50
+sorStdMultiplier: 0.1
+diffDistanceRatio: 0.5
+cloudYawOffset: 0.0
+#cloudYawOffset: -1.5707
+cloudEastingOffset: 344178.0
+cloudNorthingOffset: 3127579.0
+cloudElevationOffset: 2442.0
+robotEastingOffset: 344043.8
+robotNorthingOffset: 3127408.3
+robotElevationOffset: 2543.0
+# robotEastingOffset: 344043.0
+# robotNorthingOffset: 3127403.0
+# robotElevationOffset: 2296.0
+
