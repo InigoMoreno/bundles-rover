@@ -12,6 +12,6 @@ update_criterias: [SLIP_RATIO, OBSTACLES_DENSITY]
 
 update_criterias: [SLIP_RATIO]
 
---- name:decos_test
+--- name:decos_3terrains
 
 num_terrains: 3 # without considering obstacles
