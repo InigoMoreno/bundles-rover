@@ -38,7 +38,7 @@ exposure: 10
 exposure_mode: manual
 exposure_power: false
 # frames per second
-fps: 3.75
+fps: 15 #1.875
 # size of the frame buffer
 frame_buffer_size: 10
 # External trigger event, allowed values:  EdgeRising, EdgeFalling, EdgeAny, LevelHigh, LevelLow, none
@@ -149,12 +149,13 @@ clear_buffer_if_frame_drop: false
 # no data are written to frame_raw if set to true
 disable_frame_raw: true
 # exposure value if exposure mode is not auto
-exposure: 150 #50 
+exposure: 300 #50 
 # exposure mode (auto, manual, external, none)
 exposure_mode: manual #auto #manual
 exposure_power: true
 # frames per second - When running a stereo camera (BB2, BB3) the value set for framerate should be doubled due to the fact that each frame contains two images
-fps: 7.5
+# accepted values: 1.875, 3.75, 7.5, 15, 30
+fps: 30 #1.875 #3.75 #7.5
 # size of the frame buffer
 frame_buffer_size: 60
 # External trigger event, allowed values:  EdgeRising, EdgeFalling, EdgeAny, LevelHigh, LevelLow, none

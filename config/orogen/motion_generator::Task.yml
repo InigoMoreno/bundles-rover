@@ -1,15 +1,15 @@
 
 --- name:default
 # List containing time to execute the commands
-commandsTime:           [0.0, 10.0, 11.0] #38.57] #52.857] #38.5714] #81.42857] #260]
+commandsTime:           [0.0, 10.0, 60.0, 90] #38.57] #52.857] #38.5714] #81.42857] #260]
 # List containing the translation velocity command associated to the CommandsTimes
-commandsTranslation:    [0.0, 0.07, 0.0]
+commandsTranslation:    [0.0, 0.02, 0.07, 0.0]
 # List containing the rotation velocity command associated to the CommandsTimes
-commandsRotation:       [0.0, 0.0, 0.0]
+commandsRotation:       [0.0, 0.0, 0.0, 0.0]
 # List containing the locomotion_mode switches associated to the CommandsTimes
 # 1 = DRIVING
 # 2 = WHEEL_WALKING
-commandsLocomotionMode: [1, 1, 1]
+commandsLocomotionMode: [1, 1, 1, 1]
 # Flag to execute or not a PTU position command at the beginning
 commandsPTU: 0
 # Pan position (double) in radians to be executed
@@ -58,7 +58,7 @@ commandsTilt: 0.650677778 #60deg=1.046666667 #50deg=0.872222222 #40deg=0.6977777
 
 --- name:stationary
 # List containing time to execute the commands
-commandsTime:           [0.0, 30]
+commandsTime:           [0.0, 130]
 # List containing the translation velocity command associated to the CommandsTimes
 commandsTranslation:    [0.0, 0.0]
 # List containing the rotation velocity command associated to the CommandsTimes
@@ -72,7 +72,7 @@ commandsPTU: 1
 # Pan position (double) in radians to be executed
 commandsPan: 0
 # Tilt position (double) in radians to be executed
-commandsTilt: 0.523598776 #0.523598776 0,348888889 0,872222222 0,872222222
+commandsTilt: 0.35 #0.523598776 0,348888889 0,872222222 0,872222222
 
 
 --- name:ptu_test
