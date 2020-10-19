@@ -32,25 +32,6 @@ libElas_conf:
   filter_adaptive_mean: true
   postprocess_only_left: true
   subsampling: false
-# configuration for sparse features.
-sparse_config:
-  debugImage: true
-  targetNumFeatures: 100
-  maxStereoYDeviation: 5
-  knn: 1
-  distanceFactor: 2
-  isometryFilterMaxSteps: 1000
-  isometryFilterThreshold: 0.1
-  adaptiveDetectorParam: false
-  detectorConfig:
-    SURFparam: 170
-    goodParam: 0.10000000149011612
-    mserParam: 3.0
-    starParam: 9.0
-    fastParam: 12.0
-  descriptorType: :DESCRIPTOR_PSURF
-  detectorType: :DETECTOR_MSER
-  filterType: :FILTER_STEREO
 # calibration parameters for stereo camera intrinsics and extrinsics
 stereoCameraCalibration:
   camLeft:
@@ -119,25 +100,6 @@ libElas_conf:
   filter_adaptive_mean: true
   postprocess_only_left: true
   subsampling: false
-# configuration for sparse features.
-sparse_config:
-  debugImage: true
-  targetNumFeatures: 100
-  maxStereoYDeviation: 5
-  knn: 1
-  distanceFactor: 2
-  isometryFilterMaxSteps: 1000
-  isometryFilterThreshold: 0.1
-  adaptiveDetectorParam: false
-  detectorConfig:
-    SURFparam: 170
-    goodParam: 0.10000000149011612
-    mserParam: 3.0
-    starParam: 9.0
-    fastParam: 12.0
-  descriptorType: :DESCRIPTOR_PSURF
-  detectorType: :DETECTOR_MSER
-  filterType: :FILTER_STEREO
 # calibration parameters for stereo camera setup
 stereoCameraCalibration:
   camLeft:
@@ -211,25 +173,6 @@ libElas_conf:
   filter_adaptive_mean: true
   postprocess_only_left: true
   subsampling: false
-# configuration for sparse features.
-sparse_config:
-  debugImage: true
-  targetNumFeatures: 100
-  maxStereoYDeviation: 5
-  knn: 1
-  distanceFactor: 2
-  isometryFilterMaxSteps: 1000
-  isometryFilterThreshold: 0.1
-  adaptiveDetectorParam: false
-  detectorConfig:
-    SURFparam: 170
-    goodParam: 0.10000000149011612
-    mserParam: 3.0
-    starParam: 9.0
-    fastParam: 12.0
-  descriptorType: :DESCRIPTOR_PSURF
-  detectorType: :DETECTOR_MSER
-  filterType: :FILTER_STEREO
 # calibration parameters for stereo camera setup
 #stereoCameraCalibration:
 #  camLeft:
@@ -329,25 +272,6 @@ libElas_conf:
   filter_adaptive_mean: true
   postprocess_only_left: true
   subsampling: false
-# configuration for sparse features.
-sparse_config:
-  debugImage: true
-  targetNumFeatures: 100
-  maxStereoYDeviation: 5
-  knn: 1
-  distanceFactor: 2
-  isometryFilterMaxSteps: 1000
-  isometryFilterThreshold: 0.1
-  adaptiveDetectorParam: false
-  detectorConfig:
-    SURFparam: 170
-    goodParam: 0.10000000149011612
-    mserParam: 3.0
-    starParam: 9.0
-    fastParam: 12.0
-  descriptorType: :DESCRIPTOR_PSURF
-  detectorType: :DETECTOR_MSER
-  filterType: :FILTER_STEREO
 # calibration parameters for stereo camera setup
 stereoCameraCalibration:
   camLeft:
@@ -422,25 +346,6 @@ libElas_conf:
   filter_adaptive_mean: true
   postprocess_only_left: true
   subsampling: false
-# configuration for sparse features.
-sparse_config:
-  debugImage: true
-  targetNumFeatures: 100
-  maxStereoYDeviation: 5
-  knn: 1
-  distanceFactor: 2
-  isometryFilterMaxSteps: 1000
-  isometryFilterThreshold: 0.1
-  adaptiveDetectorParam: false
-  detectorConfig:
-    SURFparam: 170
-    goodParam: 0.10000000149011612
-    mserParam: 3.0
-    starParam: 9.0
-    fastParam: 12.0
-  descriptorType: :DESCRIPTOR_PSURF
-  detectorType: :DETECTOR_MSER
-  filterType: :FILTER_STEREO
 # calibration parameters for stereo camera setup
 stereoCameraCalibration:
   camLeft:
@@ -510,25 +415,6 @@ libElas_conf:
   filter_adaptive_mean: true
   postprocess_only_left: true
   subsampling: false
-# configuration for sparse features.
-sparse_config:
-  debugImage: true
-  targetNumFeatures: 100
-  maxStereoYDeviation: 5
-  knn: 1
-  distanceFactor: 2
-  isometryFilterMaxSteps: 1000
-  isometryFilterThreshold: 0.1
-  adaptiveDetectorParam: false
-  detectorConfig:
-    SURFparam: 170
-    goodParam: 0.10000000149011612
-    mserParam: 3.0
-    starParam: 9.0
-    fastParam: 12.0
-  descriptorType: :DESCRIPTOR_PSURF
-  detectorType: :DETECTOR_MSER
-  filterType: :FILTER_STEREO
 # calibration parameters for stereo camera setup
 stereoCameraCalibration:
   camLeft:
@@ -601,25 +487,6 @@ libElas_conf:
   filter_adaptive_mean: true
   postprocess_only_left: true
   subsampling: false
-# configuration for sparse features.
-sparse_config:
-  debugImage: true
-  targetNumFeatures: 100
-  maxStereoYDeviation: 5
-  knn: 1
-  distanceFactor: 2
-  isometryFilterMaxSteps: 1000
-  isometryFilterThreshold: 0.1
-  adaptiveDetectorParam: false
-  detectorConfig:
-    SURFparam: 170
-    goodParam: 0.10000000149011612
-    mserParam: 3.0
-    starParam: 9.0
-    fastParam: 12.0
-  descriptorType: :DESCRIPTOR_PSURF
-  detectorType: :DETECTOR_MSER
-  filterType: :FILTER_STEREO
 # calibration parameters for stereo camera setup
 stereoCameraCalibration:
   camLeft:
