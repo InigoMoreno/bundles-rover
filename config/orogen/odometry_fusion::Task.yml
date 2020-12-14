@@ -27,11 +27,11 @@ visual_standard_deviation:
 
 
 # maximum latency, in seconds, of the stream aligner. The aligner will start dropping samples if the difference between the last output and last input is greater than this
-aggregator_max_latency: 0.5
+aggregator_max_latency: 2
 # minimum time, in s, between two sequential samples arrive on inertial_delta_pose_in
 inertial_delta_pose_in_period: 0.001
 # minimum time, in s, between two sequential samples arrive on visual_delta_pose_in
-visual_delta_pose_in_period: 0.5
+visual_delta_pose_in_period: 0.1
 # minimum system time in s between two status readings
 stream_aligner_status_period: 0.1
 
