@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 
 require 'rock/bundle'
-require 'vizkit'
+# require 'vizkit'
 
 include Orocos
 
@@ -173,7 +173,7 @@ do
     #     :widget => Vizkit.default_loader.TrajectoryVisualization
 
     # Vizkit.display camera_bb2.left_frame
-    Vizkit.display camera_bb3.left_frame
+    # Vizkit.display camera_bb3.left_frame
     # Vizkit.display bag.pancam_panorama.left_frame_out
 
     # Vizkit.display stereo_bb2.point_cloud
@@ -200,5 +200,5 @@ do
     sleep 3
 
     ####### Vizkit #######
-    Vizkit.exec
+    # Vizkit.exec
 end
