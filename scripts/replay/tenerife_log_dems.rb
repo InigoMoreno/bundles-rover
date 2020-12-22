@@ -196,8 +196,8 @@ do
     control.bplay_clicked
 
     ####### ROS RViz #######
-    spawn 'roslaunch ga_slam_visualization ga_slam_visualization.launch'
-    sleep 3
+#    spawn 'roslaunch ga_slam_visualization ga_slam_visualization.launch'
+#    sleep 3
 
     ####### Vizkit #######
     # Vizkit.exec
