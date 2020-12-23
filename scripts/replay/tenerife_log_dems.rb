@@ -147,6 +147,9 @@ do
     orbiter_preprocessing.pointCloud.connect_to     ga_slam.orbiterCloud
     gps_transformer.outputPose.connect_to           ga_slam.orbiterCloudPose
 
+    # Log the component output
+    ga_slam.log_all_ports
+
     ####### Start Tasks #######
     # camera_bb2.start
     camera_bb3.start
