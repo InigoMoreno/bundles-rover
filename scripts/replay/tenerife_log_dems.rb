@@ -162,6 +162,12 @@ do
     orbiter_preprocessing.start
     ga_slam.start
 
+
+    # Run log
+    bag.speed = 1
+    while bag.step(true) && log.sample_index <= 2000
+    end
+
     ####### Vizkit Display #######
     # Vizkit.display viso2.pose_samples_out,
     #     :widget => Vizkit.default_loader.RigidBodyStateVisualization
