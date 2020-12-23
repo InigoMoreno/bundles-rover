@@ -43,9 +43,8 @@ bag = Orocos::Log::Replay.open(
         '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/pancam.log',
         '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/waypoint_navigation.log',
         '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/imu.log',
-
-    )
-    bag.use_sample_time = true
+)
+bag.use_sample_time = true
 
 Orocos.run(
     ####### Tasks #######
