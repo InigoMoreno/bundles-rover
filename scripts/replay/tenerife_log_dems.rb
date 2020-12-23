@@ -11,24 +11,8 @@ Bundles.initialize
 Bundles.transformer.load_conf(
     Bundles.find_file('config', 'transforms_scripts_ga_slam.rb'))
 
-Orocos.run(
-    ####### Tasks #######
-    'camera_bb2::Task' => 'camera_bb2',
-    'camera_bb3::Task' => 'camera_bb3',
-    'stereo::Task' => ['stereo_bb2', 'stereo_bb3', 'stereo_pancam'],
-    'viso2::StereoOdometer' => 'viso2',
-    'pancam_transformer::Task' => 'pancam_transformer',
-    'gps_transformer::Task' => 'gps_transformer',
-    'orbiter_preprocessing::Task' => 'orbiter_preprocessing',
-    'ga_slam::Task' => 'ga_slam',
-    ####### Debug #######
-    # :output => '%m-%p.log',
-    # :gdb => ['ga_slam'],
-    # :valgrind => ['ga_slam'],
-    :valgrind_options => ['--track-origins=yes']) \
-do
-    ####### Replay Logs #######
-    bag = Orocos::Log::Replay.open(
+####### Replay Logs #######
+bag = Orocos::Log::Replay.open(
 #       Nominal start
 #        '/media/kvasir/Dataset1/9June/Traverse/20170609-1413/bb2.log',
 #        '/media/kvasir/Dataset1/9June/Traverse/20170609-1413/bb3.log',
@@ -63,6 +47,22 @@ do
     )
     bag.use_sample_time = true
 
+Orocos.run(
+    ####### Tasks #######
+    'camera_bb2::Task' => 'camera_bb2',
+    'camera_bb3::Task' => 'camera_bb3',
+    'stereo::Task' => ['stereo_bb2', 'stereo_bb3', 'stereo_pancam'],
+    'viso2::StereoOdometer' => 'viso2',
+    'pancam_transformer::Task' => 'pancam_transformer',
+    'gps_transformer::Task' => 'gps_transformer',
+    'orbiter_preprocessing::Task' => 'orbiter_preprocessing',
+    'ga_slam::Task' => 'ga_slam',
+    ####### Debug #######
+    # :output => '%m-%p.log',
+    # :gdb => ['ga_slam'],
+    # :valgrind => ['ga_slam'],
+    :valgrind_options => ['--track-origins=yes']) \
+do
     ####### Configure Tasks #######
     camera_bb2 = TaskContext.get 'camera_bb2'
     Orocos.conf.apply(camera_bb2, ['loc_cam_front'], :override => true)
