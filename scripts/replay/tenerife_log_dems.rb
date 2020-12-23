@@ -165,7 +165,7 @@ do
 
     # Run log
     bag.speed = 1
-    while bag.step(true) && log.sample_index <= 2000
+    while bag.step(true) && bag.sample_index <= 2000
     end
 
     ####### Vizkit Display #######
