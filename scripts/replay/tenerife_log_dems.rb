@@ -188,13 +188,13 @@ do
     # Vizkit.display orbiter_preprocessing.pointCloud
 
     ####### Vizkit Replay Control #######
-    control = Vizkit.control bag
-    control.speed = 1.0
+#    control = Vizkit.control bag
+#    control.speed = 1.0
 #    control.seek_to 13000 # Nominal
 #    control.seek_to 34700 #17181 #34000 #31000 # Nurburing
-    control.seek_to 59000 # Eight Track Dusk
+#    control.seek_to 59000 # Eight Track Dusk
 #    control.seek_to 4955 #24000 #15378 # Side Track
-    control.bplay_clicked
+#    control.bplay_clicked
 
     ####### ROS RViz #######
 #    spawn 'roslaunch ga_slam_visualization ga_slam_visualization.launch'
