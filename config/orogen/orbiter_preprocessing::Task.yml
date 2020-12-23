@@ -1,6 +1,6 @@
 --- name:default
-loadFilename: '~/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.ply'
-saveFilename: '~/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.pcd'
+loadFilename: '/home/heimdal/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.ply'
+saveFilename: '/home/heimdal/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.pcd'
 savePreprocessedCloud: true
 smoothCloud: true
 sorMeanK: 50
@@ -19,6 +19,6 @@ robotElevationOffset: 2543.0
 # robotElevationOffset: 2296.0
 
 --- name:prepared
-loadFilename: '~/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.pcd'
+loadFilename: '/home/heimdal/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.pcd'
 preprocessingEnabled: false
 
