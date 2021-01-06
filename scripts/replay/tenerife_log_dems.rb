@@ -12,6 +12,9 @@ Bundles.transformer.load_conf(
     Bundles.find_file('config', 'transforms_scripts_ga_slam.rb'))
 
 ####### Replay Logs #######
+# Specifying multiple logs for replay is not supported by the current version of tools/pocolog
+# The last pocolog version known to work is e31eb91ff4370fb413c03d38d58c2825ad4c3905
+# https://github.com/rock-core/tools-pocolog/compare/e31eb91ff4370fb413c03d38d58c2825ad4c3905...master
 bag = Orocos::Log::Replay.open(
 #       Nominal start
 #        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/bb2.log',
@@ -166,50 +169,6 @@ do
 
     # Run log
     bag.speed = 1
-    while bag.step(true) && bag.sample_index <= 2000
+    while bag.step(true)
     end
-
-    ####### Vizkit Display #######
-    # Vizkit.display viso2.pose_samples_out,
-    #     :widget => Vizkit.default_loader.RigidBodyStateVisualization
-    # Vizkit.display viso2.pose_samples_out,
-    #     :widget => Vizkit.default_loader.TrajectoryVisualization
-    # Vizkit.display gps_transformer.outputPose,
-    #     :widget => Vizkit.default_loader.RigidBodyStateVisualization
-    # Vizkit.display gps_transformer.outputPose,
-    #     :widget => Vizkit.default_loader.TrajectoryVisualization
-    # Vizkit.display ga_slam.estimatedPose,
-    #     :widget => Vizkit.default_loader.RigidBodyStateVisualization
-    # Vizkit.display ga_slam.estimatedPose,
-    #     :widget => Vizkit.default_loader.TrajectoryVisualization
-
-    # Vizkit.display camera_bb2.left_frame
-    # Vizkit.display camera_bb3.left_frame
-    # Vizkit.display bag.pancam_panorama.left_frame_out
-
-    # Vizkit.display stereo_bb2.point_cloud
-    # Vizkit.display stereo_bb3.point_cloud
-    # Vizkit.display stereo_pancam.point_cloud
-    # Vizkit.display viso2.point_cloud_samples_out
-    # Vizkit.display ga_slam.mapCloud
-
-    # Vizkit.display ga_slam.elevationMapMean
-
-    # Vizkit.display orbiter_preprocessing.pointCloud
-
-    ####### Vizkit Replay Control #######
-#    control = Vizkit.control bag
-#    control.speed = 1.0
-#    control.seek_to 13000 # Nominal
-#    control.seek_to 34700 #17181 #34000 #31000 # Nurburing
-#    control.seek_to 59000 # Eight Track Dusk
-#    control.seek_to 4955 #24000 #15378 # Side Track
-#    control.bplay_clicked
-
-    ####### ROS RViz #######
-#    spawn 'roslaunch ga_slam_visualization ga_slam_visualization.launch'
-#    sleep 3
-
-    ####### Vizkit #######
-    # Vizkit.exec
 end
