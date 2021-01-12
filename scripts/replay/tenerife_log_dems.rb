@@ -1,13 +1,53 @@
 #! /usr/bin/env ruby
 
+require 'orocos'
+require 'orocos/log'
 require 'rock/bundle'
-require 'vizkit'
+# require 'vizkit'
 
 include Orocos
 
 Bundles.initialize
 Bundles.transformer.load_conf(
     Bundles.find_file('config', 'transforms_scripts_ga_slam.rb'))
+
+####### Replay Logs #######
+# Specifying multiple logs for replay is not supported by the current version of tools/pocolog
+# The last pocolog version known to work is e31eb91ff4370fb413c03d38d58c2825ad4c3905
+# https://github.com/rock-core/tools-pocolog/compare/e31eb91ff4370fb413c03d38d58c2825ad4c3905...master
+bag = Orocos::Log::Replay.open(
+#       Nominal start
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/bb2.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/bb3.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/pancam.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/waypoint_navigation.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/imu.log',
+#       Nurburing
+#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1448/bb2.log',
+#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1448/bb3.log',
+#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1448/pancam.log',
+#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1448/waypoint_navigation.log',
+#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1448/imu.log',
+#       Nurburing End //Not used due to lack of time
+#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1615/bb2.log',
+#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1615/bb3.log',
+#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1615/pancam.log',
+#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1615/waypoint_navigation.log',
+#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1615/imu.log',
+#       Side Track
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/bb2.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/bb3.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/pancam.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/waypoint_navigation.log',
+#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/imu.log',
+#       Eight Track (Dusk)
+        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/bb2.log',
+        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/bb3.log',
+        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/pancam.log',
+        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/waypoint_navigation.log',
+        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/imu.log',
+)
+bag.use_sample_time = true
 
 Orocos.run(
     ####### Tasks #######
@@ -19,56 +59,13 @@ Orocos.run(
     'gps_transformer::Task' => 'gps_transformer',
     'orbiter_preprocessing::Task' => 'orbiter_preprocessing',
     'ga_slam::Task' => 'ga_slam',
-    'spartan::Task' => 'spartan',
     ####### Debug #######
     # :output => '%m-%p.log',
     # :gdb => ['ga_slam'],
     # :valgrind => ['ga_slam'],
     :valgrind_options => ['--track-origins=yes']) \
 do
-    ####### Replay Logs #######
-    bag = Orocos::Log::Replay.open(
-#       Nominal start
-#        '/media/kvasir/Dataset1/9June/Traverse/20170609-1413/bb2.log',
-#        '/media/kvasir/Dataset1/9June/Traverse/20170609-1413/bb3.log',
-#        '/media/kvasir/Dataset1/9June/Traverse/20170609-1413/pancam.log',
-#        '/media/kvasir/Dataset1/9June/Traverse/20170609-1413/waypoint_navigation.log',
-#        '/media/kvasir/Dataset1/9June/Traverse/20170609-1413/imu.log',
-#       Nurburing
-#        '/media/kvasir/Dataset1/10June/Traverse/20170610-1448/bb2.log',
-#        '/media/kvasir/Dataset1/10June/Traverse/20170610-1448/bb3.log',
-#        '/media/kvasir/Dataset1/10June/Traverse/20170610-1448/pancam.log',
-#        '/media/kvasir/Dataset1/10June/Traverse/20170610-1448/waypoint_navigation.log',
-#        '/media/kvasir/Dataset1/10June/Traverse/20170610-1448/imu.log',
-#       Nurburing End //Not used due to lack of time
-#        '/media/kvasir/Dataset1/10June/Traverse/20170610-1615/bb2.log',
-#        '/media/kvasir/Dataset1/10June/Traverse/20170610-1615/bb3.log',
-#        '/media/kvasir/Dataset1/10June/Traverse/20170610-1615/pancam.log',
-#        '/media/kvasir/Dataset1/10June/Traverse/20170610-1615/waypoint_navigation.log',
-#        '/media/kvasir/Dataset1/10June/Traverse/20170610-1615/imu.log',
-#       Side Track
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/bb2.log',
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/bb3.log',
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/pancam.log',
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/waypoint_navigation.log',
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/imu.log',
-#       Eight Track (Dusk)
-#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/bb2.log',
-#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/bb3.log',
-#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/pancam.log',
-#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/waypoint_navigation.log',
-#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/imu.log',
-
-    )
-    bag.use_sample_time = true
-
     ####### Configure Tasks #######
-
-    spartan = Orocos.name_service.get 'spartan'
-    spartan.apply_conf_file("/home/marta/rock/perception/orogen/spartan/config/spartan::Task.yml", ["default"])
-    Orocos.transformer.setup(spartan);
-    spartan.configure
-
     camera_bb2 = TaskContext.get 'camera_bb2'
     Orocos.conf.apply(camera_bb2, ['loc_cam_front'], :override => true)
     camera_bb2.configure
@@ -153,6 +150,10 @@ do
     orbiter_preprocessing.pointCloud.connect_to     ga_slam.orbiterCloud
     gps_transformer.outputPose.connect_to           ga_slam.orbiterCloudPose
 
+    # Log the component output
+    ga_slam.log_all_ports
+    orbiter_preprocessing.log_all_ports
+
     ####### Start Tasks #######
     # camera_bb2.start
     camera_bb3.start
@@ -165,48 +166,9 @@ do
     orbiter_preprocessing.start
     ga_slam.start
 
-    ####### Vizkit Display #######
-    # Vizkit.display viso2.pose_samples_out,
-    #     :widget => Vizkit.default_loader.RigidBodyStateVisualization
-    # Vizkit.display viso2.pose_samples_out,
-    #     :widget => Vizkit.default_loader.TrajectoryVisualization
-    # Vizkit.display gps_transformer.outputPose,
-    #     :widget => Vizkit.default_loader.RigidBodyStateVisualization
-    # Vizkit.display gps_transformer.outputPose,
-    #     :widget => Vizkit.default_loader.TrajectoryVisualization
-    # Vizkit.display ga_slam.estimatedPose,
-    #     :widget => Vizkit.default_loader.RigidBodyStateVisualization
-    # Vizkit.display ga_slam.estimatedPose,
-    #     :widget => Vizkit.default_loader.TrajectoryVisualization
 
-    # Vizkit.display camera_bb2.left_frame
-    Vizkit.display camera_bb3.left_frame
-    # Vizkit.display bag.pancam_panorama.left_frame_out
-
-    # Vizkit.display stereo_bb2.point_cloud
-    # Vizkit.display stereo_bb3.point_cloud
-    # Vizkit.display stereo_pancam.point_cloud
-    # Vizkit.display viso2.point_cloud_samples_out
-    # Vizkit.display ga_slam.mapCloud
-
-    # Vizkit.display ga_slam.elevationMapMean
-
-    # Vizkit.display orbiter_preprocessing.pointCloud
-
-    ####### Vizkit Replay Control #######
-    control = Vizkit.control bag
-    control.speed = 1.0
-#    control.seek_to 13000 # Nominal
-#    control.seek_to 34700 #17181 #34000 #31000 # Nurburing
-#    control.seek_to 59000 # Eight Track Dusk
-    control.seek_to 15378 #4955 #24000 #15378 # Side Track
-    control.bplay_clicked
-
-    ####### ROS RViz #######
-    #spawn 'roslaunch ga_slam_visualization ga_slam_visualization.launch'
-    sleep 3
-
-    ####### Vizkit #######
-    Vizkit.exec
+    # Run log
+    bag.speed = 1
+    while bag.step(true)
+    end
 end
-
