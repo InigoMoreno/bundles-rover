@@ -148,7 +148,6 @@ do
 
     # Log the component output
     ga_slam.log_all_ports
-    orbiter_preprocessing.log_all_ports
 
     ####### Start Tasks #######
     # camera_bb2.start
