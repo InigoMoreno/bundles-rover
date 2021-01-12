@@ -54,4 +54,6 @@ orbiterMapResolution: 0.5
 --- name:solving_occlusion
 mapLength: 10.0
 mapResolution: 0.04
+orbiterMapLength: 100
+orbiterMapResolution: 0.04
 
