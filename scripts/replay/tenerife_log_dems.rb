@@ -139,7 +139,7 @@ do
                                                         robotPose
 
     #viso2.pose_samples_out.connect_to               ga_slam.odometryPose
-    gps_transformer.outputDriftPose.connect_to      ga_slam.odometryPose
+    gps_transformer.outputPose.connect_to      ga_slam.odometryPose
 
     # Connect IMU (roll, pitch) + Laser Gyro (yaw)
     gps_transformer.outputPose.connect_to           ga_slam.imuOrientation
