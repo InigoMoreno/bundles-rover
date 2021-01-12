@@ -12,9 +12,6 @@ Bundles.transformer.load_conf(
     Bundles.find_file('config', 'transforms_scripts_ga_slam.rb'))
 
 ####### Replay Logs #######
-# Specifying multiple logs for replay is not supported by the current version of tools/pocolog
-# The last pocolog version known to work is e31eb91ff4370fb413c03d38d58c2825ad4c3905
-# https://github.com/rock-core/tools-pocolog/compare/e31eb91ff4370fb413c03d38d58c2825ad4c3905...master
 bag = Orocos::Log::Replay.open(
 #       Nominal start
 #        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/bb2.log',
