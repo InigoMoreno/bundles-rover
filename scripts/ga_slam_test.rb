@@ -101,7 +101,7 @@ do
 
     ga_slam = TaskContext.get 'ga_slam'
     # Orocos.conf.apply(ga_slam, ['default'], :override => true)
-    Orocos.conf.apply(ga_slam, ['default','test'], :override => true)
+    Orocos.conf.apply(ga_slam, ['default', 'test', 'solving_occlusion'], :override => true)
     Bundles.transformer.setup(ga_slam)
     ga_slam.configure
 
