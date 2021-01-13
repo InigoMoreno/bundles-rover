@@ -95,7 +95,7 @@ do
     gps_transformer.configure
 
     orbiter_preprocessing = TaskContext.get 'orbiter_preprocessing'
-    Orocos.conf.apply(orbiter_preprocessing, ['default'], :override => true)
+    Orocos.conf.apply(orbiter_preprocessing, ['default', 'ga_slam'], :override => true)
     # Orocos.conf.apply(orbiter_preprocessing, ['prepared'], :override => true)
     orbiter_preprocessing.configure
 
