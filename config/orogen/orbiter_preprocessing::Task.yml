@@ -24,4 +24,5 @@ preprocessingEnabled: false
 
 --- name:solving_occlusion
 diffDistanceRatio: 0.1 # we want to translate the global map at every time-step so we get accurate ground-truth
+rotateCloudWithRobotHeading: false
 
