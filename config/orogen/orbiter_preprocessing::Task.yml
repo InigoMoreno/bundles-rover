@@ -22,3 +22,6 @@ robotElevationOffset: 2543.0
 loadFilename: '/home/user/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.pcd'
 preprocessingEnabled: false
 
+--- name:solving_occlusion
+diffDistanceRatio: 0.1 # we want to translate the global map at every time-step so we get accurate ground-truth
+

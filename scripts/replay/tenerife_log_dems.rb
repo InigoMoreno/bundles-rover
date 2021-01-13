@@ -96,13 +96,13 @@ do
     gps_transformer.configure
 
     orbiter_preprocessing = TaskContext.get 'orbiter_preprocessing'
-    Orocos.conf.apply(orbiter_preprocessing, ['default'], :override => true)
+    Orocos.conf.apply(orbiter_preprocessing, ['default', 'solving_occlusion'], :override => true)
     # Orocos.conf.apply(orbiter_preprocessing, ['prepared'], :override => true)
     orbiter_preprocessing.configure
 
     ga_slam = TaskContext.get 'ga_slam'
     # Orocos.conf.apply(ga_slam, ['default'], :override => true)
-    Orocos.conf.apply(ga_slam, ['default','test'], :override => true)
+    Orocos.conf.apply(ga_slam, ['default', 'test', 'solving_occlusion'], :override => true)
     Bundles.transformer.setup(ga_slam)
     ga_slam.configure
 
