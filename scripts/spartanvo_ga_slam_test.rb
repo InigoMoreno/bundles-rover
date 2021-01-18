@@ -189,7 +189,7 @@ do
     # Vizkit.display viso2.point_cloud_samples_out
     # Vizkit.display ga_slam.mapCloud
 
-    # Vizkit.display ga_slam.elevationMapMean
+    # Vizkit.display ga_slam.localElevationMapMean
 
     # Vizkit.display orbiter_preprocessing.pointCloud
 
