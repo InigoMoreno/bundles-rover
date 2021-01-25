@@ -27,6 +27,8 @@ gpsRefFrame: true
 cloudYawOffset: 0
 
 --- name:solving_occlusion
+loadFilename: '/media/heimdal/Dataset1/Maps/minas_densified_point_cloud_part_1.ply'
+saveFilename: '/media/heimdal/Dataset1/Maps/minas_densified_point_cloud_part_1.pld'
 gpsRefFrame: true
 cloudYawOffset: 0
 diffDistanceRatio: 0.1 # we want to translate the global map at every time-step so we get accurate ground-truth
