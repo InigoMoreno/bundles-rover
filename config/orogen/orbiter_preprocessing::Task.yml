@@ -1,6 +1,6 @@
 --- name:default
-loadFilename: '/home/user/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.ply'
-saveFilename: '/home/user/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.pcd'
+loadFilename: '/media/heimdal/Dataset1/Maps/minas_densified_point_cloud_part_1.ply'
+saveFilename: '/media/heimdal/Dataset1/Maps/minas_densified_point_cloud_part_1.pcd'
 savePreprocessedCloud: true
 smoothCloud: true
 sorMeanK: 50
@@ -19,7 +19,7 @@ robotElevationOffset: 2543.0
 # robotElevationOffset: 2296.0
 
 --- name:prepared
-loadFilename: '/home/user/rock/bundles/rover/data/maps/tenerife/minas_densified_point_cloud_part_1.pcd'
+loadFilename: '/media/heimdal/Dataset1/Maps/minas_densified_point_cloud_part_1.pcd'
 preprocessingEnabled: false
 
 --- name:ga_slam
@@ -27,8 +27,6 @@ gpsRefFrame: true
 cloudYawOffset: 0
 
 --- name:solving_occlusion
-loadFilename: '/media/heimdal/Dataset1/Maps/minas_densified_point_cloud_part_1.ply'
-saveFilename: '/media/heimdal/Dataset1/Maps/minas_densified_point_cloud_part_1.pcd'
 gpsRefFrame: true
 cloudYawOffset: 0
 diffDistanceRatio: 0.1 # we want to translate the global map at every time-step so we get accurate ground-truth
