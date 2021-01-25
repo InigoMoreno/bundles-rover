@@ -9,7 +9,7 @@ include Orocos
 
 Orocos.run do
     ####### Replay Logs #######
-    bag = Orocos::Log::Replay.open('/media/heimdal/Dataset1/logs/20210113-1950/ga_slam.0.log')
+    bag = Orocos::Log::Replay.open('/media/heimdal/Dataset1/logs/20210125-1045/ga_slam.0.log')
     bag.use_sample_time = true
 
 
