@@ -7,7 +7,7 @@ include Orocos
 
 # Replay a ga_slam.0.log and visualize the output ports
 
-Orocos.run(
+Orocos.run()
     ####### Tasks #######
 do
     ####### Replay Logs #######
