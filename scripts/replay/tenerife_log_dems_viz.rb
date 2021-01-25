@@ -183,10 +183,13 @@ do
     # Vizkit.display viso2.point_cloud_samples_out
     # Vizkit.display ga_slam.mapCloud
 
-    Vizkit.display ga_slam.localElevationMapMean
-    Vizkit.display ga_slam.globalElevationMapMean
-
     Vizkit.display orbiter_preprocessing.pointCloud
+
+    Vizkit.display ga_slam.localElevationMapMean,
+        :widget => Vizkit.default_loader.DistanceImageVisualization
+    Vizkit.display ga_slam.localElevationMapVariance
+    Vizkit.display ga_slam.globalElevationMapMean,
+        :widget => Vizkit.default_loader.DistanceImageVisualization
 
     ####### Vizkit Replay Control #######
     control = Vizkit.control bag
