@@ -29,6 +29,6 @@ cloudYawOffset: 0
 --- name:solving_occlusion
 gpsRefFrame: true
 cloudYawOffset: 0
-diffDistanceRatio: 0.05 # we want to translate the global map at every time-step so we get accurate ground-truth
+diffDistanceRatio: 0.01 # we want to translate the global map at every time-step so we get accurate ground-truth
 smoothCloud: false
 
