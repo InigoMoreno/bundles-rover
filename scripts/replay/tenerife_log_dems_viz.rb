@@ -3,6 +3,7 @@
 require 'orocos'
 require 'orocos/log'
 require 'rock/bundle'
+require 'vizkit'
 
 include Orocos
 
@@ -95,9 +96,6 @@ do
     orbiter_preprocessing.pointCloud.connect_to     ga_slam.orbiterCloud
     gps_transformer.outputPose.connect_to           ga_slam.orbiterCloudPose
 
-    # Log the component output
-    ga_slam.log_all_ports
-
     ####### Start Tasks #######
     camera_bb3.start
     stereo_bb3.start
@@ -106,8 +104,41 @@ do
     ga_slam.start
 
 
-    # Run log
-    bag.speed = 1
-    while bag.step(true)
-    end
+    ####### Vizkit Display #######
+    # Vizkit.display gps_transformer.outputPose,
+    #     :widget => Vizkit.default_loader.RigidBodyStateVisualization
+    # Vizkit.display gps_transformer.outputPose,
+    #     :widget => Vizkit.default_loader.TrajectoryVisualization
+    # Vizkit.display ga_slam.estimatedPose,
+    #     :widget => Vizkit.default_loader.RigidBodyStateVisualization
+    # Vizkit.display ga_slam.estimatedPose,
+    #     :widget => Vizkit.default_loader.TrajectoryVisualization
+
+    Vizkit.display camera_bb3.left_frame
+
+    # Vizkit.display stereo_bb3.point_cloud
+    # Vizkit.display ga_slam.mapCloud
+
+    # Vizkit.display orbiter_preprocessing.pointCloud
+
+    Vizkit.display ga_slam.localElevationMapMean
+    Vizkit.display ga_slam.localElevationMapVariance
+    Vizkit.display ga_slam.globalElevationMapMean
+
+    # Vizkit.display ga_slam.localElevationMapMean,
+    #     :widget => Vizkit.default_loader.DistanceImageVisualization
+    # Vizkit.display ga_slam.globalElevationMapMean,
+    #     :widget => Vizkit.default_loader.DistanceImageVisualization
+
+    ####### Vizkit Replay Control #######
+    control = Vizkit.control bag
+#    control.speed = 1.0
+#    control.seek_to 13000 # Nominal
+#    control.seek_to 34700 #17181 #34000 #31000 # Nurburing
+#    control.seek_to 59000 # Eight Track Dusk
+#    control.seek_to 4955 #24000 #15378 # Side Track
+    control.bplay_clicked
+
+    ####### Vizkit #######
+    Vizkit.exec
 end

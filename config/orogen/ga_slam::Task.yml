@@ -52,9 +52,9 @@ orbiterMapLength: 100
 orbiterMapResolution: 0.5
 
 --- name:solving_occlusion
-mapLength: 50.0
-mapResolution: 0.5
-orbiterMapLength: 50
-orbiterMapResolution: 0.5
+mapLength: 30.0
+mapResolution: 0.05
+orbiterMapLength: 30.0
+orbiterMapResolution: 0.05
 traversedDistanceThreshold: 1000000.0 # we do not want to use global pose correction as we are feeding ground-truth odometry info
 
