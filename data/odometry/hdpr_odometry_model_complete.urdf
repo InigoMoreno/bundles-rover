@@ -407,7 +407,7 @@
 
 <!-- right joint that connects base and right_rocker with a revolute joint -->
 <!-- FIXME: Currently the passive joints have been FIXED until we can measure or derive them -->
-<joint name="right_passive" type="fixed">
+<joint name="right_passive" type="continuous">
     <parent link="body"/>
     <child link="right_rocker"/>
     <origin xyz="0.0 -0.41 0.0" rpy="0 0.00 0"/> 
@@ -417,7 +417,7 @@
 </joint>
 
 <!-- left joint that connects base and left_rocker with a revolute joint -->
-<joint name="left_passive" type="fixed">
+<joint name="left_passive" type="continuous">
     <parent link="body"/>
     <child link="left_rocker"/>
     <origin xyz="0.0 0.41 0" rpy="0 0.00 0"/> 
@@ -427,7 +427,7 @@
 </joint>
 
 <!-- left joint that connects left_bogie and left rocker with a revolute -->
-<joint name="left_rocker_bogie" type="fixed">
+<joint name="left_rocker_bogie" type="continuous">
     <parent link="left_rocker"/>
     <child link="left_bogie"/>
     <origin xyz="-0.375 0.0 -0.260" rpy="0 0.0 0"/>
@@ -436,7 +436,7 @@
 </joint>
 
 <!-- right joint that connects right_bogie and right rocker with a revolute -->
-<joint name="right_rocker_bogie" type="fixed">
+<joint name="right_rocker_bogie" type="continuous">
     <parent link="right_rocker"/>
     <child link="right_bogie"/>
     <origin xyz="-0.375 0 -0.260" rpy="0 0.0 0"/>

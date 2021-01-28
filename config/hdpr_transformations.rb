@@ -59,6 +59,8 @@ static_transform Eigen::Quaternion.Identity(),
 # TODO: Measure again when final position has come up
 static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.0, -0.454-Math::PI/2.0), 2,1,0),
     Eigen::Vector3.new( 0.6, 0.0, 0.15), "tof" => "body"
+static_transform Eigen::Quaternion.from_euler(Eigen::Vector3.new(-Math::PI/2.0, 0.0, -0.454-Math::PI/2.0), 2,1,0),
+    Eigen::Vector3.new( 0.6, 0.0, 0.15), "tof_camera" => "body"
 
 static_transform Eigen::Quaternion.Identity(),
     Eigen::Vector3.new(0, 0, 0), "left_camera_navcam" => "left_camera_bb3"
