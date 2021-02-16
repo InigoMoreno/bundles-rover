@@ -41,6 +41,10 @@ bag = Orocos::Log::Replay.open(
         '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/bb3.log',
         '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/waypoint_navigation.log',
         '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/imu.log',
+#       Valley Circle
+#        '/media/heimdal/Dataset1/11June/Traverse/20170611-1407/bb3.log',
+#        '/media/heimdal/Dataset1/11June/Traverse/20170611-1407/waypoint_navigation.log',
+#        '/media/heimdal/Dataset1/11June/Traverse/20170611-1407/imu.log',
 )
 bag.use_sample_time = true
 
