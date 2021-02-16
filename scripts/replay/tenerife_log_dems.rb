@@ -16,6 +16,14 @@ bag = Orocos::Log::Replay.open(
 #        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/bb3.log',
 #        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/waypoint_navigation.log',
 #        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/imu.log',
+#       Nominal end
+#       '/media/heimdal/Dataset1/9June/Traverse/20170609-1450/bb3.log',
+#       '/media/heimdal/Dataset1/9June/Traverse/20170609-1450/waypoint_navigation.log',
+#       '/media/heimdal/Dataset1/9June/Traverse/20170609-1450/imu.log',
+#       Nominal reverse
+#       '/media/heimdal/Dataset1/9June/Traverse/20170610-1315/bb3.log',
+#       '/media/heimdal/Dataset1/9June/Traverse/20170610-1315/waypoint_navigation.log',
+#       '/media/heimdal/Dataset1/9June/Traverse/20170610-1315/imu.log',
 #       Nurburing
 #        '/media/heimdal/Dataset1/10June/Traverse/20170610-1448/bb3.log',
 #        '/media/heimdal/Dataset1/10June/Traverse/20170610-1448/waypoint_navigation.log',
