@@ -1,6 +1,6 @@
 --- name:exoter
 # the device port
-serial_port: /dev/ttyS4  #ttyS4 for PC104, if connected through USB/Serial converter then use ttyUSB1; in HDPR repo: ttyXR0
+serial_port: /dev/ttyUSB1  #ttyS4 for PC104, if connected through USB/Serial converter then use ttyUSB1; in HDPR repo: ttyXR0
 # Baud rate to open the serial com_port.
 serial_baudrate: 38400
 # the expected time (in seconds) to have a whole package in the fd (the device port)
@@ -43,7 +43,7 @@ gnss_target_frame: "world_osg" #transformer names. No transformation convention
 
 --- name:Spain
 # UTM zone for conversion of WGS84 to UTM
-utm_zone: 28
+utm_zone: 30
 # UTM north for conversion of WGS84 to UTM
 utm_north: true
 # Geodetic datum typically NAD83 or WGS84 
@@ -115,6 +115,14 @@ pose_origin:
   - 344182.92
   - 3127638.37
   - 2299.0
+
+--- name:Malaga
+# Origin in UTM coordinates, that is used for position readings.
+pose_origin:
+  data:
+  - 367027.1
+  - 4064425.8
+  - 0.0
 
 --- name:calibration
 # Offset to 0 so the value in rock-display would show the value needed to set here

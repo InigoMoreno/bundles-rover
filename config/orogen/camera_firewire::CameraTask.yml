@@ -33,18 +33,19 @@ clear_buffer_if_frame_drop: false
 # no data are written to frame_raw if set to true
 disable_frame_raw: true
 # exposure value if exposure mode is not auto
-exposure: 10
+exposure: 350
 # exposure mode (auto, manual, external, none)
 exposure_mode: manual
 exposure_power: false
-# frames per second
-fps: 3.75
+# frames per second - When running a stereo camera (BB2, BB3) the value set for framerate should be doubled due to the fact that each frame contains two images
+fps: 7.5
 # size of the frame buffer
-frame_buffer_size: 10
+frame_buffer_size: 60
 # External trigger event, allowed values:  EdgeRising, EdgeFalling, EdgeAny, LevelHigh, LevelLow, none
 frame_start_trigger_event: EdgeRising
 # gain value
-gain: 16
+# Set to high for low motion blur, but high noise, set to low for smooth picture, but lots of motion blur
+gain: 0
 # gain mode
 gain_mode_auto: false
 # turns gamma on or off
@@ -61,6 +62,8 @@ hdr_voltage_3: 0
 hdr_voltage_4: 0
 # height of the camera frame
 height: 768
+# image count per packet, 2 images per one packet for the BB2
+image_count: 2
 # interval for logging a statistic about valid and invalid frames per second (0= logging of) -> it is saved as frame attrib StatFrameRate
 log_interval_in_sec: 5
 # opening mode (Master, Monitor, MasterMulticast)
@@ -93,14 +96,35 @@ synchronize_time_interval: 0
 trigger_mode: fixed
 # true => undistort the image before it is writen to the output port
 undistort: false
+# set saturation to on/off
+saturation_power: false
+# saturation mode (auto, manual)
+saturation_mode: manual
+# saturation of the image
+saturation: 300
+# set the sharpness to on/off
+sharpness_power: false
+# sharpness mode (auto, manual)
+sharpness_mode: manual
+# sharpness of the image
+sharpness: 340
+# decides if auto exposure has control or not over the shutter (auto, manual)
+#shutter_mode: auto
+shutter_mode: manual
+# time that the shutter is open when taking an image
+shutter_time: 200
+# set whitebalance to on/off
+whitebalance_power: true
 # How fast the Auto white balance will update.
 whitebalance_auto_rate: 100
 # Sets a range of scene color changes in which the automatic whitebalance will not respond.
 whitebalance_auto_threshold: 5
 # Red gain expressed as a percentage of the camera default setting.
-whitebalance_red: 530
+whitebalance_red: 550
+#whitebalance_red: 530
 # Blue gain expressed as a percentage of the camera default setting.
-whitebalance_blue: 720
+whitebalance_blue: 602
+#whitebalance_blue: 720
 # whitebalance mode (auto, manual, auto_once, none)
 whitebalance_mode: manual
 # width of the camera frame
@@ -149,9 +173,9 @@ clear_buffer_if_frame_drop: false
 # no data are written to frame_raw if set to true
 disable_frame_raw: true
 # exposure value if exposure mode is not auto
-exposure: 10
+exposure: 350
 # exposure mode (auto, manual, external, none)
-exposure_mode: auto
+exposure_mode: manual
 exposure_power: false
 # frames per second - When running a stereo camera (BB2, BB3) the value set for framerate should be doubled due to the fact that each frame contains two images
 fps: 7.5
@@ -160,7 +184,8 @@ frame_buffer_size: 60
 # External trigger event, allowed values:  EdgeRising, EdgeFalling, EdgeAny, LevelHigh, LevelLow, none
 frame_start_trigger_event: EdgeRising
 # gain value
-gain: 16
+# Set to high for low motion blur, but high noise, set to low for smooth picture, but lots of motion blur
+gain: 0
 # gain mode
 gain_mode_auto: false
 # turns gamma on or off
@@ -177,6 +202,8 @@ hdr_voltage_3: 0
 hdr_voltage_4: 0
 # height of the camera frame
 height: 768
+# image count per packet, 2 images per one packet for the BB2
+image_count: 2
 # interval for logging a statistic about valid and invalid frames per second (0= logging of) -> it is saved as frame attrib StatFrameRate
 log_interval_in_sec: 5
 # opening mode (Master, Monitor, MasterMulticast)
@@ -209,14 +236,35 @@ synchronize_time_interval: 0
 trigger_mode: fixed
 # true => undistort the image before it is writen to the output port
 undistort: false
+# set saturation to on/off
+saturation_power: false
+# saturation mode (auto, manual)
+saturation_mode: manual
+# saturation of the image
+saturation: 300
+# set the sharpness to on/off
+sharpness_power: false
+# sharpness mode (auto, manual)
+sharpness_mode: manual
+# sharpness of the image
+sharpness: 340
+# decides if auto exposure has control or not over the shutter (auto, manual)
+#shutter_mode: auto
+shutter_mode: manual
+# time that the shutter is open when taking an image
+shutter_time: 200
+# set whitebalance to on/off
+whitebalance_power: true
 # How fast the Auto white balance will update.
 whitebalance_auto_rate: 100
 # Sets a range of scene color changes in which the automatic whitebalance will not respond.
 whitebalance_auto_threshold: 5
 # Red gain expressed as a percentage of the camera default setting.
-whitebalance_red: 530
+whitebalance_red: 550
+#whitebalance_red: 530
 # Blue gain expressed as a percentage of the camera default setting.
-whitebalance_blue: 720
+whitebalance_blue: 602
+#whitebalance_blue: 720
 # whitebalance mode (auto, manual, auto_once, none)
 whitebalance_mode: manual
 # width of the camera frame
