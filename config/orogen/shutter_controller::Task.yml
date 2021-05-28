@@ -29,8 +29,8 @@ config:
 --- name:bb2malaga
 config:
   shutter_computation_period: 3
-  init_shutter_time: 10
-  min_shutter_time: 0
+  init_shutter_time: 15
+  min_shutter_time: 10
   max_shutter_time: 864
   max_intensity: 255
   fact_min_intensity: 0.20
