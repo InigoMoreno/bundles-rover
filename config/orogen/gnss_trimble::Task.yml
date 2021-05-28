@@ -1,14 +1,14 @@
 --- name:exoter
 # the device port
-serial_port: /dev/ttyUSB1  #ttyS4 for PC104, if connected through USB/Serial converter then use ttyUSB1; in HDPR repo: ttyXR0
+serial_port: /dev/exoter-dgps  #ttyS4 for PC104, if connected through USB/Serial converter then use ttyUSB1; in HDPR repo: ttyXR0
 # Baud rate to open the serial com_port.
 serial_baudrate: 38400
 # the expected time (in seconds) to have a whole package in the fd (the device port)
 serial_timeout: 0.2
 # from frame for the transformer
-gnss_source_frame: "body" #transformer names. No transformation convention
+#gnss_source_frame: "body" #transformer names. No transformation convention
 # to frame for the transformer
-gnss_target_frame: "world_osg" #transformer names. No transformation convention
+#gnss_target_frame: "world_osg" #transformer names. No transformation convention
 
 --- name:HDPR
 # the device port
