@@ -135,3 +135,11 @@ globalCostFile: '../../../rover/data/maps/marsTerrain/global_marsTerrain_2cm.txt
 global_offset: [500,500]
 global_res: 0.02
 #local_res: 0.05
+
+--- name:exoter_rover
+elevationFile: '../../../rover/data/maps/umaRescueArea_2021/UMARescueArea_10cmDEM.txt'
+localCostFile: '../../../rover/data/maps/umaRescueArea_2021/UMARescueArea_10cmDEM.txt'
+globalCostFile: '../../../rover/data/maps/umaRescueArea_2021/UMARescueArea_10cmDEM.txt'
+global_offset: [366966.844, 4064276.833]
+global_res: 0.02
+#local_res: 0.05
