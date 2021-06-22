@@ -251,3 +251,17 @@ undistort: false
 #--- name:stitch
 # Distance in pixels between left and right image for a rough stitching. Leave empty for not stitching
 #stitching_offset: [30, 0]
+
+--- name:udp_communication
+
+udp_config: true
+
+# UDP port to send right camera info
+bb2_port_c_r: 7000
+
+# UDP port to send left camera info
+bb2_port_c_l: 7001
+
+# Local address (Cameras)
+addr_c: "172.16.78.23"
+
