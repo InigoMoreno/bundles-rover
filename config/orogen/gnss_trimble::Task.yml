@@ -120,9 +120,9 @@ pose_origin:
 # Origin in UTM coordinates, that is used for position readings.
 pose_origin:
   data:
-  - 367027.1
-  - 4064425.8
-  - 0.0
+  - 367028
+  - 4064510
+  - 52.138
 
 --- name:calibration
 # Offset to 0 so the value in rock-display would show the value needed to set here

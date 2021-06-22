@@ -14,7 +14,7 @@ biasgyro: [-0.000586893,0.00007351,-0.0001117164]
 biasacc: [0,0,0]
 #biasgyro: [-0.00067397,0.000164118,0.000480464]
 #biasacc: [5.91841e-09,-4.54387e-10,0]
-init_heading: 180.0
+init_heading: 30
 
 --- name:calibration
 # General configuration values to run the task
@@ -114,7 +114,7 @@ location:
 location:
   latitude: 0.640827459 #36deg 43min 0.2sec NORTH
   longitude: -0.78358166 # 4deg 29min 19.2sec WEST
-  altitude: 20
+  altitude: 50
   magnetic_declination: -0.16 # -0deg 9min WEST
   magnetic_declination_mode: :WEST
   dip_angle: 0.00663
