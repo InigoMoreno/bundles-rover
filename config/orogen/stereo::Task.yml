@@ -523,3 +523,15 @@ stereoCameraCalibration:
     rx: -0.002154805092804208
     ry: 0.0006652668141734516
     rz: -0.0002057358731394412
+
+    
+--- name:udp_communication
+
+udp_config: true
+
+# UDP ports to read data from UDP
+stereo_port_c: 8000
+
+# Local address (Cameras)
+addr_c: "172.16.78.23"
+
