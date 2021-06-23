@@ -137,9 +137,9 @@ global_res: 0.02
 #local_res: 0.05
 
 --- name:exoter_rover
-elevationFile: '../../../rover/data/maps/umaRescueArea_2021/UMARescueArea_10cmDEM.txt'
-localCostFile: '../../../rover/data/maps/umaRescueArea_2021/UMARescueArea_10cmDEM.txt'
-globalCostFile: '../../../rover/data/maps/umaRescueArea_2021/UMARescueArea_10cmDEM.txt'
+elevationFile: '../../../rover/data/maps/umaRescueArea_2021/elevation_map_UMA.txt'
+localCostFile: '../../../rover/data/maps/umaRescueArea_2021/global_obsmap_UMA.txt'
+globalCostFile: '../../../rover/data/maps/umaRescueArea_2021/global_obsmap_UMA.txt'
 global_offset: [366966.844, 4064276.833]
 global_res: 0.02
 #local_res: 0.05
