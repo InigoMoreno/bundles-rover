@@ -263,7 +263,7 @@ bb2_port_c_r: 7000
 bb2_port_c_l: 7001
 
 # Local address (Cameras)
-addr_c: "172.16.78.23"
+addr_c: "192.168.43.26"
 
 --- name:udp_communication_loccam
 
@@ -276,5 +276,5 @@ bb2_port_c_r: 7002
 bb2_port_c_l: 7003
 
 # Local address (Cameras)
-addr_c: "172.16.78.23"
+addr_c: "192.168.43.26"
 
