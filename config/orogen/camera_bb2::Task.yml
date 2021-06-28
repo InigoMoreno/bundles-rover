@@ -45,6 +45,7 @@ calibration_parameters:
 #output_format: :MODE_RGB
 output_format: :MODE_GRAYSCALE
 undistort: false
+loccam: true
 
 #    ___        _____    ___   ___ ___ ___ 
 #   | __|_ ____|_   _|__| _ \ | _ ) _ )_  )
@@ -89,6 +90,7 @@ calibration_parameters:
 #output_format: :MODE_RGB
 output_format: :MODE_GRAYSCALE
 undistort: false
+navcam: true
 
 --- name:egp_bb2
 calibration_parameters:

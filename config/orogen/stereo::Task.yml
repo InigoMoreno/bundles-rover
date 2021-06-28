@@ -65,6 +65,7 @@ stereoCameraCalibration:
     ry: 0.006861413405440
     rz: -0.000787881379522
 output_format_sync: :MODE_GRAYSCALE
+navcam: true
 
 --- name:hdpr_bb2
 # gaussian kernel for dense stereo pre-processing.
@@ -137,6 +138,7 @@ stereoCameraCalibration:
     ry: -0.008842211883599646
     rz: -0.003584645009846816
 output_format_sync: :MODE_GRAYSCALE
+loccam: true
 
 --- name:hdpr_bb2_ga_slam_tenerife
 # gaussian kernel for dense stereo pre-processing.
