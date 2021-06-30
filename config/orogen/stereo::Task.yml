@@ -535,7 +535,7 @@ udp_config: true
 stereo_port_c: 8000
 
 # Local address (Cameras)
-addr_c: "192.168.43.26"
+addr_c: "127.0.0.1"
 
 --- name:udp_communication_loccam
 
@@ -545,5 +545,5 @@ udp_config: true
 stereo_port_c: 8001
 
 # Local address (Cameras)
-addr_c: "192.168.43.26"
+addr_c: "127.0.0.1"
 
