@@ -120,8 +120,8 @@ pose_origin:
 # Origin in UTM coordinates, that is used for position readings.
 pose_origin:
   data:
-  - 367028
-  - 4064510
+  - 366966.844
+  - 4064276.833
   - 52.138
 
 --- name:calibration
