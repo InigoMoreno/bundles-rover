@@ -148,9 +148,9 @@ slope_values: [0,5,10,15,20,25,30,35,40,45]
 cost_data: [10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,
             10.0,20.0,30.0,40.0,50.0,60.0,70.0,80.0,90.0,100.0]
 
-local_res: 0.10
+local_res: 0.02
 
-global_res: 0.10
+global_res: 0.02
 
 risk_distance: 0.7
 
@@ -158,7 +158,7 @@ reconnect_distance: 0.5
 
 risk_ratio: 1.0
 
-elevationFile: '../../../rover/data/maps/umaRescueArea_2021/elevation_map_UMA.txt'
-localCostFile: '../../../rover/data/maps/umaRescueArea_2021/global_obsmap_UMA.txt'
-globalCostFile: '../../../rover/data/maps/umaRescueArea_2021/global_obsmap_UMA.txt'
-global_offset: [0,0]
+elevationFile: '../../../rover/data/maps/umaRescueArea_2cm/elevation_map_UMA.txt'
+localCostFile: '../../../rover/data/maps/umaRescueArea_2cm/global_obsmap_UMA.txt'
+globalCostFile: '../../../rover/data/maps/umaRescueArea_2cm/global_obsmap_UMA.txt'
+global_offset: [-10.0, 100]
