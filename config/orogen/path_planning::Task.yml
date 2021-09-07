@@ -158,7 +158,34 @@ reconnect_distance: 0.5
 
 risk_ratio: 1.0
 
-elevationFile: '../../../rover/data/maps/umaRescueArea_2cm/elevation_map_UMA.txt'
-localCostFile: '../../../rover/data/maps/umaRescueArea_2cm/global_obsmap_UMA.txt'
-globalCostFile: '../../../rover/data/maps/umaRescueArea_2cm/global_obsmap_UMA.txt'
+elevationFile: '../../../rover/data/maps/umaRescueArea_2cm/DEM_UMA_2cm.txt'
+localCostFile: '../../../rover/data/maps/umaRescueArea_2cm/global_obsmap_UMA_2cm.txt'
+globalCostFile: '../../../rover/data/maps/umaRescueArea_2cm/global_obsmap_UMA_2cm.txt'
 global_offset: [-10.0, 100]
+
+--- name:small_exoter_rover
+locomotion_modes: [DRIVING]
+slope_values: [0,5,10,15,20,25,30,35,40,45]
+#
+#          Locomotion1        Locomotion2
+#Obstacles slope1-slope2-...  slope1-slope2-... value much higher than for terrains (f.e. 100 times)
+#Terrain1  slope1-slope2-...  slope1-slope2-... 
+#Terrain2  slope1-slope2-...  slope1-slope2-...
+#
+cost_data: [10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,
+            10.0,20.0,30.0,40.0,50.0,60.0,70.0,80.0,90.0,100.0]
+
+local_res: 0.02
+
+global_res: 0.02
+
+risk_distance: 0.7
+
+reconnect_distance: 0.5
+
+risk_ratio: 1.0
+
+elevationFile: '../../../rover/data/maps/umaRescueArea_2cm_small/DEM_UMA_2cm_small.txt'
+localCostFile: '../../../rover/data/maps/umaRescueArea_2cm_small/global_obsmap_UMA_2cm_small.txt'
+globalCostFile: '../../../rover/data/maps/umaRescueArea_2cm_small/global_obsmap_UMA_2cm_small.txt'
+global_offset: [5.0, 130]

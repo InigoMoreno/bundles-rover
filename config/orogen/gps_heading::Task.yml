@@ -26,15 +26,15 @@ dist_min: 0.0
 # Complementary filter weight
 alpha: 0.15
 # Minimum distance to travel for the first headning estimation (calibration), should be higher than dist_min
-calibration_dist_min: 0.5
+calibration_dist_min: 1.2
 # Minimum distance to travel for GPS-based heading estimation
-dist_min: 0.3
+dist_min: 1.0
 # GPS position offset (x, y, z) with regards to the platform it is mounted on
 offset:
   data:
-    - -0.14
-    - 0
-    - -1.16
+    - -0.1705
+    - 0.0745
+    - 0.2206
 
 gnss_source_frame: "body" #transformer names. No transformation convention
 # to frame for the transformer
@@ -42,3 +42,4 @@ gnss_target_frame: "gnss_utm" #transformer names. No transformation convention
 
 stop_integrating_time: 5  #seconds after which the component should not continue integrating the gyro because it is in stopped state. Reduces drift.
 
+heading_offset: 0 # heading offset in degrees
