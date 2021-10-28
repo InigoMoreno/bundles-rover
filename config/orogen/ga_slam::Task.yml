@@ -58,3 +58,13 @@ orbiterMapLength: 30.0
 orbiterMapResolution: 0.05
 traversedDistanceThreshold: 1000000.0 # we do not want to use global pose correction as we are feeding ground-truth odometry info
 
+--- name:deep_ga
+mapLength: 40.0
+minElevation: -500
+maxElevation: 500
+mapResolution: 0.05
+orbiterMapLength: 40.0
+orbiterMapResolution: 0.05
+traversedDistanceThreshold: 1000000.0 # we do not want to use global pose correction as we are feeding ground-truth odometry info
+skipMapMatch: True
+

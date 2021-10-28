@@ -10,40 +10,37 @@ Bundles.initialize
 Bundles.transformer.load_conf(
     Bundles.find_file('config', 'transforms_scripts_ga_slam.rb'))
 
+path = ARGV.shift
+puts path
+if path.nil?
+    dataset='/media/heimdal/Dataset1'
+    # traverse ='9June/Traverse/20170609-1413/'  #       Nominal start
+    # traverse ='9June/Traverse/20170609-1450/'  #       Nominal end
+    # traverse ='10June/Traverse/20170610-1315/' #       Nominal reverse
+    # traverse ='10June/Traverse/20170610-1448/' #       Nurburing
+    # traverse ='10June/Traverse/20170610-1615/' #       Nurburing End //Not used due to lack of time
+    # traverse ='9June/Traverse/20170609-1556/'  #       Side Track
+    traverse ='9June/Traverse/20170609-1909/'  #       Eight Track (Dusk)
+    # traverse ='11June/Traverse/20170611-1407/' #       Valley Circle
+else
+    dataset = path.split("/")[0..-4].join("/")
+    traverse = path.split("/")[-3..-1].join("/")
+end
+
+unless traverse[-1]=='/'
+    traverse+='/'
+end
+
+path = dataset+'/'+traverse
+save_to = dataset + '/processed/' + traverse #log files will be removed from default folder to here, set to nil if you don't want to do this
+
+system("echo \"save_to #{save_to}\"")
+system("echo \"path #{path}\"")
 ####### Replay Logs #######
 bag = Orocos::Log::Replay.open(
-#       Nominal start
-#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/bb3.log',
-#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/waypoint_navigation.log',
-#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1413/imu.log',
-#       Nominal end
-#       '/media/heimdal/Dataset1/9June/Traverse/20170609-1450/bb3.log',
-#       '/media/heimdal/Dataset1/9June/Traverse/20170609-1450/waypoint_navigation.log',
-#       '/media/heimdal/Dataset1/9June/Traverse/20170609-1450/imu.log',
-#       Nominal reverse
-#       '/media/heimdal/Dataset1/10June/Traverse/20170610-1315/bb3.log',
-#       '/media/heimdal/Dataset1/10June/Traverse/20170610-1315/waypoint_navigation.log',
-#       '/media/heimdal/Dataset1/10June/Traverse/20170610-1315/imu.log',
-#       Nurburing
-#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1448/bb3.log',
-#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1448/waypoint_navigation.log',
-#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1448/imu.log',
-#       Nurburing End //Not used due to lack of time
-#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1615/bb3.log',
-#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1615/waypoint_navigation.log',
-#        '/media/heimdal/Dataset1/10June/Traverse/20170610-1615/imu.log',
-#       Side Track
-#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/bb3.log',
-#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/waypoint_navigation.log',
-#        '/media/heimdal/Dataset1/9June/Traverse/20170609-1556/imu.log',
-#       Eight Track (Dusk)
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/bb3.log',
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/waypoint_navigation.log',
-        '/media/heimdal/Dataset1/9June/Traverse/20170609-1909/imu.log',
-#       Valley Circle
-#        '/media/heimdal/Dataset1/11June/Traverse/20170611-1407/bb3.log',
-#        '/media/heimdal/Dataset1/11June/Traverse/20170611-1407/waypoint_navigation.log',
-#        '/media/heimdal/Dataset1/11June/Traverse/20170611-1407/imu.log',
+        path+'/bb3.log',
+        # path+'/imu.log',
+        path+'/waypoint_navigation.log'
 )
 bag.use_sample_time = true
 
@@ -74,13 +71,13 @@ do
     gps_transformer.configure
 
     orbiter_preprocessing = TaskContext.get 'orbiter_preprocessing'
-    Orocos.conf.apply(orbiter_preprocessing, ['default', 'ga_slam', 'solving_occlusion'], :override => true)
+    Orocos.conf.apply(orbiter_preprocessing, ['default', 'ga_slam', 'deep_ga'], :override => true)
     # Orocos.conf.apply(orbiter_preprocessing, ['prepared'], :override => true)
     orbiter_preprocessing.configure
 
     ga_slam = TaskContext.get 'ga_slam'
     # Orocos.conf.apply(ga_slam, ['default'], :override => true)
-    Orocos.conf.apply(ga_slam, ['default', 'test', 'solving_occlusion'], :override => true)
+    Orocos.conf.apply(ga_slam, ['default', 'test', 'deep_ga'], :override => true)
     Bundles.transformer.setup(ga_slam)
     ga_slam.configure
 
@@ -107,8 +104,8 @@ do
     orbiter_preprocessing.pointCloud.connect_to     ga_slam.orbiterCloud
     gps_transformer.outputPose.connect_to           ga_slam.orbiterCloudPose
 
-    # Log the component output
-    ga_slam.log_all_ports
+    # Log the output (only ga_slam:localElevationMapMean and gps:outputPose and orbiter_preprocessing:robotPoseTransformed)
+    Orocos.log_all_ports(tasks:/(ga_slam|gps|orbiter)/, exclude_ports: /(global|Variance|estim|state|Drift|Delta)/, exclude_types: /(cloud|Status|double)/) 
 
     ####### Start Tasks #######
     camera_bb3.start
@@ -120,6 +117,23 @@ do
 
     # Run log
     bag.speed = 1
-    while bag.step(true)
+
+    begin
+        while bag.step(true)# && bag.sample_index <= 100
+            # if bag.sample_index % 100 == 0
+            puts path
+            puts "sample %i out of %i" % [bag.sample_index, bag.size]
+            # end
+        end
+    ensure
+        unless save_to.nil?
+            sleep(5)
+            system("echo \"mkdir -p #{save_to}\"")
+            system("mkdir -p #{save_to}")
+            system("echo \"rsync -ah --progress -r #{Bundles.log_dir}/*.log  #{save_to}\"")
+            system("rsync -ah --progress -r #{Bundles.log_dir}/*.log  #{save_to}")
+            system("echo \"rm -r #{Bundles.log_dir}\"")
+            system("rm -r #{Bundles.log_dir}")
+        end
     end
 end

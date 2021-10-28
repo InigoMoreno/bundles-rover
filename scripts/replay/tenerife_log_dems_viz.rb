@@ -75,13 +75,13 @@ do
     gps_transformer.configure
 
     orbiter_preprocessing = TaskContext.get 'orbiter_preprocessing'
-    Orocos.conf.apply(orbiter_preprocessing, ['default', 'ga_slam', 'solving_occlusion'], :override => true)
+    Orocos.conf.apply(orbiter_preprocessing, ['default', 'ga_slam', 'deep_ga'], :override => true)
     # Orocos.conf.apply(orbiter_preprocessing, ['prepared'], :override => true)
     orbiter_preprocessing.configure
 
     ga_slam = TaskContext.get 'ga_slam'
     # Orocos.conf.apply(ga_slam, ['default'], :override => true)
-    Orocos.conf.apply(ga_slam, ['default', 'test', 'solving_occlusion'], :override => true)
+    Orocos.conf.apply(ga_slam, ['default', 'test', 'deep_ga'], :override => true)
     Bundles.transformer.setup(ga_slam)
     ga_slam.configure
 
@@ -126,7 +126,7 @@ do
     # Vizkit.display ga_slam.estimatedPose,
     #     :widget => Vizkit.default_loader.TrajectoryVisualization
 
-    Vizkit.display camera_bb3.left_frame
+    # Vizkit.display camera_bb3.left_frame
 
     # Vizkit.display stereo_bb3.point_cloud
     # Vizkit.display ga_slam.mapCloud
@@ -134,11 +134,11 @@ do
     # Vizkit.display orbiter_preprocessing.pointCloud
 
     Vizkit.display ga_slam.localElevationMapMean
-    Vizkit.display ga_slam.localElevationMapVariance
-    Vizkit.display ga_slam.globalElevationMapMean
+    # Vizkit.display ga_slam.localElevationMapVariance
+    # Vizkit.display ga_slam.globalElevationMapMean
 
-    # Vizkit.display ga_slam.localElevationMapMean,
-    #     :widget => Vizkit.default_loader.DistanceImageVisualization
+    Vizkit.display ga_slam.localElevationMapMean,
+        :widget => Vizkit.default_loader.DistanceImageVisualization
     # Vizkit.display ga_slam.globalElevationMapMean,
     #     :widget => Vizkit.default_loader.DistanceImageVisualization
 

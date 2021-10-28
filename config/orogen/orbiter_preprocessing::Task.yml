@@ -32,3 +32,12 @@ cloudYawOffset: 0
 diffDistanceRatio: 0.01 # we want to translate the global map at every time-step so we get accurate ground-truth
 smoothCloud: false
 
+--- name:deep_ga
+loadFilename: '/media/heimdal/Dataset1/Maps/minas_densified_point_cloud_part_1.pcd'
+preprocessingEnabled: false
+gpsRefFrame: true
+cloudYawOffset: 0
+diffDistanceRatio: 10000 # prevent preprocessing from happening
+smoothCloud: false
+savePreprocessedCloud: false
+
