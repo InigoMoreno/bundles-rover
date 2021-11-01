@@ -136,7 +136,7 @@ global_offset: [500,500]
 global_res: 0.02
 #local_res: 0.05
 
---- name:exoter_rover
+--- name:prl_sfr_tests
 locomotion_modes: [DRIVING]
 slope_values: [0,5,10,15,20,25,30,35,40,45]
 #
@@ -146,7 +146,7 @@ slope_values: [0,5,10,15,20,25,30,35,40,45]
 #Terrain2  slope1-slope2-...  slope1-slope2-...
 #
 cost_data: [10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,
-            10.0,20.0,30.0,40.0,50.0,60.0,70.0,80.0,90.0,100.0]
+            1.0,1.2,1.5,2.0,4.0,10.0,30.0,100.0,1000.0,10000.0]
 
 local_res: 0.02
 
@@ -158,12 +158,14 @@ reconnect_distance: 0.5
 
 risk_ratio: 1.0
 
-elevationFile: '../../../rover/data/maps/umaRescueArea_2cm/DEM_UMA_2cm.txt'
-localCostFile: '../../../rover/data/maps/umaRescueArea_2cm/global_obsmap_UMA_2cm.txt'
-globalCostFile: '../../../rover/data/maps/umaRescueArea_2cm/global_obsmap_UMA_2cm.txt'
-global_offset: [-10.0, 100]
+elevationFile: '../../../rover/data/maps/prl/DEM_PRL_2cm.txt'
+localCostFile: '../../../rover/data/maps/prl/local_terrainMap.txt'
+globalCostFile: '../../../rover/data/maps/prl/dilatedGlobalTerrainMap_2cm.txt'
+global_offset: [0,0]
+global_res: 0.02
+#local_res: 0.05
 
---- name:small_exoter_rover
+--- name:malaga_sfr_tests
 locomotion_modes: [DRIVING]
 slope_values: [0,5,10,15,20,25,30,35,40,45]
 #
