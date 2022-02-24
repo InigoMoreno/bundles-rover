@@ -10,6 +10,7 @@ Bundles.initialize
 Bundles.transformer.load_conf(
     Bundles.find_file('config', 'transforms_scripts_ga_slam.rb'))
 
+# Get the path from the ARGV
 path = ARGV.shift
 puts path
 if path.nil?
@@ -31,6 +32,7 @@ unless traverse[-1]=='/'
     traverse+='/'
 end
 
+# Where to save the logs
 path = dataset+'/'+traverse
 save_to = dataset + '/processed/' + traverse #log files will be removed from default folder to here, set to nil if you don't want to do this
 
@@ -71,12 +73,14 @@ do
     gps_transformer.configure
 
     orbiter_preprocessing = TaskContext.get 'orbiter_preprocessing'
+    # Use deep_ga config, you probably need to play with these to increase the resolution
     Orocos.conf.apply(orbiter_preprocessing, ['default', 'ga_slam', 'deep_ga'], :override => true)
     # Orocos.conf.apply(orbiter_preprocessing, ['prepared'], :override => true)
     orbiter_preprocessing.configure
 
     ga_slam = TaskContext.get 'ga_slam'
     # Orocos.conf.apply(ga_slam, ['default'], :override => true)
+    # Use deep_ga config, you probably need to play with these to increase the resolution
     Orocos.conf.apply(ga_slam, ['default', 'test', 'deep_ga'], :override => true)
     Bundles.transformer.setup(ga_slam)
     ga_slam.configure
@@ -119,6 +123,8 @@ do
     bag.speed = 1
 
     begin
+        # Step through the bag
+
         while bag.step(true)# && bag.sample_index <= 100
             # if bag.sample_index % 100 == 0
             puts path
@@ -127,11 +133,17 @@ do
         end
     ensure
         unless save_to.nil?
+            # Save to save folder
             sleep(5)
+            # Mkdir the folder
             system("echo \"mkdir -p #{save_to}\"")
             system("mkdir -p #{save_to}")
+
+            # Copy the log files to where they should be (using rsync for progress bar)
             system("echo \"rsync -ah --progress -r #{Bundles.log_dir}/*.log  #{save_to}\"")
             system("rsync -ah --progress -r #{Bundles.log_dir}/*.log  #{save_to}")
+
+            # Remove the log dir
             system("echo \"rm -r #{Bundles.log_dir}\"")
             system("rm -r #{Bundles.log_dir}")
         end
